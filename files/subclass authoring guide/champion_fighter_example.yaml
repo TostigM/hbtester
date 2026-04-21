@@ -1,0 +1,261 @@
+# ==============================================================================
+# SUBCLASS: Champion (Fighter)
+# Source: 2024 Player's Handbook
+#
+# This is the reference/example YAML file for subclass authoring. It demonstrates
+# every major section of the subclass schema and serves as the canonical example
+# referenced by the Subclass Authoring Guide.
+#
+# When authoring new subclass YAML files, use this as a format template.
+# ==============================================================================
+
+schema_version: "0.1"
+content_type: "subclass"
+id: "champion"
+display_name: "Champion"
+parent_class: "fighter"
+source: "PHB_2024"
+version: "2024"
+author: "Wizards of the Coast"
+flavor_text: >
+  The archetypal Champion focuses on the development of raw physical power honed
+  to deadly perfection. Those who model themselves on this archetype combine
+  rigorous training with physical excellence to deal devastating blows.
+
+# ==============================================================================
+# FEATURES
+# Ordered by unlock_level ascending.
+# ==============================================================================
+
+features:
+
+  # --------------------------------------------------------------------------
+  # LEVEL 3: Improved Critical
+  #
+  # PHB text: "Your attack rolls with weapons and Unarmed Strikes can score a
+  # critical hit on a roll of 19 or 20 on the d20."
+  # --------------------------------------------------------------------------
+  - id: "improved_critical"
+    unlock_level: 3
+    display_name: "Improved Critical"
+    feature_type: "crit_range_modifier"
+    body:
+      new_crit_threshold: 19
+      applies_to: "weapon_and_unarmed_attacks"
+    flavor: "Weapons seem to find the chinks in your enemies' defenses."
+
+  # --------------------------------------------------------------------------
+  # LEVEL 3: Remarkable Athlete
+  #
+  # PHB text: "You can add half your Proficiency Bonus (round up) to any
+  # Strength, Dexterity, or Constitution check you make that doesn't already
+  # use your Proficiency Bonus. In addition, when you make a running long jump,
+  # the distance you can cover increases by a number of feet equal to your
+  # Strength modifier."
+  # --------------------------------------------------------------------------
+  - id: "remarkable_athlete"
+    unlock_level: 3
+    display_name: "Remarkable Athlete"
+    feature_type: "passive_feature_grant"
+    body:
+      grants:
+        - type: "half_proficiency_to_ability_checks"
+          ability_scores: ["STR", "DEX", "CON"]
+          round: "up"
+          condition: "not_already_proficient"
+        - type: "jump_distance_bonus"
+          jump_type: "running_long_jump"
+          bonus: "strength_modifier"
+          unit: "feet"
+
+  # --------------------------------------------------------------------------
+  # LEVEL 7: Additional Fighting Style
+  #
+  # PHB text: "You gain another Fighting Style feat of your choice."
+  #
+  # Note: This feature presents a choice point at character build time.
+  # The engine must ask the user (or default per standard party rules) which
+  # fighting style to apply. For standard party testing, the default is
+  # Great Weapon Fighting (reroll 1s and 2s on two-handed weapon damage dice).
+  # --------------------------------------------------------------------------
+  - id: "additional_fighting_style"
+    unlock_level: 7
+    display_name: "Additional Fighting Style"
+    feature_type: "feat_grant"
+    body:
+      feat_category: "fighting_style"
+      author_chooses: true
+      standard_party_default: "great_weapon_fighting"
+
+  # --------------------------------------------------------------------------
+  # LEVEL 10: Heroic Warrior
+  #
+  # PHB text: "The thrill of battle drives you toward victory. At the start of
+  # each of your turns in combat, you can give yourself Heroic Inspiration if
+  # you don't already have it."
+  #
+  # Note: Heroic Inspiration allows rerolling any d20. This feature provides a
+  # free reroll every round (if not already held). The AI should spend it on
+  # the most impactful roll of the turn.
+  # --------------------------------------------------------------------------
+  - id: "heroic_warrior"
+    unlock_level: 10
+    display_name: "Heroic Warrior"
+    feature_type: "passive_feature_grant"
+    body:
+      grants:
+        - type: "conditional_heroic_inspiration"
+          trigger: "start_of_your_turn_in_combat"
+          condition: "do_not_currently_have_heroic_inspiration"
+          effect: "gain_heroic_inspiration"
+
+  # --------------------------------------------------------------------------
+  # LEVEL 15: Superior Critical
+  #
+  # PHB text: "Your attack rolls with weapons and Unarmed Strikes can now
+  # score a critical hit on a roll of 18 or higher on the d20."
+  #
+  # The 'supersedes' field ensures the engine does not double-apply the crit
+  # range modification when both Improved Critical and Superior Critical are
+  # active. Only the most-recent modifier applies.
+  # --------------------------------------------------------------------------
+  - id: "superior_critical"
+    unlock_level: 15
+    display_name: "Superior Critical"
+    feature_type: "crit_range_modifier"
+    body:
+      new_crit_threshold: 18
+      applies_to: "weapon_and_unarmed_attacks"
+      supersedes: "improved_critical"
+    flavor: "Your blows find the weakest gaps with uncanny precision."
+
+  # --------------------------------------------------------------------------
+  # LEVEL 18: Survivor
+  #
+  # PHB text: "You attain the pinnacle of resilience in battle, giving you
+  # these benefits:
+  #   Defy Death. You have Advantage on Death Saving Throws. Moreover, when you
+  #     roll 18-20 on a Death Saving Throw, you gain the benefit of rolling a 20
+  #     on it.
+  #   Heroic Rally. At the start of each of your turns, you regain Hit Points
+  #     equal to 5 plus your Constitution modifier if you are Bloodied and have
+  #     at least 1 Hit Point."
+  # --------------------------------------------------------------------------
+  - id: "survivor"
+    unlock_level: 18
+    display_name: "Survivor"
+    feature_type: "passive_feature_grant"
+    body:
+      grants:
+        - type: "death_save_advantage"
+          effect: "advantage_on_death_saves"
+        - type: "death_save_threshold_improvement"
+          threshold: 18
+          effect: "equivalent_to_nat_20"
+        - type: "turn_start_regeneration"
+          trigger: "start_of_your_turn_in_combat"
+          conditions:
+            - "bloodied"
+            - "hp_greater_than_0"
+          amount: "5 + constitution_modifier"
+
+# ==============================================================================
+# RESOURCE POOLS
+# Champion introduces no subclass-specific pools. It uses Fighter class pools
+# (Second Wind, Action Surge, Indomitable) as-is.
+# ==============================================================================
+
+resource_pools: []
+
+# ==============================================================================
+# SPELL LIST
+# Champion has no spellcasting. Eldritch Knight (another Fighter subclass) is
+# the spellcasting Fighter option.
+# ==============================================================================
+
+spell_list: []
+
+# ==============================================================================
+# BEHAVIOR AI HINTS
+# How the Champion should make tactical decisions during simulation.
+# ==============================================================================
+
+behavior_hints:
+  combat_role: "striker"
+
+  primary_signature:
+    description: >
+      Relentless weapon attacker with expanded crit range. No concentration
+      dependence, no spell slots to manage, no complex resource economy. The
+      Champion's value is consistent, reliable damage output across long
+      adventuring days.
+    priority_actions:
+      - "attack"
+      - "extra_attack_if_unlocked"
+      - "action_surge_offensively"
+
+  resource_management:
+    aggressive_use:
+      - resource: "second_wind_uses"
+        when: "hp_below_50_percent"
+        note: "Second Wind is bonus action; no opportunity cost in most turns"
+      - resource: "action_surge_uses"
+        when: "round_1_or_boss_engaged"
+        note: "Early burst damage is typically worth more than saved action economy"
+    conservative_use:
+      - resource: "indomitable_uses"
+        reason: "Save for critical failed saves against save-or-die effects"
+
+  target_preferences:
+    - preference: "highest_hp_enemy"
+      reason: "Consistent damage excels against bosses; Champion doesn't waste damage on overkill"
+    - preference: "enemies_within_extra_attack_reach"
+      reason: "Maximizing attack count per turn compounds Improved Critical value"
+    - preference: "prone_or_restrained_targets"
+      reason: "Advantage on melee attacks compounds expanded crit range significantly"
+
+  positioning:
+    preference: "engaged_melee_frontline"
+    avoid: "isolated_without_ally_support"
+    target_reposition: "gap_close_to_priority_target"
+
+  weapon_mastery_recommendations:
+    preferred_masteries: ["graze", "cleave", "vex"]
+    reasoning: >
+      Graze provides damage on missed attacks (compounds reliability).
+      Cleave extends damage to multiple targets.
+      Vex provides advantage that pairs well with expanded crit range.
+
+  synergies_with_class_features:
+    - "second_wind_is_bonus_action_between_turns"
+    - "action_surge_doubles_attack_count_for_one_action"
+    - "multiple_attacks_compound_improved_critical_value"
+
+  avoid_situations:
+    - situation: "concentration_saves_required_in_role"
+      reason: "Champion has no concentration spells; this does not apply"
+    - situation: "long_range_encounters"
+      reason: "Champion lacks ranged specialization; should close to melee"
+    - situation: "save_or_die_against_mental_save"
+      reason: "No mental save proficiency; Indomitable is the only insurance"
+
+  notes: >
+    The Champion has the simplest tactical decision tree of any Fighter subclass.
+    The AI should attack every turn, use bonus action for Second Wind when
+    bloodied, and Action Surge on round 1 of hard encounters. Heroic Warrior
+    (L10) grants self-inspiration at turn start; use it on the attack roll most
+    likely to hit a high-value target. Survivor (L18) makes dropping to 0 HP
+    rare; play aggressively at high levels.
+
+# ==============================================================================
+# CATEGORIZATION METADATA
+# ==============================================================================
+
+tags:
+  - "martial"
+  - "non_caster"
+  - "melee_focused"
+  - "simple_mechanics"
+  - "damage_dealer"
+
+complexity_rating: "low"     # Simplest tactical decision tree of any Fighter subclass
