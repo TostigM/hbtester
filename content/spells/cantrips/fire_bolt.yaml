@@ -1,0 +1,30 @@
+schema_version: "0.1"
+content_type: spell
+id: fire_bolt
+display_name: Fire Bolt
+source: PHB_2024
+author: Wizards of the Coast
+level: 0
+school: evocation
+casting_time: action
+range: 120_feet
+components:
+  verbal: true
+  somatic: true
+duration: instantaneous
+concentration: false
+class_lists: [wizard, sorcerer]
+intent_tags: [damage, combat]
+character_level_scaling:
+  - at_level: 5
+    damage: 2d10
+  - at_level: 11
+    damage: 3d10
+  - at_level: 17
+    damage: 4d10
+effects:
+  - type: damage
+    damage_type: fire
+    damage_formula: "1d10"
+    target_count: 1
+    attack_type: ranged_spell

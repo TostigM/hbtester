@@ -1,0 +1,16 @@
+schema_version: "0.1"
+content_type: feat
+id: savage_attacker
+display_name: Savage Attacker
+source: PHB_2024
+author: Wizards of the Coast
+feat_category: origin
+benefits:
+  - id: savage_attacker_reroll
+    display_name: Weapon Damage Reroll
+    feature_type: passive_roll_modifier
+    body:
+      trigger: weapon_damage_roll
+      uses_per_turn: 1
+      effect: reroll_keep_higher
+      description: Once per turn, reroll one weapon damage die and use the higher result

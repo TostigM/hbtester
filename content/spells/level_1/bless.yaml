@@ -1,0 +1,29 @@
+schema_version: "0.1"
+content_type: spell
+id: bless
+display_name: Bless
+source: PHB_2024
+author: Wizards of the Coast
+level: 1
+school: enchantment
+casting_time: bonus_action
+range: 30_feet
+components:
+  verbal: true
+  somatic: true
+  material: true
+  material_description: holy water
+duration: concentration_1_minute
+concentration: true
+class_lists: [cleric, paladin]
+intent_tags: [buff, combat, concentration]
+upcast_scaling:
+  - slot_level: 2
+    changes:
+      additional_targets: 1
+effects:
+  - type: buff
+    buff_type: roll_bonus
+    roll_types: [attack_roll, saving_throw]
+    amount: 1d4
+    targets: up_to_3_creatures

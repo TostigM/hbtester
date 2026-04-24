@@ -1,0 +1,14 @@
+schema_version: "0.1"
+content_type: feat
+id: skilled
+display_name: Skilled
+source: PHB_2024
+author: Wizards of the Coast
+feat_category: origin
+benefits:
+  - id: skilled_bonus_proficiencies
+    display_name: Skill or Tool Proficiencies
+    feature_type: skill_proficiency_grant
+    body:
+      count: 3
+      description: Gain proficiency in 3 skills or tools of your choice

@@ -1,0 +1,78 @@
+schema_version: "0.1"
+content_type: subclass
+id: battle_master
+display_name: Battle Master
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: fighter
+tags: [control, support, versatile]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: superiority_dice_maneuver
+  save_superiority_for: boss_or_dangerous_target
+
+features:
+  - id: combat_superiority
+    display_name: Combat Superiority
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      resource: superiority_dice
+      initial_die: d8
+      initial_count: 4
+      maneuvers_known: 3
+      scaling:
+        - level: 7
+          count: 5
+        - level: 10
+          die: d10
+          maneuvers_known: 5
+        - level: 15
+          count: 6
+        - level: 18
+          die: d12
+          maneuvers_known: 7
+
+  - id: student_of_war
+    display_name: Student of War
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Gain proficiency in one type of Artisan's Tools; +1 weapon expertise
+
+  - id: know_your_enemy
+    display_name: Know Your Enemy
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: 1 minute of observation reveals target's immunities, resistances, vulnerabilities, AC, and current HP
+
+  - id: relentless
+    display_name: Relentless
+    feature_type: passive_feature_grant
+    unlock_level: 15
+    body:
+      description: Regain one superiority die when you roll initiative and have none remaining
+
+  - id: master_of_battle_master
+    display_name: Master of Battle
+    feature_type: passive_feature_grant
+    unlock_level: 20
+    body:
+      description: Regain all superiority dice after a short rest; improve Battle Master saving throw DCs
+
+resource_pools:
+  - id: superiority_dice
+    display_name: Superiority Dice
+    max_size: 4
+    refresh: short_or_long
+    die_size: d8
+    scaling:
+      - level: 7
+        max_size: 5
+      - level: 10
+        die_size: d10
+      - level: 15
+        max_size: 6
+      - level: 18
+        die_size: d12

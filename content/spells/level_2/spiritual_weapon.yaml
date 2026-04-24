@@ -1,0 +1,30 @@
+schema_version: "0.1"
+content_type: spell
+id: spiritual_weapon
+display_name: Spiritual Weapon
+source: PHB_2024
+author: Wizards of the Coast
+level: 2
+school: evocation
+casting_time: bonus_action
+range: 60_feet
+components:
+  verbal: true
+  somatic: true
+duration: concentration_1_minute
+concentration: true
+class_lists: [cleric]
+intent_tags: [damage, combat, concentration]
+upcast_scaling:
+  - slot_level: 3
+    changes:
+      damage: 2d8
+  - slot_level: 4
+    changes:
+      damage: 3d8
+effects:
+  - type: summon_weapon
+    damage_type: force
+    damage_formula: "1d8 + spellcasting_mod"
+    attack_type: melee_spell
+    actions_required: bonus_action_to_attack

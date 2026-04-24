@@ -68,6 +68,18 @@ FEATURE_TYPES: Final[frozenset[str]] = frozenset({
     # Monster traits
     "scripted_trait",
     "aura",
+    # Class / subclass mechanical pillars (read by character builder and engine)
+    "spellcasting",
+    "fighting_style",
+    "hp_bonus_per_level",
+    "sneak_attack",
+    "extra_attack",
+    "expertise",
+    "channel_divinity",
+    "arcane_recovery",
+    "second_wind",
+    "action_surge",
+    "bardic_inspiration",
     # Escape hatch for novel mechanics requiring custom engine logic
     "scripted_feature",
 })

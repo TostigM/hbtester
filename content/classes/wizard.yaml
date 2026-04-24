@@ -1,0 +1,89 @@
+schema_version: "0.1"
+content_type: class
+id: wizard
+display_name: Wizard
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d6
+primary_ability_options: [INT]
+saving_throw_proficiencies: [INT, WIS]
+spellcasting_ability: INT
+spellcasting_progression: full
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: []
+  weapons: [simple]
+  tools: []
+  saving_throws: [INT, WIS]
+  skills_choose: 2
+  skills_available:
+    - arcana
+    - history
+    - insight
+    - investigation
+    - medicine
+    - religion
+features:
+  - id: wizard_spellcasting
+    display_name: Spellcasting
+    feature_type: spellcasting
+    unlock_level: 1
+    body:
+      ability: INT
+      progression: full
+      prepared: true
+      prep_formula: "level + INT_mod"
+      spellbook: true
+      spellbook_start: 6
+      spellbook_per_level: 2
+      ritual_casting: true
+
+  - id: arcane_recovery
+    display_name: Arcane Recovery
+    feature_type: arcane_recovery
+    unlock_level: 1
+    body:
+      uses_per_long_rest: 1
+      description: Once per day on short rest, recover spell slots totaling half wizard level (round up)
+
+  - id: ritual_adept
+    display_name: Ritual Adept
+    feature_type: passive_feature_grant
+    unlock_level: 1
+    body:
+      description: Cast any spell with Ritual tag as a ritual (no slot needed, spellbook or prepared)
+
+  - id: scholar
+    display_name: Scholar
+    feature_type: passive_feature_grant
+    unlock_level: 2
+    body:
+      description: Expertise in one skill or tool; add proficiency twice to INT (Arcana/History) checks
+
+  - id: wizard_subclass
+    display_name: Wizard Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Wizard subclass (Arcane Tradition)
+
+  - id: memory_of_a_thousand_forms
+    display_name: Memorize Spell
+    feature_type: passive_feature_grant
+    unlock_level: 5
+    body:
+      description: Replace one prepared spell with another from spellbook during short rest
+
+  - id: spell_mastery
+    display_name: Spell Mastery
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: Cast chosen 1st- and 2nd-level spells without expending spell slots
+
+  - id: signature_spells
+    display_name: Signature Spells
+    feature_type: passive_feature_grant
+    unlock_level: 20
+    body:
+      description: Two 3rd-level spells that are always prepared; cast each once per short rest for free

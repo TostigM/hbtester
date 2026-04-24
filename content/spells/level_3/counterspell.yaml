@@ -1,0 +1,24 @@
+schema_version: "0.1"
+content_type: spell
+id: counterspell
+display_name: Counterspell
+source: PHB_2024
+author: Wizards of the Coast
+level: 3
+school: abjuration
+casting_time: reaction
+range: 60_feet
+components:
+  somatic: true
+duration: instantaneous
+concentration: false
+class_lists: [wizard, sorcerer, warlock]
+intent_tags: [defense, reaction, utility]
+upcast_scaling:
+  - slot_level: 4
+    changes:
+      description: Automatically counters spells of 4th level or lower
+effects:
+  - type: counter_spell
+    auto_counter_max_level: 3
+    check_for_higher: ability_check_dc10_plus_spell_level

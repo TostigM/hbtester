@@ -1,0 +1,20 @@
+schema_version: "0.1"
+content_type: feat
+id: alert
+display_name: Alert
+source: PHB_2024
+author: Wizards of the Coast
+feat_category: origin
+benefits:
+  - id: alert_initiative
+    display_name: Initiative Bonus
+    feature_type: passive_roll_modifier
+    body:
+      roll_type: initiative
+      amount: proficiency_bonus
+      description: Add proficiency bonus to initiative rolls
+  - id: alert_no_surprise
+    display_name: No Surprise
+    feature_type: passive_feature_grant
+    body:
+      description: Cannot be surprised while conscious

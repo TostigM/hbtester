@@ -1,0 +1,30 @@
+schema_version: "0.1"
+content_type: spell
+id: magic_missile
+display_name: Magic Missile
+source: PHB_2024
+author: Wizards of the Coast
+level: 1
+school: evocation
+casting_time: action
+range: 120_feet
+components:
+  verbal: true
+  somatic: true
+duration: instantaneous
+concentration: false
+class_lists: [wizard, sorcerer]
+intent_tags: [damage, combat]
+upcast_scaling:
+  - slot_level: 2
+    changes:
+      additional_darts: 1
+  - slot_level: 3
+    changes:
+      additional_darts: 2
+effects:
+  - type: damage
+    damage_type: force
+    damage_formula: "3x(1d4+1)"
+    target_count: up_to_3_separate
+    auto_hit: true

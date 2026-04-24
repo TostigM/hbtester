@@ -1,0 +1,26 @@
+schema_version: "0.1"
+content_type: feat
+id: magic_initiate_wizard
+display_name: Magic Initiate (Wizard)
+source: PHB_2024
+author: Wizards of the Coast
+feat_category: origin
+benefits:
+  - id: magic_initiate_wizard_cantrips
+    display_name: Cantrips
+    feature_type: spell_grant
+    body:
+      count: 2
+      class_list: wizard
+      spell_level: 0
+      description: Learn 2 cantrips from the Wizard spell list
+  - id: magic_initiate_wizard_spell
+    display_name: 1st-Level Spell
+    feature_type: spell_grant
+    body:
+      count: 1
+      class_list: wizard
+      spell_level: 1
+      uses_per_long_rest: 1
+      free_cast: true
+      description: Learn one 1st-level spell from Wizard list; cast once per long rest for free

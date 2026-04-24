@@ -1,0 +1,25 @@
+schema_version: "0.1"
+content_type: spell
+id: mass_cure_wounds
+display_name: Mass Cure Wounds
+source: PHB_2024
+author: Wizards of the Coast
+level: 5
+school: abjuration
+casting_time: action
+range: 60_feet
+components:
+  verbal: true
+  somatic: true
+duration: instantaneous
+concentration: false
+class_lists: [cleric, druid, bard]
+intent_tags: [healing, aoe]
+upcast_scaling:
+  - slot_level: 6
+    changes:
+      heal_dice: 5d8
+effects:
+  - type: healing
+    heal_formula: "4d8 + spellcasting_mod"
+    target_count: up_to_6
