@@ -68,9 +68,57 @@ class CombatantState:
     spell_attack_bonus: int | None = None
     spell_save_dc: int | None = None
 
+    # Combat role (drives behavior AI dispatch)
+    behavior_profile: str = "passive"  # "martial" | "healer" | "caster" | "rogue" | "monster_melee"
+
+    # Attack economy
+    extra_attack_count: int = 1   # total attacks per Attack action (1 = one, 2 = Extra Attack, etc.)
+    sneak_attack_dice: int = 0    # number of d6 added to first sneak attack per turn
+
     # Status flags
     is_alive: bool = True
     is_stable: bool = False  # True = unconscious but no longer rolling saves
+
+    # ------------------------------------------------------------------
+    # Factory
+    # ------------------------------------------------------------------
+
+    @classmethod
+    def from_character(
+        cls,
+        character: object,  # Character — avoid circular import at module level
+        combatant_id: str,
+        display_name: str,
+        team: str,
+        behavior_profile: str = "passive",
+    ) -> "CombatantState":
+        """Build a CombatantState from a resolved Character, populating resource pools
+        from active features so the behavior AI can spend them."""
+        from balance_framework.registry.character_builder import Character
+        from balance_framework.ai.profiles import resources_from_features
+
+        assert isinstance(character, Character)
+        c = character
+
+        resources = resources_from_features(c.active_features, c.build.class_id, c.build.level)
+
+        return cls(
+            id=combatant_id,
+            display_name=display_name,
+            team=team,
+            hp_max=c.hp_max,
+            hp_current=c.hp_max,
+            ac=c.ac,
+            proficiency_bonus=c.proficiency_bonus,
+            ability_modifiers=dict(c.ability_modifiers),
+            saving_throw_proficiencies=c.saving_throw_proficiencies,
+            spell_attack_bonus=c.spell_attack_bonus,
+            spell_save_dc=c.spell_save_dc,
+            sneak_attack_dice=c.sneak_attack_dice,
+            extra_attack_count=max(1, c.extra_attack_count + 1),  # feature count=1 → 2 attacks total
+            behavior_profile=behavior_profile,
+            resources=resources,
+        )
 
     # ------------------------------------------------------------------
     # Derived state helpers
