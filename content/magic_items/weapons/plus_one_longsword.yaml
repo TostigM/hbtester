@@ -1,0 +1,20 @@
+schema_version: "0.1"
+content_type: magic_item
+id: plus_one_longsword
+display_name: "+1 Longsword"
+source: DMG_2024
+author: Wizards of the Coast
+item_type: weapon
+subtype: longsword
+rarity: uncommon
+requires_attunement: false
+base_item_stats:
+  damage_die: d8
+  damage_type: slashing
+  properties: [versatile]
+passive_modifiers:
+  - stat: attack_roll
+    amount: 1
+  - stat: damage_roll
+    amount: 1
+intent_tags: [bonus_damage, combat]

@@ -1,0 +1,30 @@
+schema_version: "0.1"
+content_type: spell
+id: meteor_swarm
+display_name: Meteor Swarm
+source: PHB_2024
+author: Wizards of the Coast
+level: 8
+school: conjuration
+casting_time: action
+range: 1_mile
+components:
+  verbal: true
+  somatic: true
+duration: instantaneous
+concentration: false
+class_lists: [wizard, sorcerer]
+intent_tags: [damage, aoe, combat]
+area_of_effect:
+  shape: sphere
+  radius_feet: 40
+  count: 4
+effects:
+  - type: damage
+    damage_type: fire
+    damage_formula: "20d6"
+    additional_damage_type: bludgeoning
+    additional_damage_formula: "20d6"
+    save: DEX
+    save_on_success: half_damage
+    count: 4

@@ -1,0 +1,19 @@
+schema_version: "0.1"
+content_type: background
+id: soldier
+display_name: Soldier
+source: PHB_2024
+author: Wizards of the Coast
+ability_score_increases:
+  mode: plus_2_plus_1
+  eligible_abilities: [STR, CON, CHA]
+skill_proficiencies: [athletics, intimidation]
+tool_proficiency: gaming_set
+origin_feat: savage_attacker
+starting_equipment:
+  - spear
+  - shortbow
+  - 20 arrows
+  - gaming set
+  - traveler's clothes
+  - 14 gp

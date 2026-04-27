@@ -1,0 +1,25 @@
+schema_version: "0.1"
+content_type: spell
+id: heal
+display_name: Heal
+source: PHB_2024
+author: Wizards of the Coast
+level: 6
+school: abjuration
+casting_time: action
+range: 60_feet
+components:
+  verbal: true
+  somatic: true
+duration: instantaneous
+concentration: false
+class_lists: [cleric, druid]
+intent_tags: [healing]
+upcast_scaling:
+  - slot_level: 7
+    changes:
+      heal_amount: 80
+effects:
+  - type: healing
+    heal_amount: 70
+    also_ends: [blinded, deafened, diseased]

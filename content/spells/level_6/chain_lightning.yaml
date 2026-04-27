@@ -1,0 +1,31 @@
+schema_version: "0.1"
+content_type: spell
+id: chain_lightning
+display_name: Chain Lightning
+source: PHB_2024
+author: Wizards of the Coast
+level: 6
+school: evocation
+casting_time: action
+range: 150_feet
+components:
+  verbal: true
+  somatic: true
+  material: true
+  material_description: fur, amber, silver rod
+duration: instantaneous
+concentration: false
+class_lists: [wizard, sorcerer]
+intent_tags: [damage, combat]
+upcast_scaling:
+  - slot_level: 7
+    changes:
+      additional_arc_targets: 1
+effects:
+  - type: damage
+    damage_type: lightning
+    damage_formula: "10d8"
+    save: DEX
+    save_on_success: half_damage
+    primary_target: 1
+    arc_targets: 3

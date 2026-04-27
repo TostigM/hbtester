@@ -1,0 +1,18 @@
+schema_version: "0.1"
+content_type: background
+id: charlatan
+display_name: Charlatan
+source: PHB_2024
+author: Wizards of the Coast
+ability_score_increases:
+  mode: plus_2_plus_1
+  eligible_abilities: [DEX, CON, CHA]
+skill_proficiencies: [deception, sleight_of_hand]
+tool_proficiency: forgery_kit
+origin_feat: skilled
+starting_equipment:
+  - fine clothes
+  - disguise kit
+  - signet ring (fake)
+  - letter (forged)
+  - 15 gp

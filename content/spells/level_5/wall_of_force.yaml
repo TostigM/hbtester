@@ -1,0 +1,24 @@
+schema_version: "0.1"
+content_type: spell
+id: wall_of_force
+display_name: Wall of Force
+source: PHB_2024
+author: Wizards of the Coast
+level: 5
+school: evocation
+casting_time: action
+range: 120_feet
+components:
+  verbal: true
+  somatic: true
+  material: true
+  material_description: pinch of powder made from a clear gem
+duration: concentration_10_minutes
+concentration: true
+class_lists: [wizard]
+intent_tags: [control, utility, concentration]
+effects:
+  - type: barrier
+    immune_to: all_damage
+    blocks: movement_and_spells
+    description: Impenetrable invisible wall up to 10x10 panels or dome 10ft radius

@@ -1,0 +1,77 @@
+schema_version: "0.1"
+content_type: class
+id: cleric
+display_name: Cleric
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d8
+primary_ability_options: [WIS]
+saving_throw_proficiencies: [WIS, CHA]
+spellcasting_ability: WIS
+spellcasting_progression: full
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: [light, medium, shields]
+  weapons: [simple]
+  tools: []
+  saving_throws: [WIS, CHA]
+  skills_choose: 2
+  skills_available:
+    - history
+    - insight
+    - medicine
+    - persuasion
+    - religion
+features:
+  - id: cleric_spellcasting
+    display_name: Spellcasting
+    feature_type: spellcasting
+    unlock_level: 1
+    body:
+      ability: WIS
+      progression: full
+      prepared: true
+      prep_formula: "level + WIS_mod"
+      ritual_casting: true
+
+  - id: divine_order
+    display_name: Divine Order
+    feature_type: passive_feature_grant
+    unlock_level: 1
+    body:
+      description: "Choose Divine Order: Protector or Thaumaturge"
+
+  - id: channel_divinity_cleric
+    display_name: Channel Divinity
+    feature_type: channel_divinity
+    unlock_level: 2
+    body:
+      uses_per_rest: short_or_long
+      initial_uses: 2
+      options: [turn_undead, divine_spark]
+      scaling:
+        - level: 6
+          uses: 3
+        - level: 18
+          uses: 4
+
+  - id: cleric_subclass
+    display_name: Cleric Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Cleric subclass (Divine Domain)
+
+  - id: blessed_strikes
+    display_name: Blessed Strikes
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: Add 1d8 radiant damage or gain +1d8 healing (choose when you level up)
+
+  - id: divine_intervention
+    display_name: Divine Intervention
+    feature_type: scripted_feature
+    unlock_level: 10
+    body:
+      description: Call on your deity for miraculous aid (recharge on long rest after use)

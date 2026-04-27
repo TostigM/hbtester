@@ -1,0 +1,16 @@
+schema_version: "0.1"
+content_type: magic_item
+id: cloak_of_protection
+display_name: Cloak of Protection
+source: DMG_2024
+author: Wizards of the Coast
+item_type: wondrous
+rarity: uncommon
+requires_attunement: true
+passive_modifiers:
+  - stat: ac
+    amount: 1
+  - stat: saving_throws
+    amount: 1
+intent_tags: [defense]
+testing_category: passive_defensive

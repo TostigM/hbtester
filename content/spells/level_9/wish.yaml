@@ -1,0 +1,21 @@
+schema_version: "0.1"
+content_type: spell
+id: wish
+display_name: Wish
+source: PHB_2024
+author: Wizards of the Coast
+level: 9
+school: conjuration
+casting_time: action
+range: self
+components:
+  verbal: true
+duration: instantaneous
+concentration: false
+class_lists: [wizard, sorcerer]
+intent_tags: [utility, combat]
+effects:
+  - type: scripted
+    description: >
+      Replicate any spell of 8th level or lower. Or describe an effect and the DM adjudicates.
+      Repeated non-replication uses risk losing spellcasting.

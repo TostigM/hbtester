@@ -1,0 +1,85 @@
+schema_version: "0.1"
+content_type: subclass
+id: life_domain
+display_name: Life Domain
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: cleric
+tags: [healing, support, protective]
+complexity_rating: low
+behavior_hints:
+  preferred_action: healing_or_spirit_guardians
+  healing_priority: lowest_hp_ally
+
+spell_list:
+  - bless
+  - cure_wounds
+  - aid
+  - lesser_restoration
+  - beacon_of_hope
+  - mass_healing_word
+  - death_ward
+  - guardian_of_faith
+  - mass_cure_wounds
+  - raise_dead
+
+features:
+  - id: life_domain_spells
+    display_name: Life Domain Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared:
+        - bless
+        - cure_wounds
+        - aid
+        - lesser_restoration
+        - beacon_of_hope
+        - mass_healing_word
+        - death_ward
+        - guardian_of_faith
+        - mass_cure_wounds
+        - raise_dead
+
+  - id: preserve_life
+    display_name: Preserve Life
+    feature_type: channel_divinity
+    unlock_level: 3
+    body:
+      description: Spend Channel Divinity to restore HP to nearby creatures (max half HP each)
+      max_restore_per_use: "5 * cleric_level"
+
+  - id: disciple_of_life
+    display_name: Disciple of Life
+    feature_type: passive_roll_modifier
+    unlock_level: 3
+    body:
+      trigger: healing_spell
+      bonus_formula: "2 + spell_level"
+      description: Healing spells restore extra HP equal to 2 + spell level
+
+  - id: blessed_healer
+    display_name: Blessed Healer
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: When you cast a healing spell on another creature, you also regain HP equal to 2 + spell level
+
+  - id: divine_strike_life
+    display_name: Divine Strike
+    feature_type: passive_roll_modifier
+    unlock_level: 8
+    body:
+      trigger: weapon_attack_hit
+      damage_type: radiant
+      damage_formula: "1d8"
+      scaling:
+        - level: 14
+          damage_formula: "2d8"
+
+  - id: supreme_healing
+    display_name: Supreme Healing
+    feature_type: passive_feature_grant
+    unlock_level: 17
+    body:
+      description: Instead of rolling dice for healing spells, use the highest possible roll

@@ -1,0 +1,24 @@
+schema_version: "0.1"
+content_type: spell
+id: prayer_of_healing
+display_name: Prayer of Healing
+source: PHB_2024
+author: Wizards of the Coast
+level: 3
+school: abjuration
+casting_time: action
+range: 30_feet
+components:
+  verbal: true
+duration: instantaneous
+concentration: false
+class_lists: [cleric]
+intent_tags: [healing]
+upcast_scaling:
+  - slot_level: 4
+    changes:
+      heal_dice: 3d8
+effects:
+  - type: healing
+    heal_formula: "2d8 + spellcasting_mod"
+    target_count: up_to_5

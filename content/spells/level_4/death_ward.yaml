@@ -1,0 +1,20 @@
+schema_version: "0.1"
+content_type: spell
+id: death_ward
+display_name: Death Ward
+source: PHB_2024
+author: Wizards of the Coast
+level: 4
+school: abjuration
+casting_time: action
+range: touch
+components:
+  verbal: true
+  somatic: true
+duration: 8_hours
+concentration: false
+class_lists: [cleric, paladin]
+intent_tags: [defense, buff]
+effects:
+  - type: passive_buff
+    description: If the creature would die, it drops to 1 HP instead (ends the spell). Negates instant-death effects.
