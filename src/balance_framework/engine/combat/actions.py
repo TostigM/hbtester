@@ -57,7 +57,23 @@ class DeathSaveAction:
     combatant_id: str = ""
 
 
-Action = WeaponAttackAction | DodgeAction | HelpAction | DeathSaveAction
+@dataclass
+class HealAction:
+    """Heal a target by rolling dice + a flat bonus.
+
+    Optionally spends one charge from *resource_pool* (e.g. 'spell_slot_1').
+    """
+
+    action_type: str = "heal"
+    caster_id: str = ""
+    target_id: str = ""
+    heal_dice: list[tuple[int, int]] = field(default_factory=list)  # (count, sides)
+    heal_bonus: int = 0
+    resource_pool: str | None = None   # pool to spend; None = no cost
+    resource_cost: int = 1
+
+
+Action = WeaponAttackAction | DodgeAction | HelpAction | DeathSaveAction | HealAction
 
 
 # ---------------------------------------------------------------------------
@@ -79,6 +95,8 @@ def resolve_action(action: Action, scenario: "ScenarioState") -> list[str]:
             return _resolve_help(action, scenario)  # type: ignore[arg-type]
         case "death_save":
             return []  # handled by turns.start_turn
+        case "heal":
+            return _resolve_heal(action, scenario)  # type: ignore[arg-type]
         case _:
             raise ValueError(f"Unknown action type: {action.action_type!r}")
 
@@ -143,3 +161,29 @@ def _resolve_help(action: HelpAction, scenario: "ScenarioState") -> list[str]:
     scenario.helped_targets.add(action.target_id)
     helper = scenario.get_combatant(action.helper_id)
     return [f"{helper.display_name} uses the Help action against {action.target_id}"]
+
+
+def _resolve_heal(action: HealAction, scenario: "ScenarioState") -> list[str]:
+    from balance_framework.engine.combat.damage import apply_healing
+    from balance_framework.engine.combat.resources import spend, InsufficientResourceError
+
+    caster = scenario.get_combatant(action.caster_id)
+    target = scenario.get_combatant(action.target_id)
+
+    # Spend resource if required
+    if action.resource_pool is not None:
+        try:
+            spend(caster, action.resource_pool, action.resource_cost)
+        except (KeyError, InsufficientResourceError):
+            return [f"{caster.display_name} tried to heal but has no {action.resource_pool!r}"]
+
+    # Roll healing dice
+    amount = action.heal_bonus
+    for count, sides in action.heal_dice:
+        amount += scenario.dice.roll_sum(sides, count)
+
+    gained = apply_healing(target, amount)
+    return [
+        f"{caster.display_name} heals {target.display_name} for {gained} HP "
+        f"({target.hp_current}/{target.hp_max})"
+    ]
