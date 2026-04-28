@@ -1,0 +1,44 @@
+schema_version: "0.1"
+content_type: subclass
+id: light_domain
+display_name: Light Domain
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: cleric
+tags: [damage, control, radiant]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: damage_spell
+  special_trait: warding_flare
+
+features:
+  - id: warding_flare
+    display_name: Warding Flare
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      uses_per_long_rest: WIS_mod
+      description: Use Reaction when attacked to impose disadvantage on the attack roll
+
+  - id: channel_divinity_radiance_of_dawn
+    display_name: "Channel Divinity: Radiance of the Dawn"
+    feature_type: channel_divinity
+    unlock_level: 3
+    body:
+      description: "Expend Channel Divinity to deal 2d10 + Cleric level radiant damage to all hostile creatures within 30 feet (CON save for half). Dispels magical darkness."
+
+  - id: improved_warding_flare
+    display_name: Improved Warding Flare
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: Warding Flare can protect allies within 30 feet, not just yourself
+
+  - id: corona_of_light
+    display_name: Corona of Light
+    feature_type: passive_feature_grant
+    unlock_level: 17
+    body:
+      description: "Bonus action to activate a corona of sunlight. For 1 minute, hostile creatures in 60 feet have disadvantage on saves vs. fire and radiant spells."
+
+resource_pools: []

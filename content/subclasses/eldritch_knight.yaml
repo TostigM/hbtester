@@ -1,0 +1,59 @@
+schema_version: "0.1"
+content_type: subclass
+id: eldritch_knight
+display_name: Eldritch Knight
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: fighter
+tags: [spellcasting, versatile, defensive]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: attack
+  special_trait: one_third_spellcasting
+
+features:
+  - id: eldritch_knight_spellcasting
+    display_name: Spellcasting
+    feature_type: spellcasting
+    unlock_level: 3
+    body:
+      ability: INT
+      progression: one_third
+      description: "Spellcasting using Intelligence. Learn spells from the Wizard spell list, primarily abjuration and evocation."
+
+  - id: war_bond
+    display_name: War Bond
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Bond with up to two weapons; can summon a bonded weapon as a Bonus Action
+
+  - id: war_magic
+    display_name: War Magic
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: When you cast a cantrip, make one weapon attack as a Bonus Action
+
+  - id: eldritch_strike
+    display_name: Eldritch Strike
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: When you hit a creature with a weapon attack, it has disadvantage on its next saving throw against your next spell this turn
+
+  - id: arcane_charge
+    display_name: Arcane Charge
+    feature_type: passive_feature_grant
+    unlock_level: 15
+    body:
+      description: When using Action Surge, also teleport up to 30 feet to an unoccupied space you can see
+
+  - id: improved_war_magic
+    display_name: Improved War Magic
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: War Magic now works with any spell, not just cantrips
+
+resource_pools: []

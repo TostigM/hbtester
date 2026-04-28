@@ -80,6 +80,8 @@ FEATURE_TYPES: Final[frozenset[str]] = frozenset({
     "second_wind",
     "action_surge",
     "bardic_inspiration",
+    "rage",
+    "unarmored_defense",
     # Escape hatch for novel mechanics requiring custom engine logic
     "scripted_feature",
 })

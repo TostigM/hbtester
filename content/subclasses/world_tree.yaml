@@ -1,0 +1,44 @@
+schema_version: "0.1"
+content_type: subclass
+id: world_tree
+display_name: Path of the World Tree
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: barbarian
+tags: [support, mobility, nature]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: attack
+  special_trait: vitality_of_the_tree
+
+features:
+  - id: vitality_of_the_tree
+    display_name: Vitality of the Tree
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "When you enter Rage, gain Temporary Hit Points equal to your Barbarian level. While Raging, when an ally within 30 feet takes damage, expend 1 to 3 Temporary HP to reduce that damage by twice the amount spent."
+
+  - id: branches_of_the_world
+    display_name: Branches of the World
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: "While Raging, your reach extends by 10 feet. When you hit a creature with an Opportunity Attack, reduce its speed to 0 until the start of your next turn and knock it Prone."
+
+  - id: travel_along_the_tree
+    display_name: Travel Along the Tree
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      uses_per_long_rest: 2
+      description: "While Raging, teleport up to 60 feet to an unoccupied space you can see as a Bonus Action. Alternatively, bring up to six willing allies within 10 feet along (each appears within 6 feet of your destination)."
+
+  - id: attunement_of_the_tree
+    display_name: Attunement of the World Tree
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: "When you use Vitality of the Tree, the Temporary Hit Points increase to twice your Barbarian level. While Raging, when reduced to 0 HP, regain 1 HP, end the Rage, and gain Temporary HP equal to three times your Barbarian level. Usable once per long rest."
+
+resource_pools: []

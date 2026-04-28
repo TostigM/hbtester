@@ -1,0 +1,52 @@
+schema_version: "0.1"
+content_type: subclass
+id: zealot
+display_name: Path of the Zealot
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: barbarian
+tags: [damage, radiant, support]
+complexity_rating: simple
+behavior_hints:
+  preferred_action: attack
+  special_trait: divine_fury_extra_damage
+
+features:
+  - id: divine_fury
+    display_name: Divine Fury
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "While Raging, the first creature you hit each turn takes extra damage equal to 1d6 + half Barbarian level. The type is radiant or necrotic (choose when you gain this feature)."
+
+  - id: warrior_of_the_gods
+    display_name: Warrior of the Gods
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "Spells that restore you to life (such as Revivify) need no material components when cast on you. Your soul lingers near your body for 1 hour after death."
+
+  - id: fanatical_focus
+    display_name: Fanatical Focus
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      uses_per_rage: 1
+      description: "While Raging, if you fail a saving throw, reroll it and use the new roll. (Once per Rage.)"
+
+  - id: zealous_presence
+    display_name: Zealous Presence
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      uses_per_long_rest: 1
+      description: "Bonus Action: unleash a battle cry. Up to 10 creatures of your choice within 60 feet gain Advantage on attack rolls and saving throws until the start of your next turn."
+
+  - id: rage_beyond_death
+    display_name: Rage Beyond Death
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: "While Raging, reaching 0 HP doesn't knock you unconscious. You still make death saving throws; on three failures you die. Your Rage must end for this to cease. When Rage ends, if you have 0 HP, you then drop unconscious."
+
+resource_pools: []

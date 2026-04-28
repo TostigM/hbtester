@@ -33,6 +33,16 @@ _CLASS_DEFAULTS: dict[str, dict] = {
         ability_scores={"STR": 8, "DEX": 16, "CON": 15, "INT": 12, "WIS": 14, "CHA": 10},
         feat_ids=["alert"], armor_type="studded_leather",
     ),
+    "barbarian": dict(
+        species_id="human", background_id="soldier",
+        ability_scores={"STR": 17, "DEX": 14, "CON": 16, "INT": 8, "WIS": 12, "CHA": 10},
+        feat_ids=["tough"], armor_type="none",
+    ),
+    "bard": dict(
+        species_id="human", background_id="charlatan",
+        ability_scores={"STR": 8, "DEX": 14, "CON": 14, "INT": 10, "WIS": 12, "CHA": 16},
+        feat_ids=["alert"], armor_type="studded_leather",
+    ),
 }
 
 

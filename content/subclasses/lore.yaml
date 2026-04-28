@@ -1,0 +1,43 @@
+schema_version: "0.1"
+content_type: subclass
+id: lore
+display_name: College of Lore
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: bard
+tags: [versatile, support, knowledge]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: support
+  special_trait: cutting_words
+
+features:
+  - id: bonus_proficiencies_lore
+    display_name: Bonus Proficiencies
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Gain proficiency in three skills of your choice
+
+  - id: cutting_words
+    display_name: Cutting Words
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "Reaction: expend one Bardic Inspiration die when a creature within 60 feet that you can see makes an attack roll, ability check, or damage roll. Subtract the die result from that roll."
+
+  - id: magical_discoveries
+    display_name: Magical Discoveries
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: "Learn two spells from any class's spell list. These count as Bard spells for you."
+
+  - id: peerless_skill
+    display_name: Peerless Skill
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: "When making an ability check, expend one Bardic Inspiration die and add the result to your check. You can do this after rolling but before learning if it succeeded."
+
+resource_pools: []

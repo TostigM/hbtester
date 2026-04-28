@@ -24,6 +24,8 @@ CLASS_PROFILE: dict[str, str] = {
     "cleric": HEALER,
     "wizard": CASTER,
     "rogue": ROGUE,
+    "barbarian": MARTIAL,
+    "bard": HEALER,
 }
 
 # ---------------------------------------------------------------------------
@@ -55,6 +57,16 @@ _FULL_CASTER_SLOTS: dict[int, dict[str, int]] = {
 }
 
 _FULL_CASTER_CLASSES = frozenset({"cleric", "wizard", "druid", "bard", "sorcerer"})
+
+# Barbarian rage uses per long rest by level
+_RAGE_USES: dict[int, int] = {
+    **{lvl: 2 for lvl in range(1, 3)},
+    **{lvl: 3 for lvl in range(3, 6)},
+    **{lvl: 4 for lvl in range(6, 12)},
+    **{lvl: 5 for lvl in range(12, 17)},
+    **{lvl: 6 for lvl in range(17, 20)},
+    20: 999,  # unlimited at level 20
+}
 
 
 def spell_slots_for(class_id: str, level: int) -> dict[str, int]:
@@ -105,6 +117,9 @@ def resources_from_features(
 
     if "arcane_recovery" in feature_types:
         pools["arcane_recovery"] = 1
+
+    if "rage" in feature_types or "rage" in feature_ids:
+        pools["rage"] = _RAGE_USES.get(level, 2)
 
     pools.update(spell_slots_for(class_id, level))
 
