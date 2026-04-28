@@ -88,6 +88,21 @@ def compare_subclasses(
     )
 
 
+def run_subclass_build(
+    build: CharacterBuild,
+    label: str,
+    registry: ContentRegistry,
+    *,
+    n: int = 100,
+    base_seed: int = 0,
+    enemy_factory: EnemyFactory | None = None,
+) -> VariantResult:
+    """Run *n* encounters for one build and return aggregated stats."""
+    if enemy_factory is None:
+        enemy_factory = lambda seed: default_enemy_band(2)  # noqa: E731
+    return _run_variant(build, label, "variant", registry, n, base_seed, enemy_factory)
+
+
 def _run_variant(
     build: CharacterBuild,
     label: str,
