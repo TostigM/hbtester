@@ -19,6 +19,9 @@ class CombatantResult:
     hp_max: int
     is_alive: bool
     is_stable: bool  # alive but at 0 HP
+    damage_dealt: int = 0
+    kills: int = 0
+    healing_done: int = 0
 
 
 @dataclass
@@ -65,6 +68,9 @@ def collect_result(scenario: "ScenarioState", seed: int) -> EncounterResult:
             hp_max=c.hp_max,
             is_alive=c.is_alive,
             is_stable=c.is_stable,
+            damage_dealt=scenario.damage_dealt.get(c.id, 0),
+            kills=scenario.kills.get(c.id, 0),
+            healing_done=scenario.healing_done.get(c.id, 0),
         )
         for c in scenario.combatants
     ]

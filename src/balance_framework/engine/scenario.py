@@ -30,6 +30,11 @@ class ScenarioState:
     # Tracking for Help action targets
     helped_targets: set[str] = field(default_factory=set)
 
+    # Per-combatant stat accumulation (keyed by combatant ID)
+    damage_dealt: dict[str, int] = field(default_factory=dict)
+    kills: dict[str, int] = field(default_factory=dict)
+    healing_done: dict[str, int] = field(default_factory=dict)
+
     # ------------------------------------------------------------------
     # Lookup helpers
     # ------------------------------------------------------------------

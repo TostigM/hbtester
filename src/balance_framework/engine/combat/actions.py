@@ -127,6 +127,10 @@ def _resolve_weapon_attack(action: WeaponAttackAction, scenario: "ScenarioState"
 
     if result.hit:
         dmg = apply_damage(target, result.damage_total, result.damage_type, result.crit)
+        aid = action.attacker_id
+        scenario.damage_dealt[aid] = scenario.damage_dealt.get(aid, 0) + dmg.applied_damage
+        if dmg.killed:
+            scenario.kills[aid] = scenario.kills.get(aid, 0) + 1
         events.append(
             f"  {target.display_name}: {dmg.applied_damage} dmg "
             f"→ {dmg.hp_after}/{target.hp_max} HP"
@@ -183,6 +187,8 @@ def _resolve_heal(action: HealAction, scenario: "ScenarioState") -> list[str]:
         amount += scenario.dice.roll_sum(sides, count)
 
     gained = apply_healing(target, amount)
+    cid = action.caster_id
+    scenario.healing_done[cid] = scenario.healing_done.get(cid, 0) + gained
     return [
         f"{caster.display_name} heals {target.display_name} for {gained} HP "
         f"({target.hp_current}/{target.hp_max})"
