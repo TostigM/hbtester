@@ -125,12 +125,46 @@ def _resolve_weapon_attack(action: WeaponAttackAction, scenario: "ScenarioState"
     result = resolve_attack(attacker, target, spec, scenario.dice)
     events = list(result.events)
 
+    if not result.hit:
+        from balance_framework.logging.event_log import AttackEvent
+        scenario.structured_events.append(AttackEvent(
+            round_number=scenario.round_number,
+            attacker_id=action.attacker_id,
+            target_id=action.target_id,
+            roll=result.raw_roll,
+            total=result.total_attack_roll,
+            target_ac=result.target_ac,
+            hit=False,
+            damage_type=action.damage_type,
+        ))
+
     if result.hit:
         dmg = apply_damage(target, result.damage_total, result.damage_type, result.crit)
         aid = action.attacker_id
         scenario.damage_dealt[aid] = scenario.damage_dealt.get(aid, 0) + dmg.applied_damage
         if dmg.killed:
             scenario.kills[aid] = scenario.kills.get(aid, 0) + 1
+        from balance_framework.logging.event_log import AttackEvent, DeathEvent
+        scenario.structured_events.append(AttackEvent(
+            round_number=scenario.round_number,
+            attacker_id=aid,
+            target_id=action.target_id,
+            roll=result.raw_roll,
+            total=result.total_attack_roll,
+            target_ac=result.target_ac,
+            hit=True,
+            crit=result.crit,
+            damage=dmg.applied_damage,
+            damage_type=result.damage_type,
+            killed=dmg.killed,
+        ))
+        if dmg.killed:
+            scenario.structured_events.append(DeathEvent(
+                round_number=scenario.round_number,
+                combatant_id=action.target_id,
+                team=target.team,
+                instant_death=dmg.instant_death,
+            ))
         events.append(
             f"  {target.display_name}: {dmg.applied_damage} dmg "
             f"→ {dmg.hp_after}/{target.hp_max} HP"
@@ -189,6 +223,14 @@ def _resolve_heal(action: HealAction, scenario: "ScenarioState") -> list[str]:
     gained = apply_healing(target, amount)
     cid = action.caster_id
     scenario.healing_done[cid] = scenario.healing_done.get(cid, 0) + gained
+    from balance_framework.logging.event_log import HealEvent
+    scenario.structured_events.append(HealEvent(
+        round_number=scenario.round_number,
+        caster_id=cid,
+        target_id=action.target_id,
+        amount=gained,
+        resource_spent=action.resource_pool,
+    ))
     return [
         f"{caster.display_name} heals {target.display_name} for {gained} HP "
         f"({target.hp_current}/{target.hp_max})"

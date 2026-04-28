@@ -6,7 +6,8 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    pass
+    from balance_framework.logging.event_log import CombatEvent
+    from balance_framework.logging.decision_log import DecisionLog
 
 from balance_framework.engine.combatant import CombatantState
 from balance_framework.engine.dice import Dice
@@ -24,8 +25,14 @@ class ScenarioState:
     is_over: bool = False
     winner_team: str | None = None
 
-    # Event log (list of strings; M7 will replace with structured events)
+    # Event log (plain strings for human-readable output)
     events: list[str] = field(default_factory=list)
+
+    # Structured events (typed; populated alongside events list)
+    structured_events: list["CombatEvent"] = field(default_factory=list)
+
+    # Optional decision log (populated by the AI dispatcher if attached)
+    decision_log: "DecisionLog | None" = None
 
     # Tracking for Help action targets
     helped_targets: set[str] = field(default_factory=set)
