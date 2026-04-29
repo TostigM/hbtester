@@ -117,7 +117,7 @@ def subclass(
     """Test a subclass and generate a balance report."""
     from balance_framework.registry.loader import load_content_directory
     from balance_framework.registry.registry import ContentRegistry
-    from balance_framework.harnesses.subclass import run_subclass_build, format_comparison
+    from balance_framework.harnesses.subclass import run_subclass_build
     from balance_framework.reporting.test_report import summarize, format_report
     from balance_framework.reporting.formats.markdown import format_suite_markdown
     from balance_framework.reporting.formats.json import write_results

@@ -49,15 +49,13 @@ def caster_selector(
         return None
 
     spell_atk = combatant.spell_attack_bonus or 0
-    int_mod = combatant.ability_modifiers.get("INT", 0)
 
     # 1. Leveled spell (modelled as a powered-up spell attack)
     #    Uses the best available slot (highest level first)
     for slot_level in range(5, 0, -1):
         pool = f"spell_slot_{slot_level}"
         if has_resource(combatant, pool):
-            # Damage scales: slot_level d6 + slot_level d6 extra (simulate)
-            # e.g. L1 = 2d10, L2 = 3d10, L3 = 5d6 (fireball)
+            spend(combatant, pool)
             if slot_level >= 3:
                 dice = [(8, 6)]  # 8d6 fireball baseline
             else:
@@ -70,9 +68,7 @@ def caster_selector(
                 damage_type="fire",
                 damage_bonus=0,
                 is_ranged=True,
-                # Mark as spell slot spend via resource — handled post-action for simplicity
-                # (actual spend happens here so AI doesn't double-spend)
-            )] + [_spend_slot_side_effect(combatant, pool)]
+            )]
 
     # 2. Cantrip (no resource cost)
     count, sides = _cantrip_count_sides(combatant.proficiency_bonus)
@@ -85,21 +81,3 @@ def caster_selector(
         damage_bonus=0,
         is_ranged=True,
     )]
-
-
-def _spend_slot_side_effect(combatant: "CombatantState", pool: str) -> "Action":
-    """Return a no-op HealAction that triggers the resource spend as a side-effect.
-
-    This keeps the spend inside the action resolution pipeline so it shows up
-    in tests, rather than mutating resources during selector execution.
-    """
-    # Actually spend inline — the selector runs before actions are resolved.
-    spend(combatant, pool)
-    # Return a zero-effect heal on self so the list length stays consistent.
-    from balance_framework.engine.combat.actions import HealAction
-    return HealAction(
-        caster_id=combatant.id,
-        target_id=combatant.id,
-        heal_dice=[],
-        heal_bonus=0,
-    )
