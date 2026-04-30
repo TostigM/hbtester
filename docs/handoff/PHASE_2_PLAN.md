@@ -287,6 +287,58 @@ Each milestone has a defined scope, deliverables, and verification criteria. See
 
 **Estimated effort:** 2-4 weeks
 
+### M10 prerequisite: Class-level groundwork
+
+Before any subclass can be authored, its parent class must have full engine
+infrastructure in place:
+
+1. **Class YAML** at `content/classes/<class_id>.yaml` with all base class
+   features for levels 1-20
+2. **`_CLASS_DEFAULTS` entry** in the character builder defining default
+   ability score arrays, starting equipment templates, and skill proficiency
+   options for the class
+3. **`CLASS_PROFILE` mapping** in the AI layer, linking the class to the
+   appropriate heuristic module (`ai/heuristics/martial.py`, `caster.py`,
+   `healer.py`, or `support.py`)
+4. **Smoke test** confirming the engine builds and simulates a character of
+   this class without errors
+
+After M9 (Tier A), the following classes have this infrastructure:
+
+- Fighter (M2 standard party)
+- Cleric (M2 standard party)
+- Wizard (M2 standard party)
+- Rogue (M2 standard party)
+- Barbarian (M9 Tier A: Berserker, World Tree, Zealot)
+- Bard (M9 Tier A: Lore)
+
+The following classes need infrastructure added during M10 before their
+subclasses can be authored:
+
+- Druid
+- Monk
+- Paladin
+- Ranger
+- Sorcerer
+- Warlock
+
+(Artificer is Tier C; deferred until later.)
+
+**Recommended ordering** (by increasing engine complexity, so simpler cases
+surface engine bugs before complex ones):
+
+1. Paladin (martial half-caster; similar to Cleric)
+2. Ranger (martial half-caster; tests Hunter's Mark concentration)
+3. Monk (martial with Focus Points; tests new resource mechanic)
+4. Druid (full caster + Wild Shape; flag complex transformation logic early)
+5. Sorcerer (full caster + Metamagic; tests Sorcery Point spending)
+6. Warlock (full caster with Pact Magic; tests short-rest slot recovery)
+
+For each class, complete steps 1-4 (class YAML, defaults, profile, smoke test)
+before authoring any of its subclasses. If a smoke test fails, stop and
+investigate before proceeding to subclasses; mass-authoring on a broken
+chassis multiplies debugging cost.
+
 ---
 
 ## 4. Parallel Work Streams
@@ -305,7 +357,7 @@ After M1 (schema layer) lands, subclass YAML authoring can begin in parallel wit
 
 - During M2: author class YAMLs (13 files), standard party subclasses (4 files), species/backgrounds/spells/items for the standard party
 - During M3: author Tier A subclasses (16 files)
-- During M4-M5: author Tier B subclasses (24 files)
+- During M4-M5: author Tier B subclasses (20 files: Druid 3, Monk 3, Paladin 3, Ranger 3, Sorcerer 3, Warlock 3, Bard 2)
 - During M6-M7: author Tier C subclasses (7 files) and monster YAMLs
 
 Total content authoring effort: approximately 25-40 hours spread across Phase 2.

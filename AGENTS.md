@@ -447,6 +447,7 @@ At the start of every session (after the first), do the following:
 3. Identify where the previous session left off (look at recent commits, open PRs, TODO comments)
 4. Re-read any AGENTS.md sections relevant to the current task
 5. Report your understanding of the current state and propose the next step to the user
+6. If you are about to author or test subclasses for a class you have not touched before, verify that class's infrastructure exists (class YAML in `content/classes/`, `_CLASS_DEFAULTS` entry, `CLASS_PROFILE` mapping). If any are missing, halt subclass work and add the infrastructure first per `framework/PHASE_2_PLAN.md` M10 prerequisite section.
 
 **Do not assume state from memory.** The repository is the source of truth; your memory across sessions is not.
 
@@ -487,6 +488,27 @@ Anything that uses randomness must accept a seed. If you find yourself unable to
 ### Pitfall: Silent content duplication
 
 If a mechanic appears in both a class and a subclass (e.g., Fighter's Second Wind vs. a subclass that grants an additional Second Wind use), the class defines the pool; the subclass modifies it. Never duplicate the pool definition.
+
+### Pitfall: Assuming class infrastructure exists when authoring subclasses
+
+Subclasses cannot be authored or tested in isolation. Each subclass requires
+its parent class to have complete infrastructure in place: a class YAML, a
+`_CLASS_DEFAULTS` entry in the character builder, and a `CLASS_PROFILE`
+mapping in the AI layer. After M2 (standard party) and M9 (Tier A), only 6
+of 12 PHB classes (Fighter, Cleric, Wizard, Rogue, Barbarian, Bard) have
+this infrastructure. The other 6 (Druid, Monk, Paladin, Ranger, Sorcerer,
+Warlock) need it added during M10 before their subclasses can be authored.
+
+**Symptom:** Authoring a Land Druid subclass and finding that the validator
+or engine cannot process it because `parent_class: druid` has no class YAML
+or AI profile to attach to.
+
+**Fix:** Before authoring subclasses for any class, verify the class's
+infrastructure exists. If it does not, add it (class YAML + defaults +
+profile + smoke test) and only then proceed to subclass authoring.
+
+This is documented in `framework/PHASE_2_PLAN.md` M10 section under
+"Class-level groundwork."
 
 ### Pitfall: Drifting from the architecture spec
 
