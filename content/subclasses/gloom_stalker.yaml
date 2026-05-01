@@ -1,0 +1,86 @@
+schema_version: "0.1"
+content_type: subclass
+id: gloom_stalker
+display_name: Gloom Stalker
+parent_class: ranger
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Gloom Stalkers are at home in the darkest places — dungeons, midnight forests,
+  urban shadows. They strike hard before enemies can react and disappear back into
+  the dark.
+subclass_feature_levels: [3, 7, 11, 15]
+features:
+  # "Dread Ambusher: At the start of a combat, you take a special action before
+  # the first turn begins. You gain a bonus to Initiative equal to your WIS modifier,
+  # and on your first turn you can make one additional weapon attack." — PHB 2024
+  - id: dread_ambusher
+    display_name: Dread Ambusher
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      description: >
+        Gain WIS modifier bonus to Initiative. On your first turn, make one
+        extra weapon attack that deals an extra 2d6 damage.
+
+  # "Gloom Stalker Magic: Disguise Self is always prepared." — PHB 2024
+  - id: gloom_stalker_spells
+    display_name: Gloom Stalker Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - disguise_self
+        - rope_trick
+        - fear
+        - greater_invisibility
+        - seeming
+
+  # "Umbral Sight: You gain Darkvision to a range of 60 feet. If you already
+  # have Darkvision, its range increases by 60 feet. You are also invisible to
+  # any creature that relies on Darkvision to see you in Dim Light or Darkness."
+  # — PHB 2024
+  - id: umbral_sight
+    display_name: Umbral Sight
+    feature_type: sensory_feature
+    unlock_level: 3
+    body:
+      sense_type: darkvision
+      range: 60
+      description: >
+        Gain Darkvision 60 ft (or extend by 60 ft). Invisible to any creature
+        that relies on Darkvision to see you in dim light or darkness.
+
+  # "Iron Mind: You have proficiency in WIS saving throws. If you already have
+  # this proficiency, you instead gain proficiency in INT or CHA saves (your
+  # choice)." — PHB 2024
+  - id: iron_mind
+    display_name: Iron Mind
+    feature_type: save_proficiency
+    unlock_level: 7
+    body:
+      saving_throw: WIS
+      description: Gain proficiency in WIS saves (or INT/CHA if already proficient).
+
+  # "Stalker's Flurry: Once on each of your turns when you miss with a weapon
+  # attack, you can make another weapon attack as part of the same action." — PHB 2024
+  - id: stalkers_flurry
+    display_name: Stalker's Flurry
+    feature_type: scripted_feature
+    unlock_level: 11
+    body:
+      description: Once per turn, when you miss a weapon attack, make one additional weapon attack.
+
+  # "Shadowy Dodge: When a creature makes an attack roll against you, you can
+  # use your Reaction to impose Disadvantage on that roll. You can use this
+  # feature only if you are in Dim Light or Darkness." — PHB 2024
+  - id: shadowy_dodge
+    display_name: Shadowy Dodge
+    feature_type: reaction
+    unlock_level: 15
+    body:
+      trigger: targeted_by_attack
+      description: >
+        Reaction: impose Disadvantage on an attack roll against you
+        (requires Dim Light or Darkness).

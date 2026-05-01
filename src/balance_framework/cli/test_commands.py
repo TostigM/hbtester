@@ -49,6 +49,12 @@ _CLASS_DEFAULTS: dict[str, dict] = {
         feat_ids=["tough"], armor_type="chain_mail", has_shield=True,
         selected_fighting_style="defense",
     ),
+    "ranger": dict(
+        species_id="human", background_id="soldier",
+        ability_scores={"STR": 8, "DEX": 17, "CON": 14, "INT": 12, "WIS": 14, "CHA": 10},
+        feat_ids=["alert"], armor_type="studded_leather",
+        selected_fighting_style="archery",
+    ),
 }
 
 

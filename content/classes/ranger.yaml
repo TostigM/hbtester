@@ -1,0 +1,170 @@
+schema_version: "0.1"
+content_type: class
+id: ranger
+display_name: Ranger
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d10
+primary_ability_options: [DEX, WIS]
+saving_throw_proficiencies: [STR, DEX]
+spellcasting_ability: WIS
+spellcasting_progression: half
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: [light, medium, shields]
+  weapons: [simple, martial]
+  tools: []
+  saving_throws: [STR, DEX]
+  skills_choose: 3
+  skills_available:
+    - animal_handling
+    - athletics
+    - insight
+    - investigation
+    - nature
+    - perception
+    - stealth
+    - survival
+features:
+  # "Favored Enemy: You always have the Hunter's Mark spell prepared. You can
+  # cast it twice without expending a spell slot, and you regain all expended
+  # uses when you finish a Long Rest. The number of uses increases at level 6
+  # (3 uses) and level 14 (4 uses)." — PHB 2024
+  - id: favored_enemy
+    display_name: Favored Enemy
+    feature_type: scripted_feature
+    unlock_level: 1
+    body:
+      description: >
+        Hunter's Mark is always prepared; cast it 2× per Long Rest without
+        a slot (3× at level 6, 4× at level 14).
+
+  - id: ranger_spellcasting
+    display_name: Spellcasting
+    feature_type: spellcasting
+    unlock_level: 1
+    body:
+      ability: WIS
+      progression: half
+      prepared: false
+      prep_formula: "known"
+      ritual_casting: false
+
+  - id: weapon_mastery_ranger
+    display_name: Weapon Mastery
+    feature_type: weapon_mastery_selection
+    unlock_level: 1
+    body:
+      initial_count: 2
+      scaling:
+        - level: 4
+          count: 3
+
+  - id: deft_explorer
+    display_name: Deft Explorer
+    feature_type: expertise
+    unlock_level: 2
+    body:
+      count: 1
+      description: Gain Expertise in one skill and proficiency in two languages.
+
+  - id: fighting_style_ranger
+    display_name: Fighting Style
+    feature_type: fighting_style
+    unlock_level: 2
+    body:
+      options: [archery, defense, dueling, two_weapon_fighting,
+                druidic_warrior, thrown_weapon_fighting]
+
+  - id: ranger_subclass
+    display_name: Ranger Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Ranger subclass (Ranger Archetype)
+
+  - id: extra_attack_ranger
+    display_name: Extra Attack
+    feature_type: extra_attack
+    unlock_level: 5
+    body:
+      count: 1
+
+  # "Roving: Your Speed increases by 10 feet while you aren't wearing Heavy Armor.
+  # You also have a Climb Speed and a Swim Speed equal to your Speed." — PHB 2024
+  - id: roving
+    display_name: Roving
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: Speed +10 ft (no heavy armor); gain Climb Speed and Swim Speed equal to Speed.
+
+  - id: expertise_ranger
+    display_name: Expertise
+    feature_type: expertise
+    unlock_level: 9
+    body:
+      count: 2
+      description: Gain Expertise in two more skills.
+
+  # "Tireless: As a Magic action, give yourself Temporary HP equal to 1d8 plus
+  # your WIS modifier. Uses = WIS modifier (min 1), restored on Long Rest.
+  # Also: finish Short Rest to reduce Exhaustion level by 1." — PHB 2024
+  - id: tireless
+    display_name: Tireless
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: >
+        Magic action: gain 1d8 + WIS modifier Temporary HP (WIS-mod uses/LR).
+        Short Rest reduces exhaustion level by 1.
+
+  # "Relentless Hunter: Taking damage can't break your Concentration on
+  # Hunter's Mark." — PHB 2024
+  - id: relentless_hunter
+    display_name: Relentless Hunter
+    feature_type: passive_feature_grant
+    unlock_level: 13
+    body:
+      description: Damage can't break Concentration on Hunter's Mark.
+
+  # "Nature's Veil: As a Bonus Action, draw on nature to become Invisible until
+  # the end of your next turn. Uses = WIS modifier, restored on Long Rest." — PHB 2024
+  - id: natures_veil
+    display_name: Nature's Veil
+    feature_type: custom_action
+    unlock_level: 14
+    body:
+      action_type: bonus_action
+      recharge: long_rest
+      uses_formula: "WIS_mod"
+      description: Become Invisible until end of next turn.
+
+  # "Precise Hunter: You have Advantage on attack rolls against the creature
+  # currently marked by your Hunter's Mark." — PHB 2024
+  - id: precise_hunter
+    display_name: Precise Hunter
+    feature_type: passive_roll_modifier
+    unlock_level: 17
+    body:
+      modifier_type: advantage
+      trigger: hunter_mark_target
+      description: Advantage on attack rolls against your Hunter's Mark target.
+
+  - id: feral_senses
+    display_name: Feral Senses
+    feature_type: sensory_feature
+    unlock_level: 18
+    body:
+      sense_type: blindsight
+      range: 30
+      description: Blindsight 30 ft.
+
+  # "Foe Slayer: The d6 of your Hunter's Mark becomes a d10." — PHB 2024
+  - id: foe_slayer
+    display_name: Foe Slayer
+    feature_type: passive_stat_modifier
+    unlock_level: 20
+    body:
+      stat: damage
+      description: Hunter's Mark damage die becomes d10.
