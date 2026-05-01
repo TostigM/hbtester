@@ -60,6 +60,11 @@ _CLASS_DEFAULTS: dict[str, dict] = {
         ability_scores={"STR": 10, "DEX": 17, "CON": 14, "INT": 8, "WIS": 16, "CHA": 10},
         feat_ids=["tough"], armor_type="none",
     ),
+    "druid": dict(
+        species_id="human", background_id="sage",
+        ability_scores={"STR": 8, "DEX": 14, "CON": 15, "INT": 10, "WIS": 17, "CHA": 10},
+        feat_ids=["alert"], armor_type="scale_mail", has_shield=True,
+    ),
 }
 
 
