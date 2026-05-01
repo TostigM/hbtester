@@ -40,7 +40,7 @@ _STANDARD_PARTY = [
     )),
 ]
 
-# All Tier A subclasses to include in a full baseline run
+# All subclasses to include in a full baseline run
 _TIER_A_SUBCLASSES: list[tuple[str, str]] = [
     # (class_id, subclass_id)
     ("fighter", "battle_master"),
@@ -62,6 +62,32 @@ _TIER_A_SUBCLASSES: list[tuple[str, str]] = [
     ("barbarian", "world_tree"),
     ("barbarian", "zealot"),
     ("bard", "lore"),
+    ("bard", "dance"),
+    ("bard", "glamour"),
+    ("paladin", "devotion"),
+    ("paladin", "ancients"),
+    ("paladin", "glory"),
+    ("paladin", "vengeance"),
+    ("ranger", "gloom_stalker"),
+    ("ranger", "beast_master"),
+    ("ranger", "fey_wanderer"),
+    ("ranger", "hunter"),
+    ("monk", "shadow"),
+    ("monk", "mercy"),
+    ("monk", "elements"),
+    ("monk", "open_hand"),
+    ("druid", "land"),
+    ("druid", "moon"),
+    ("druid", "sea"),
+    ("druid", "stars"),
+    ("sorcerer", "wild_magic"),
+    ("sorcerer", "aberrant_mind"),
+    ("sorcerer", "clockwork_soul"),
+    ("sorcerer", "draconic"),
+    ("warlock", "great_old_one"),
+    ("warlock", "archfey"),
+    ("warlock", "celestial"),
+    ("warlock", "fiend"),
 ]
 
 
