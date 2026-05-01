@@ -82,6 +82,11 @@ FEATURE_TYPES: Final[frozenset[str]] = frozenset({
     "bardic_inspiration",
     "rage",
     "unarmored_defense",
+    "lay_on_hands",
+    "focus_points",
+    "sorcery_points",
+    "pact_magic",
+    "wild_shape",
     # Escape hatch for novel mechanics requiring custom engine logic
     "scripted_feature",
 })

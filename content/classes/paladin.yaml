@@ -1,0 +1,164 @@
+schema_version: "0.1"
+content_type: class
+id: paladin
+display_name: Paladin
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d10
+primary_ability_options: [STR, CHA]
+saving_throw_proficiencies: [WIS, CHA]
+spellcasting_ability: CHA
+spellcasting_progression: half
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: [light, medium, heavy, shields]
+  weapons: [simple, martial]
+  tools: []
+  saving_throws: [WIS, CHA]
+  skills_choose: 2
+  skills_available:
+    - athletics
+    - insight
+    - intimidation
+    - medicine
+    - persuasion
+    - religion
+features:
+  # "You have a pool of healing power that replenishes when you finish a Long Rest.
+  # With that pool, you can restore a total number of Hit Points equal to five times
+  # your Paladin level." — PHB 2024
+  - id: lay_on_hands
+    display_name: Lay on Hands
+    feature_type: lay_on_hands
+    unlock_level: 1
+    body:
+      pool_formula: "5 * level"
+      restore: long_rest
+
+  - id: paladin_spellcasting
+    display_name: Spellcasting
+    feature_type: spellcasting
+    unlock_level: 1
+    body:
+      ability: CHA
+      progression: half
+      prepared: true
+      prep_formula: "half_level + CHA_mod"
+      ritual_casting: false
+
+  - id: weapon_mastery_paladin
+    display_name: Weapon Mastery
+    feature_type: weapon_mastery_selection
+    unlock_level: 1
+    body:
+      initial_count: 2
+      scaling:
+        - level: 4
+          count: 3
+
+  # "When you hit a target with a Melee weapon, you can expend one spell slot to
+  # smite that target. The extra damage is 2d8 for a 1st-level slot, plus 1d8 for
+  # each slot level above 1st (max 5d8). The damage type is Radiant." — PHB 2024
+  - id: divine_smite
+    display_name: Divine Smite
+    feature_type: scripted_feature
+    unlock_level: 2
+    body:
+      description: >
+        On a melee hit, expend a spell slot for extra radiant damage:
+        2d8 (L1 slot) up to 5d8 (L4 slot); doubles on critical hit; once per turn.
+
+  - id: fighting_style_paladin
+    display_name: Fighting Style
+    feature_type: fighting_style
+    unlock_level: 2
+    body:
+      options: [defense, dueling, great_weapon_fighting, protection,
+                blessed_warrior, interception]
+
+  - id: paladin_subclass
+    display_name: Paladin Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Paladin subclass (Sacred Oath)
+
+  # "You can use your Channel Divinity once between rests; the number of uses
+  # increases at certain levels." — PHB 2024
+  - id: channel_divinity_paladin
+    display_name: Channel Divinity
+    feature_type: channel_divinity
+    unlock_level: 3
+    body:
+      uses_per_rest: short_or_long
+      initial_uses: 1
+      options: [abjure_foes]
+      scaling:
+        - level: 7
+          uses: 2
+        - level: 20
+          uses: 3
+
+  - id: extra_attack_paladin
+    display_name: Extra Attack
+    feature_type: extra_attack
+    unlock_level: 5
+    body:
+      count: 1
+
+  - id: faithful_steed
+    display_name: Faithful Steed
+    feature_type: passive_feature_grant
+    unlock_level: 5
+    body:
+      description: >
+        Find Steed spell is always prepared; can cast it once per Long Rest
+        without expending a spell slot.
+
+  # "Aura of Protection: You and allies within 10 feet add your CHA modifier
+  # (minimum +1) to saving throws. Range increases to 30 feet at level 18." — PHB 2024
+  - id: aura_of_protection
+    display_name: Aura of Protection
+    feature_type: aura
+    unlock_level: 6
+    body:
+      radius: 10
+      description: >
+        You and allies within 10 ft add your CHA modifier to saving throws.
+        Expands to 30 ft at level 18.
+      scaling:
+        - level: 18
+          radius: 30
+
+  # "Aura of Courage: You and allies within 10 feet can't be Frightened
+  # while you're conscious." — PHB 2024
+  - id: aura_of_courage
+    display_name: Aura of Courage
+    feature_type: aura
+    unlock_level: 10
+    body:
+      radius: 10
+      description: You and allies within 10 ft can't be Frightened while you're conscious.
+      scaling:
+        - level: 18
+          radius: 30
+
+  # "Once per turn when you hit a creature with a melee weapon, you can deal
+  # an extra 1d8 Radiant damage." — PHB 2024
+  - id: radiant_strikes
+    display_name: Radiant Strikes
+    feature_type: passive_stat_modifier
+    unlock_level: 11
+    body:
+      stat: damage
+      description: Once per turn, weapon hits deal an extra 1d8 Radiant damage.
+
+  # "When you use Lay on Hands, you can also remove one of the following conditions
+  # from the creature: Blinded, Charmed, Deafened, Frightened, Paralyzed, Poisoned,
+  # or Stunned." — PHB 2024
+  - id: restoring_touch
+    display_name: Restoring Touch
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: Lay on Hands can now remove one of several conditions in addition to restoring HP.

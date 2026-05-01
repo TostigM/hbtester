@@ -43,6 +43,12 @@ _CLASS_DEFAULTS: dict[str, dict] = {
         ability_scores={"STR": 8, "DEX": 14, "CON": 14, "INT": 10, "WIS": 12, "CHA": 16},
         feat_ids=["alert"], armor_type="studded_leather",
     ),
+    "paladin": dict(
+        species_id="human", background_id="soldier",
+        ability_scores={"STR": 17, "DEX": 10, "CON": 14, "INT": 8, "WIS": 12, "CHA": 14},
+        feat_ids=["tough"], armor_type="chain_mail", has_shield=True,
+        selected_fighting_style="defense",
+    ),
 }
 
 

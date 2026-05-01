@@ -26,10 +26,16 @@ CLASS_PROFILE: dict[str, str] = {
     "rogue": ROGUE,
     "barbarian": MARTIAL,
     "bard": HEALER,
+    "paladin": MARTIAL,
+    "ranger": MARTIAL,
+    "monk": MARTIAL,
+    "druid": HEALER,
+    "sorcerer": CASTER,
+    "warlock": CASTER,
 }
 
 # ---------------------------------------------------------------------------
-# Spell slot tables (full casters: cleric, wizard)
+# Spell slot tables
 # PHB 2024 spell slots by class level -> {slot_level: count}
 # ---------------------------------------------------------------------------
 
@@ -56,7 +62,32 @@ _FULL_CASTER_SLOTS: dict[int, dict[str, int]] = {
     20: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3, "spell_slot_4": 3, "spell_slot_5": 3, "spell_slot_6": 2, "spell_slot_7": 2, "spell_slot_8": 1, "spell_slot_9": 1},
 }
 
+# Half-caster slot table (paladin, ranger): slot progression based on half class level.
+_HALF_CASTER_SLOTS: dict[int, dict[str, int]] = {
+    1:  {"spell_slot_1": 2},
+    2:  {"spell_slot_1": 2},
+    3:  {"spell_slot_1": 3},
+    4:  {"spell_slot_1": 3},
+    5:  {"spell_slot_1": 4, "spell_slot_2": 2},
+    6:  {"spell_slot_1": 4, "spell_slot_2": 2},
+    7:  {"spell_slot_1": 4, "spell_slot_2": 3},
+    8:  {"spell_slot_1": 4, "spell_slot_2": 3},
+    9:  {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 2},
+    10: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 2},
+    11: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3},
+    12: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3},
+    13: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3, "spell_slot_4": 1},
+    14: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3, "spell_slot_4": 1},
+    15: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3, "spell_slot_4": 2},
+    16: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3, "spell_slot_4": 2},
+    17: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3, "spell_slot_4": 3, "spell_slot_5": 1},
+    18: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3, "spell_slot_4": 3, "spell_slot_5": 1},
+    19: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3, "spell_slot_4": 3, "spell_slot_5": 2},
+    20: {"spell_slot_1": 4, "spell_slot_2": 3, "spell_slot_3": 3, "spell_slot_4": 3, "spell_slot_5": 2},
+}
+
 _FULL_CASTER_CLASSES = frozenset({"cleric", "wizard", "druid", "bard", "sorcerer"})
+_HALF_CASTER_CLASSES = frozenset({"paladin", "ranger"})
 
 # Barbarian rage uses per long rest by level
 _RAGE_USES: dict[int, int] = {
@@ -70,10 +101,12 @@ _RAGE_USES: dict[int, int] = {
 
 
 def spell_slots_for(class_id: str, level: int) -> dict[str, int]:
-    """Return the spell slot pool dict for a full-caster at the given level."""
-    if class_id not in _FULL_CASTER_CLASSES:
-        return {}
-    return dict(_FULL_CASTER_SLOTS.get(level, _FULL_CASTER_SLOTS[20]))
+    """Return the spell slot pool dict for a caster at the given level."""
+    if class_id in _FULL_CASTER_CLASSES:
+        return dict(_FULL_CASTER_SLOTS.get(level, _FULL_CASTER_SLOTS[20]))
+    if class_id in _HALF_CASTER_CLASSES:
+        return dict(_HALF_CASTER_SLOTS.get(level, _HALF_CASTER_SLOTS[20]))
+    return {}
 
 
 # ---------------------------------------------------------------------------
@@ -120,6 +153,10 @@ def resources_from_features(
 
     if "rage" in feature_types or "rage" in feature_ids:
         pools["rage"] = _RAGE_USES.get(level, 2)
+
+    if "lay_on_hands" in feature_types or "lay_on_hands" in feature_ids:
+        # Pool = 5 × level HP; model as that many 5-HP uses
+        pools["lay_on_hands"] = level
 
     pools.update(spell_slots_for(class_id, level))
 
