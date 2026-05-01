@@ -1,0 +1,120 @@
+schema_version: "0.1"
+content_type: subclass
+id: ancients
+display_name: Oath of the Ancients
+parent_class: paladin
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  The Oath of the Ancients is as old as the race of elves and the rituals of the
+  druids. Paladins who swear this oath cast their lot with the side of the light,
+  pledging to safeguard all things beautiful and life-giving.
+subclass_feature_levels: [3, 7, 15, 20]
+features:
+  # "Nature's Wrath: As a Magic action, you can expend one use of your Channel
+  # Divinity to conjure spectral vines that restrain a creature you can see within
+  # 10 feet of you. The creature must succeed on a STR or DEX save (its choice) or
+  # be Restrained. The creature can repeat the save at the end of each of its turns,
+  # ending the effect on itself on a success." — PHB 2024
+  - id: natures_wrath
+    display_name: Nature's Wrath
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: action
+      resource: channel_divinity
+      description: >
+        Channel Divinity: Conjure spectral vines on a creature within 10 ft.
+        Target makes STR or DEX save (its choice) or becomes Restrained. Repeats
+        save at end of each of its turns to end effect.
+
+  # "Oath Spells: Ensnaring Strike, Speak with Animals, Misty Step, Moonbeam,
+  # Plant Growth, Dispel Magic, Stoneskin, Ice Storm, Commune with Nature,
+  # Tree Stride." — PHB 2024
+  - id: ancients_oath_spells
+    display_name: Oath Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - ensnaring_strike
+        - speak_with_animals
+        - misty_step
+        - moonbeam
+        - plant_growth
+        - dispel_magic
+        - stoneskin
+        - ice_storm
+        - commune_with_nature
+        - tree_stride
+
+  # "Turn the Faithless: As a Magic action, you can expend one use of your Channel
+  # Divinity to utter ancient words that are painful for Fey and Fiends to hear.
+  # Each Fey and Fiend within 30 feet of you that can hear you must succeed on a
+  # WIS save or be Frightened of you for 1 minute. A Frightened creature repeats
+  # the save at the end of each of its turns, ending the effect on itself on a
+  # success. A creature that succeeds on its saving throw is immune to this feature
+  # for 24 hours." — PHB 2024
+  - id: turn_the_faithless
+    display_name: Turn the Faithless
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: action
+      resource: channel_divinity
+      description: >
+        Channel Divinity: Each Fey and Fiend within 30 ft that can hear you makes
+        a WIS save or becomes Frightened for 1 minute. Repeats save at end of each
+        of its turns. Immune to this feature for 24 hours on a success.
+
+  # "Aura of Warding: Ancient magic lies so heavily upon you that it forms an
+  # eldritch ward. You and friendly creatures within 10 feet of you have resistance
+  # to damage dealt by spells." — PHB 2024
+  - id: aura_of_warding
+    display_name: Aura of Warding
+    feature_type: damage_resistance
+    unlock_level: 7
+    body:
+      damage_type: spell_damage
+      aura_radius: 10
+      affects_allies: true
+      description: >
+        You and friendly creatures within 10 ft have resistance to damage dealt
+        by spells.
+
+  # "Undying Sentinel: When you are reduced to 0 Hit Points and are not killed
+  # outright, you can choose to drop to 1 Hit Point instead. Once you use this
+  # feature, you can't use it again until you finish a Long Rest. Additionally,
+  # you suffer none of the drawbacks of old age, and you can't be aged magically." — PHB 2024
+  - id: undying_sentinel
+    display_name: Undying Sentinel
+    feature_type: scripted_feature
+    unlock_level: 15
+    body:
+      recharge: long_rest
+      description: >
+        When reduced to 0 HP and not killed outright, you can choose to drop to
+        1 HP instead. Once per Long Rest. Additionally, you suffer no drawbacks
+        of old age and can't be aged magically.
+
+  # "Elder Champion: As a Bonus Action, you assume the form of an ancient force
+  # of nature for 1 minute. For the duration: at the start of each of your turns
+  # you regain 10 Hit Points; whenever you cast a Paladin spell that has a casting
+  # time of an action, you can cast it using a Bonus Action instead; enemy creatures
+  # within 10 feet of you have Disadvantage on saving throws against your Paladin
+  # spells and Channel Divinity options. Once you use this feature, you can't use
+  # it again until you finish a Long Rest." — PHB 2024
+  - id: elder_champion
+    display_name: Elder Champion
+    feature_type: custom_action
+    unlock_level: 20
+    body:
+      action_type: bonus_action
+      recharge: long_rest
+      duration: 1_minute
+      description: >
+        Become an avatar of nature for 1 minute. Regain 10 HP at the start of
+        each of your turns; cast Paladin action spells as Bonus Actions; enemies
+        within 10 ft have Disadvantage on saves against your Paladin spells and
+        Channel Divinity. Once per Long Rest.

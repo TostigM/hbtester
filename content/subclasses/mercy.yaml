@@ -1,0 +1,116 @@
+schema_version: "0.1"
+content_type: subclass
+id: mercy
+display_name: Warrior of Mercy
+parent_class: monk
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Warriors of Mercy manipulate the life force of others. They are wandering
+  physicians and welcome-sights in times of need, though they are also capable
+  of inflicting terrible harm to those who threaten them.
+subclass_feature_levels: [3, 6, 11, 17]
+features:
+  # "Hand of Healing: Your touch can mend wounds. As a Magic action, or as
+  # part of making an Unarmed Strike, you can spend 1 Focus Point to touch a
+  # creature and restore a number of Hit Points equal to a roll of your Martial
+  # Arts die plus your WIS modifier." — PHB 2024
+  - id: hand_of_healing
+    display_name: Hand of Healing
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: action_or_unarmed_strike
+      cost: 1
+      resource: focus_points
+      description: >
+        Spend 1 Focus Point as a Magic action or as part of an Unarmed Strike:
+        touch a creature and restore HP equal to 1 Martial Arts die + WIS
+        modifier.
+
+  # "Hand of Harm: Once per turn, when you hit a creature with an Unarmed
+  # Strike, you can spend 1 Focus Point to subject that creature to the
+  # following effects. It takes extra Necrotic damage equal to one roll of your
+  # Martial Arts die plus your WIS modifier, and it has the Poisoned condition
+  # until the end of your next turn." — PHB 2024
+  - id: hand_of_harm
+    display_name: Hand of Harm
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      cost: 1
+      resource: focus_points
+      once_per_turn: true
+      trigger: unarmed_strike_hit
+      description: >
+        Once per turn, when you hit with an Unarmed Strike, spend 1 Focus
+        Point: deal extra Necrotic damage equal to 1 Martial Arts die + WIS
+        modifier, and the target gains the Poisoned condition until the end of
+        your next turn.
+
+  # "Implements of Mercy: You gain proficiency in the Insight and Medicine
+  # skills, and you gain proficiency with the Herbalism Kit." — PHB 2024
+  - id: implements_of_mercy
+    display_name: Implements of Mercy
+    feature_type: skill_proficiency_grant
+    unlock_level: 3
+    body:
+      skills:
+        - insight
+        - medicine
+      tool_proficiencies:
+        - herbalism_kit
+      description: >
+        Gain proficiency in Insight and Medicine skills and with the Herbalism
+        Kit.
+
+  # "Physician's Touch: You can administer cures with greater effectiveness.
+  # When you use Hand of Healing on a creature, you can also remove one of
+  # the following conditions from it: Blinded, Deafened, Paralyzed, Poisoned,
+  # or Stunned. When you use Hand of Harm on a creature, you can subject it
+  # to the Stunned condition until the end of your next turn." — PHB 2024
+  - id: physicians_touch
+    display_name: Physician's Touch
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: >
+        Hand of Healing also removes one condition (Blinded, Deafened, Paralyzed,
+        Poisoned, or Stunned) from the target. Hand of Harm also subjects the
+        target to the Stunned condition until the end of your next turn.
+
+  # "Flurry of Healing and Harm: When you use Flurry of Blows, you can replace
+  # each of the Unarmed Strikes with a use of Hand of Healing without expending
+  # Focus Points for that use of Hand of Healing, or a use of Hand of Harm
+  # without expending Focus Points for that use of Hand of Harm." — PHB 2024
+  - id: flurry_of_healing_and_harm
+    display_name: Flurry of Healing and Harm
+    feature_type: scripted_feature
+    unlock_level: 11
+    body:
+      description: >
+        When you use Flurry of Blows, you can replace each Unarmed Strike with
+        a use of Hand of Healing or Hand of Harm. These replacements cost no
+        additional Focus Points.
+
+  # "Hand of Ultimate Mercy: Your mastery of life energy opens the door to the
+  # ultimate mercy. As a Magic action, you can spend 10 Focus Points, touch the
+  # corpse of a creature that died within the past 24 hours, and expend a spell
+  # slot of 1st level or higher. The creature is restored to life, regaining a
+  # number of Hit Points equal to 4d10 + your WIS modifier, and it is no longer
+  # affected by any conditions that End at death. Once you use this feature, you
+  # can't use it again until you finish a Long Rest." — PHB 2024
+  - id: hand_of_ultimate_mercy
+    display_name: Hand of Ultimate Mercy
+    feature_type: custom_action
+    unlock_level: 17
+    body:
+      action_type: action
+      cost: 10
+      resource: focus_points
+      recharge: long_rest
+      description: >
+        Spend 10 Focus Points and expend a spell slot: touch a creature dead
+        for no more than 24 hours to resurrect it. It regains 4d10 + WIS
+        modifier HP and loses all conditions that ended at death. Once per
+        Long Rest.

@@ -1,0 +1,101 @@
+schema_version: "0.1"
+content_type: subclass
+id: vengeance
+display_name: Oath of Vengeance
+parent_class: paladin
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  The Oath of Vengeance is a solemn commitment to punish those who have committed
+  grievous sins. When evil forces slaughter innocent folk, paladins who swear this
+  oath take it upon themselves to stand against such evil.
+subclass_feature_levels: [3, 7, 15, 20]
+features:
+  # "Vow of Enmity: As a Bonus Action, you can expend one use of your Channel
+  # Divinity to utter a vow of enmity against a creature you can see within 30
+  # feet of you. You gain Advantage on attack rolls against the creature for 1
+  # minute or until it dies or falls Unconscious. If you have the Relentless
+  # Avenger feature, you can use this feature a number of additional times equal
+  # to your CHA modifier (minimum of once) between Long Rests." — PHB 2024
+  - id: vow_of_enmity
+    display_name: Vow of Enmity
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: bonus_action
+      resource: channel_divinity
+      duration: 1_minute
+      description: >
+        Channel Divinity: Choose a creature within 30 ft. Gain Advantage on all
+        attack rolls against it for 1 minute or until it dies or falls
+        Unconscious.
+
+  # "Oath Spells: Bane, Hunter's Mark, Hold Person, Misty Step, Haste, Protection
+  # from Energy, Banishment, Dimension Door, Hold Monster, Scrying." — PHB 2024
+  - id: vengeance_oath_spells
+    display_name: Oath Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - bane
+        - hunters_mark
+        - hold_person
+        - misty_step
+        - haste
+        - protection_from_energy
+        - banishment
+        - dimension_door
+        - hold_monster
+        - scrying
+
+  # "Relentless Avenger: Your supernatural focus helps you close off a foe's
+  # retreat. When you hit a creature with an Opportunity Attack, you can move up
+  # to half your Speed immediately after the attack and as part of the same
+  # Reaction. This movement doesn't provoke Opportunity Attacks." — PHB 2024
+  - id: relentless_avenger
+    display_name: Relentless Avenger
+    feature_type: scripted_feature
+    unlock_level: 7
+    body:
+      trigger: opportunity_attack_hit
+      description: >
+        When you hit a creature with an Opportunity Attack, immediately move up
+        to half your Speed as part of the same Reaction. This movement doesn't
+        provoke Opportunity Attacks.
+
+  # "Soul of Vengeance: Immediately after a creature under the effect of a Vow
+  # of Enmity hits or misses with an attack roll, you can use your Reaction to
+  # make a melee attack against that creature if it is within range." — PHB 2024
+  - id: soul_of_vengeance
+    display_name: Soul of Vengeance
+    feature_type: reaction
+    unlock_level: 15
+    body:
+      trigger: vow_target_makes_attack
+      description: >
+        Reaction: immediately after a creature under your Vow of Enmity hits or
+        misses with an attack roll, make one melee attack against it if it is
+        within range.
+
+  # "Avenging Angel: As a Bonus Action, you temporarily take on the appearance
+  # of a divine avenger. For 1 hour, you have a Fly Speed equal to your Walk
+  # Speed and can hover. Additionally, a spectral aura of menace extends 30 feet
+  # from you. Any enemy creature that starts its turn in that aura must succeed
+  # on a WIS saving throw or become Frightened of you until the end of your next
+  # turn and has Disadvantage on attack rolls while Frightened this way. Once you
+  # use this feature, you can't do so again until you finish a Long Rest." — PHB 2024
+  - id: avenging_angel
+    display_name: Avenging Angel
+    feature_type: custom_action
+    unlock_level: 20
+    body:
+      action_type: bonus_action
+      recharge: long_rest
+      duration: 1_hour
+      description: >
+        Gain Fly Speed equal to Walk Speed (hover) for 1 hour. Enemies that
+        start their turn within 30 ft make a WIS save or become Frightened of
+        you until end of your next turn, with Disadvantage on attacks while
+        Frightened. Once per Long Rest.

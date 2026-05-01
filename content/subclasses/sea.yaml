@@ -1,0 +1,99 @@
+schema_version: "0.1"
+content_type: subclass
+id: sea
+display_name: Circle of the Sea
+parent_class: druid
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Druids of the Circle of the Sea draw on the tempestuous, flowing, and often
+  merciless power of the ocean and sky. Their rituals call upon swirling winds,
+  crashing waves, and the bone-deep cold of the deep sea.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+  # "Wrath of the Sea: As a Bonus Action, you can expend a use of Wild Shape
+  # to create a 5-foot-radius aura of churning water that lasts for 10 minutes.
+  # It moves with you, centered on you. You can use this feature a number of
+  # times equal to your WIS modifier (minimum of once) and you regain all
+  # expended uses when you finish a Long Rest. At the end of each turn any
+  # other creature is in the aura, that creature must make a CON saving throw
+  # against your spell save DC. On a failed save, it takes 1d6 Cold and 1d6
+  # Bludgeoning damage and is pushed up to 15 feet away from you." — PHB 2024
+  - id: wrath_of_the_sea
+    display_name: Wrath of the Sea
+    feature_type: aura
+    unlock_level: 3
+    body:
+      action_type: bonus_action
+      resource: wild_shape
+      aura_radius: 5
+      duration: 10_minutes
+      recharge: long_rest
+      recharge_uses: WIS_modifier
+      description: >
+        Expend a Wild Shape use: summon a watery aura (5-ft radius) for 10
+        minutes. Creatures that end their turn in the aura make a CON save or
+        take 1d6 Cold + 1d6 Bludgeoning damage and are pushed up to 15 ft away.
+        WIS modifier uses per Long Rest (minimum 1).
+
+  # "Circle of the Sea Spells: Fog Cloud, Gust of Wind, Shatter, Thunderwave,
+  # Sleet Storm, Lightning Bolt, Control Water, Ice Storm, Conjure Elemental,
+  # Hold Monster." — PHB 2024
+  - id: sea_spells
+    display_name: Circle of the Sea Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - fog_cloud
+        - gust_of_wind
+        - shatter
+        - thunderwave
+        - sleet_storm
+        - lightning_bolt
+        - control_water
+        - ice_storm
+        - conjure_elemental
+        - hold_monster
+
+  # "Aquatic Affinity: You gain a Swim Speed equal to your Walk Speed, you can
+  # breathe both air and water, and you gain Resistance to Cold damage." — PHB 2024
+  - id: aquatic_affinity
+    display_name: Aquatic Affinity
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: >
+        Gain a Swim Speed equal to your Walk Speed, the ability to breathe
+        both air and water, and Resistance to Cold damage.
+
+  # "Stormborn: Channeling the power of the storm, you gain a Fly Speed equal
+  # to your Walk Speed whenever you are not underground or indoors." — PHB 2024
+  - id: stormborn
+    display_name: Stormborn
+    feature_type: passive_stat_modifier
+    unlock_level: 10
+    body:
+      stat: fly_speed
+      modifier: walk_speed
+      condition: not_underground_or_indoors
+      description: >
+        Gain a Fly Speed equal to your Walk Speed whenever you are not
+        underground or indoors.
+
+  # "Oceanic Gift: You can cast Control Weather without expending a spell slot.
+  # Once you use this feature, you can't use it again until you finish a Long
+  # Rest. Additionally, a number of times equal to your WIS modifier (minimum
+  # of once) per Long Rest, you can grant creatures within 60 feet of you the
+  # ability to breathe underwater for 24 hours." — PHB 2024
+  - id: oceanic_gift
+    display_name: Oceanic Gift
+    feature_type: scripted_feature
+    unlock_level: 14
+    body:
+      recharge: long_rest
+      description: >
+        Once per Long Rest, cast Control Weather without expending a spell slot.
+        Additionally, WIS modifier times per Long Rest (minimum 1), grant
+        creatures within 60 ft the ability to breathe water for 24 hours.

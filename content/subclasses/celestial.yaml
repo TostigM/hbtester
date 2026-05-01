@@ -1,0 +1,110 @@
+schema_version: "0.1"
+content_type: subclass
+id: celestial
+display_name: The Celestial
+parent_class: warlock
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Your pact draws on the power of the Upper Planes — the realms of angels and
+  archons. You are touched by divine light, able to channel healing energy
+  through your Eldritch Blast and perform miraculous feats of restoration.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+  # "Patron Spells: Cure Wounds, Guiding Bolt, Flaming Sphere, Lesser
+  # Restoration, Daylight, Revivify, Guardian of Faith, Wall of Fire, Greater
+  # Restoration, Flame Strike." — PHB 2024
+  - id: celestial_patron_spells
+    display_name: Patron Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - cure_wounds
+        - guiding_bolt
+        - flaming_sphere
+        - lesser_restoration
+        - daylight
+        - revivify
+        - guardian_of_faith
+        - wall_of_fire
+        - greater_restoration
+        - flame_strike
+
+  # "Healing Light: You gain the ability to channel celestial energy to heal
+  # wounds. You have a pool of d6s that you spend to fuel this healing. The
+  # number of dice in the pool equals 1 plus your Warlock level. As a Bonus
+  # Action, you can heal one creature you can see within 60 feet of you,
+  # spending dice from the pool. The maximum number of dice you can spend at
+  # once equals your CHA modifier (minimum of 1). Roll the dice you spend,
+  # add them together, and restore a number of HP equal to the total. Your pool
+  # regains all expended dice when you finish a Long Rest." — PHB 2024
+  - id: healing_light
+    display_name: Healing Light
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: bonus_action
+      resource: healing_light_pool
+      pool_size: 1_plus_warlock_level
+      spend_limit: CHA_modifier
+      recharge: long_rest
+      description: >
+        Bonus Action: heal a creature within 60 ft by spending up to CHA
+        modifier d6s from a pool (pool = 1 + Warlock level d6s). Roll the
+        spent dice and restore that many HP. Pool restores on Long Rest.
+
+  # "Radiant Soul: Your link to your patron allows you to serve as a conduit
+  # for radiant energy. You have Resistance to Radiant damage. Additionally,
+  # when you cast a spell that deals Radiant or Fire damage, you can add your
+  # CHA modifier to one radiant or fire damage roll of that spell against one
+  # of its targets." — PHB 2024
+  - id: radiant_soul
+    display_name: Radiant Soul
+    feature_type: damage_resistance
+    unlock_level: 6
+    body:
+      damage_type: radiant
+      description: >
+        Gain Resistance to Radiant damage. When you cast a spell dealing Radiant
+        or Fire damage, add CHA modifier to one damage roll of that spell against
+        one target per turn.
+
+  # "Celestial Resilience: You gain temporary hit points whenever you finish a
+  # Short or Long Rest. These temporary hit points equal your Warlock level plus
+  # your CHA modifier. Additionally, choose up to five creatures you can see at
+  # the end of a Short or Long Rest. Those creatures gain temporary hit points
+  # equal to half your Warlock level plus your CHA modifier." — PHB 2024
+  - id: celestial_resilience
+    display_name: Celestial Resilience
+    feature_type: scripted_feature
+    unlock_level: 10
+    body:
+      trigger: finish_short_or_long_rest
+      description: >
+        On finishing a Short or Long Rest: you gain Temp HP equal to Warlock
+        level + CHA modifier. Up to five creatures you can see gain Temp HP
+        equal to half your Warlock level + CHA modifier.
+
+  # "Searing Vengeance: The radiant energy you channel allows you to resist
+  # death. When you have to make a death saving throw at the start of your
+  # turn, you can instead spring back to your feet with a burst of radiant
+  # energy. You regain hit points equal to half your hit point maximum, and
+  # then you stand up if you so choose. Each creature of your choice that is
+  # within 30 feet of you takes radiant damage equal to 2d8 plus your CHA
+  # modifier, and it is Blinded until the end of the current turn. Once you
+  # use this feature, you can't use it again until you finish a Long Rest."
+  # — PHB 2024
+  - id: searing_vengeance
+    display_name: Searing Vengeance
+    feature_type: scripted_feature
+    unlock_level: 14
+    body:
+      recharge: long_rest
+      trigger: start_of_turn_at_0_hp
+      description: >
+        When you or an ally within 60 ft would make a death save, trigger a
+        blinding burst: regain half your max HP and stand up. Each creature of
+        your choice within 30 ft takes 2d8 + CHA modifier Radiant damage and
+        is Blinded until the end of the current turn. Once per Long Rest.

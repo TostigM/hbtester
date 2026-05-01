@@ -1,0 +1,116 @@
+schema_version: "0.1"
+content_type: subclass
+id: glamour
+display_name: College of Glamour
+parent_class: bard
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  The College of Glamour is open to those bards who mastered their craft in the
+  vibrant, otherworldly realm of the Feywild or under the tutelage of someone
+  who dwelled there. Tutored by satyrs, eladrin, and other fey, these bards
+  learn to use their magic to delight and captivate others.
+subclass_feature_levels: [3, 6, 14, 18]
+features:
+  # "Mantle of Inspiration: As a Bonus Action, you can expend one use of your
+  # Bardic Inspiration to grant yourself a wondrous appearance. When you do so,
+  # choose a number of creatures you can see and that can see you within 60 feet
+  # of you, up to a number equal to your CHA modifier (minimum of one). Each of
+  # them gains Temporary HP equal to a roll of your Bardic Inspiration die plus
+  # your CHA modifier. They can also immediately use their Reaction to move up
+  # to their Speed without provoking Opportunity Attacks." — PHB 2024
+  - id: mantle_of_inspiration
+    display_name: Mantle of Inspiration
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: bonus_action
+      resource: bardic_inspiration
+      description: >
+        Expend one Bardic Inspiration: up to CHA modifier creatures within 60 ft
+        (minimum 1) each gain Temp HP equal to the Bardic Inspiration roll + CHA
+        modifier, and can immediately use their Reaction to move up to their
+        Speed without provoking Opportunity Attacks.
+
+  # "Enthralling Performance: If you perform for at least 1 minute, you can
+  # attempt to inspire wonder in your audience by singing, reciting a poem, or
+  # dancing. At the end of the performance, choose a number of Humanoids within
+  # 60 feet of you who watched and listened to all of it, up to a number equal
+  # to your CHA modifier (minimum of one). Each target must succeed on a WIS
+  # saving throw against your spell save DC or be Charmed by you. While Charmed
+  # in this way, the target idolizes you, it speaks glowingly of you to anyone
+  # who talks to it, and it hinders anyone who opposes you, although it avoids
+  # violence unless it was already inclined to fight on your behalf. This effect
+  # ends on a target after 1 hour, if it takes any damage, if you attack it, or
+  # if it witnesses you attacking or damaging any of its allies. You must finish
+  # a Short or Long Rest before you can use this feature again." — PHB 2024
+  - id: enthralling_performance
+    display_name: Enthralling Performance
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      recharge: short_rest
+      description: >
+        After performing for at least 1 minute, up to CHA modifier Humanoids
+        within 60 ft make a WIS save or become Charmed by you for 1 hour. The
+        charmed creature regards you as a trusted friend, speaks well of you, and
+        hinders those who oppose you but avoids violence. Ends if the target takes
+        damage or witnesses you harming allies. Once per Short or Long Rest.
+
+  # "Mantle of Majesty: As a Bonus Action, you cast Command without expending
+  # a spell slot, and you take on an appearance of unearthly beauty for 1
+  # minute. During this time, you can cast Command as a Bonus Action on each
+  # of your turns, without expending a spell slot. Any creature Charmed by you
+  # automatically fails its saving throw against this Command. Once you use this
+  # feature, you can't use it again until you finish a Long Rest." — PHB 2024
+  - id: mantle_of_majesty
+    display_name: Mantle of Majesty
+    feature_type: custom_action
+    unlock_level: 6
+    body:
+      action_type: bonus_action
+      recharge: long_rest
+      duration: 1_minute
+      description: >
+        Assume an unearthly appearance for 1 minute. Cast Command as a Bonus
+        Action each turn without expending a spell slot. Creatures Charmed by
+        you automatically fail saves against this Command. Once per Long Rest.
+
+  # "Unbreakable Majesty: As a Bonus Action, you can assume a magisterial
+  # presence for 1 minute. For the duration, whenever any creature tries to
+  # attack you for the first time on a turn, the attacker must make a CHA
+  # saving throw against your spell save DC. On a failed save, it can't attack
+  # you on this turn, and it must choose a new target for its attack or the
+  # attack is wasted. On a successful save, it can attack you on this turn, but
+  # it has Disadvantage on any saving throw it makes against your spells on your
+  # next turn. Once you use this feature, you can't use it again until you finish
+  # a Short or Long Rest." — PHB 2024
+  - id: unbreakable_majesty
+    display_name: Unbreakable Majesty
+    feature_type: custom_action
+    unlock_level: 14
+    body:
+      action_type: bonus_action
+      recharge: short_rest
+      duration: 1_minute
+      description: >
+        Assume magisterial presence for 1 minute. The first time a creature
+        tries to attack you on its turn, it makes a CHA save: on a failure it
+        can't attack you and must redirect the attack; on a success it attacks
+        but has Disadvantage on saves vs your spells next turn. Once per Short
+        or Long Rest.
+
+  # "Infectious Rhythm (L18 / College of Glamour capstone): When a creature
+  # uses a Bardic Inspiration die you gave it, that creature can use a Bonus
+  # Action to give a Bardic Inspiration die to another creature within 60 feet
+  # of it." — PHB 2024 (Glamour capstone grants this at 18)
+  - id: infectious_glamour
+    display_name: Infectious Glamour
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: >
+        When a creature uses a Bardic Inspiration die you gave it, that creature
+        can use a Bonus Action to give another creature within 60 ft a Bardic
+        Inspiration die (if that creature doesn't already have one). This chains
+        at most once per original die.

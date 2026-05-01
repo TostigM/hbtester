@@ -1,0 +1,115 @@
+schema_version: "0.1"
+content_type: subclass
+id: fey_wanderer
+display_name: Fey Wanderer
+parent_class: ranger
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  A fey mystique surrounds you, thanks to the boon of an archfey or your
+  exposure to the Feywild's unpredictable magic. You walk between worlds, using
+  that magic to beguile, enthral, and terrify.
+subclass_feature_levels: [3, 7, 11, 15]
+features:
+  # "Dreadful Strikes: You can augment your weapon strikes with mind-scarring
+  # magic drawn from the murky Feywild. When you hit a creature with a weapon,
+  # you can deal an extra 1d4 Psychic damage to the target, which can take this
+  # extra damage only once per turn." — PHB 2024
+  - id: dreadful_strikes
+    display_name: Dreadful Strikes
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      damage_type: psychic
+      damage_dice: 1d4
+      once_per_turn: true
+      description: >
+        When you hit a creature with a weapon, deal an extra 1d4 Psychic damage.
+        A creature can take this extra damage only once per turn.
+
+  # "Fey Wanderer Spells: Charm Person, Misty Step, Dispel Magic, Freedom of
+  # Movement, Mislead." — PHB 2024
+  - id: fey_wanderer_spells
+    display_name: Fey Wanderer Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - charm_person
+        - misty_step
+        - dispel_magic
+        - freedom_of_movement
+        - mislead
+
+  # "Otherworldly Glamour: Whenever you make a CHA check, you gain a bonus to
+  # the check equal to your WIS modifier (minimum of +1). You also gain
+  # proficiency in one of the following skills of your choice: Deception,
+  # Performance, or Persuasion." — PHB 2024
+  - id: otherworldly_glamour
+    display_name: Otherworldly Glamour
+    feature_type: passive_roll_modifier
+    unlock_level: 3
+    body:
+      roll_type: charisma_checks
+      bonus: WIS_modifier
+      minimum_bonus: 1
+      skill_proficiency: [deception, persuasion, performance]
+      choose_count: 1
+      description: >
+        Add WIS modifier (minimum +1) to all CHA checks. Gain proficiency in
+        one of Deception, Performance, or Persuasion.
+
+  # "Beguiling Twist: The magic of the Feywild guards your mind. You have
+  # Advantage on saving throws against being Charmed or Frightened. In addition,
+  # whenever you or a creature you can see within 120 feet of you succeeds on a
+  # saving throw against being Charmed or Frightened, you can use your Reaction
+  # to force a different creature you can see within 120 feet of you to make a
+  # WIS saving throw against your spell save DC. On a failed save, the target
+  # is Charmed or Frightened by you (your choice) for 1 minute." — PHB 2024
+  - id: beguiling_twist
+    display_name: Beguiling Twist
+    feature_type: reaction
+    unlock_level: 7
+    body:
+      trigger: creature_succeeds_save_vs_charmed_or_frightened
+      description: >
+        Advantage on saves vs Charmed and Frightened. When a creature within
+        120 ft succeeds on a save against Charmed or Frightened, Reaction: force
+        a different creature within 120 ft to make a WIS save or become Charmed
+        or Frightened by you (your choice) for 1 minute.
+
+  # "Fey Reinforcements: You can cast Summon Fey without a spell slot without
+  # using a spell slot, and you don't need material components when you cast it
+  # this way. You can do so a number of times equal to your WIS modifier
+  # (minimum of once), and you regain all expended uses when you finish a Long
+  # Rest. You also always have Summon Fey prepared." — PHB 2024
+  - id: fey_reinforcements
+    display_name: Fey Reinforcements
+    feature_type: scripted_feature
+    unlock_level: 11
+    body:
+      recharge: long_rest
+      recharge_uses: WIS_modifier
+      description: >
+        Summon Fey is always prepared. Cast it without a spell slot a number of
+        times equal to your WIS modifier (minimum 1) per Long Rest; no material
+        components required when cast this way.
+
+  # "Misty Wanderer: You can cast Misty Step without expending a spell slot.
+  # You can do so a number of times equal to your WIS modifier (minimum of
+  # once), and you regain all expended uses when you finish a Long Rest.
+  # Additionally, whenever you cast Misty Step, you can bring along one willing
+  # creature you can see within 5 feet of you." — PHB 2024
+  - id: misty_wanderer
+    display_name: Misty Wanderer
+    feature_type: scripted_feature
+    unlock_level: 15
+    body:
+      spell: misty_step
+      recharge: long_rest
+      recharge_uses: WIS_modifier
+      description: >
+        Cast Misty Step without a spell slot a number of times equal to your
+        WIS modifier (minimum 1) per Long Rest. When casting Misty Step, you
+        can bring one willing creature within 5 ft along with you.
