@@ -70,6 +70,11 @@ _CLASS_DEFAULTS: dict[str, dict] = {
         ability_scores={"STR": 8, "DEX": 14, "CON": 16, "INT": 10, "WIS": 12, "CHA": 17},
         feat_ids=["alert"], armor_type="none", uses_mage_armor=True,
     ),
+    "warlock": dict(
+        species_id="human", background_id="charlatan",
+        ability_scores={"STR": 8, "DEX": 14, "CON": 16, "INT": 10, "WIS": 12, "CHA": 17},
+        feat_ids=["alert"], armor_type="studded_leather",
+    ),
 }
 
 

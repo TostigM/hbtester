@@ -89,6 +89,31 @@ _HALF_CASTER_SLOTS: dict[int, dict[str, int]] = {
 _FULL_CASTER_CLASSES = frozenset({"cleric", "wizard", "druid", "bard", "sorcerer"})
 _HALF_CASTER_CLASSES = frozenset({"paladin", "ranger"})
 
+# Pact Magic: slots are all the same level; recover on short or long rest.
+# Stored as spell_slot_N so the caster AI naturally selects the right level.
+_PACT_MAGIC_SLOTS: dict[int, dict[str, int]] = {
+    1:  {"spell_slot_1": 1},
+    2:  {"spell_slot_1": 2},
+    3:  {"spell_slot_2": 2},
+    4:  {"spell_slot_2": 2},
+    5:  {"spell_slot_3": 2},
+    6:  {"spell_slot_3": 2},
+    7:  {"spell_slot_4": 2},
+    8:  {"spell_slot_4": 2},
+    9:  {"spell_slot_5": 2},
+    10: {"spell_slot_5": 2},
+    11: {"spell_slot_5": 3},
+    12: {"spell_slot_5": 3},
+    13: {"spell_slot_5": 3},
+    14: {"spell_slot_5": 3},
+    15: {"spell_slot_5": 3},
+    16: {"spell_slot_5": 3},
+    17: {"spell_slot_5": 4},
+    18: {"spell_slot_5": 4},
+    19: {"spell_slot_5": 4},
+    20: {"spell_slot_5": 4},
+}
+
 # Barbarian rage uses per long rest by level
 _RAGE_USES: dict[int, int] = {
     **{lvl: 2 for lvl in range(1, 3)},
@@ -106,6 +131,8 @@ def spell_slots_for(class_id: str, level: int) -> dict[str, int]:
         return dict(_FULL_CASTER_SLOTS.get(level, _FULL_CASTER_SLOTS[20]))
     if class_id in _HALF_CASTER_CLASSES:
         return dict(_HALF_CASTER_SLOTS.get(level, _HALF_CASTER_SLOTS[20]))
+    if class_id == "warlock":
+        return dict(_PACT_MAGIC_SLOTS.get(level, _PACT_MAGIC_SLOTS[20]))
     return {}
 
 

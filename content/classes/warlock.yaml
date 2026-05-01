@@ -1,0 +1,135 @@
+schema_version: "0.1"
+content_type: class
+id: warlock
+display_name: Warlock
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d8
+primary_ability_options: [CHA]
+saving_throw_proficiencies: [WIS, CHA]
+spellcasting_ability: CHA
+spellcasting_progression: pact
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: [light]
+  weapons: [simple]
+  tools: []
+  saving_throws: [WIS, CHA]
+  skills_choose: 2
+  skills_available:
+    - arcana
+    - deception
+    - history
+    - intimidation
+    - investigation
+    - nature
+    - religion
+features:
+  # "Eldritch Invocations: You have two Eldritch Invocations of your choice.
+  # You gain additional invocations as you gain levels." — PHB 2024
+  - id: eldritch_invocations
+    display_name: Eldritch Invocations
+    feature_type: scripted_feature
+    unlock_level: 1
+    body:
+      initial_count: 2
+      scaling:
+        - level: 3
+          count: 3
+        - level: 5
+          count: 5
+        - level: 7
+          count: 6
+        - level: 9
+          count: 7
+        - level: 12
+          count: 8
+        - level: 15
+          count: 9
+        - level: 18
+          count: 10
+      description: >
+        Supernatural boons from your patron. Each invocation modifies or
+        grants capabilities, typically modifying Eldritch Blast or granting
+        always-active spells or passive benefits.
+
+  - id: warlock_spellcasting
+    display_name: Pact Magic
+    feature_type: pact_magic
+    unlock_level: 1
+    body:
+      ability: CHA
+      progression: pact
+      prepared: false
+      prep_formula: "known"
+      restore: short_or_long_rest
+      description: >
+        Fewer spell slots than full casters, but all slots are your highest
+        available level and recharge on Short or Long Rest.
+
+  - id: warlock_subclass
+    display_name: Warlock Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Warlock subclass (Otherworldly Patron)
+
+  # "Magical Cunning: If all your Pact Magic spell slots are expended, you can
+  # perform a 1-minute ritual to recover half of them (round up). Once per Long
+  # Rest." — PHB 2024
+  - id: magical_cunning
+    display_name: Magical Cunning
+    feature_type: passive_feature_grant
+    unlock_level: 2
+    body:
+      recharge: long_rest
+      description: >
+        Perform a 1-minute ritual to recover half your Pact Magic spell slots
+        (round up). Once per Long Rest.
+
+  # "Eldritch Versatility: When you gain an Ability Score Improvement, you can
+  # replace one Eldritch Invocation you know with another." — PHB 2024
+  - id: eldritch_versatility
+    display_name: Eldritch Versatility
+    feature_type: passive_feature_grant
+    unlock_level: 4
+    body:
+      description: >
+        When gaining an Ability Score Improvement, optionally swap one known
+        Eldritch Invocation for another.
+
+  - id: contact_patron
+    display_name: Contact Patron
+    feature_type: scripted_feature
+    unlock_level: 9
+    body:
+      recharge: long_rest
+      description: >
+        Cast Contact Other Plane once per Long Rest without a spell slot
+        to contact your patron for information.
+
+  - id: mystic_arcanum
+    display_name: Mystic Arcanum
+    feature_type: spell_grant
+    unlock_level: 11
+    body:
+      always_prepared: true
+      recharge: long_rest
+      description: >
+        Learn one spell of 6th level (L11), 7th level (L13), 8th level (L15),
+        or 9th level (L17). Cast each once per Long Rest without a slot.
+      scaling:
+        - level: 13
+          additional_spell_level: 7
+        - level: 15
+          additional_spell_level: 8
+        - level: 17
+          additional_spell_level: 9
+
+  - id: eldritch_master
+    display_name: Eldritch Master
+    feature_type: passive_feature_grant
+    unlock_level: 20
+    body:
+      description: >
+        Recover all Pact Magic spell slots when you finish a Short Rest.

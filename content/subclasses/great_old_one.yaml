@@ -1,0 +1,99 @@
+schema_version: "0.1"
+content_type: subclass
+id: great_old_one
+display_name: The Great Old One
+parent_class: warlock
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Your patron is a mysterious entity of unfathomable power whose nature is
+  incomprehensible to mortal minds. The Great Old One grants its warlocks
+  telepathic abilities and psychic dominance over enemies.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+  # "Awakened Mind: As a Bonus Action, you can telepathically communicate
+  # with any creature within 30 ft that can understand a language, regardless
+  # of language barriers." — PHB 2024
+  - id: awakened_mind
+    display_name: Awakened Mind
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: >
+        Telepathically communicate with any creature within 30 ft that knows
+        a language. The creature can respond telepathically.
+
+  # "Patron Spells: Dissonant Whispers, Hideous Laughter, Detect Thoughts,
+  # Phantasmal Force, Hunger of Hadar, Hypnotic Pattern, Confusion,
+  # Summon Aberration, Telekinesis, Modify Memory." — PHB 2024
+  - id: goo_patron_spells
+    display_name: Patron Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - dissonant_whispers
+        - hideous_laughter
+        - detect_thoughts
+        - phantasmal_force
+        - hunger_of_hadar
+        - hypnotic_pattern
+        - confusion
+        - summon_aberration
+        - telekinesis
+        - modify_memory
+
+  # "Psychic Spells: When you cast a Warlock spell that deals damage, you can
+  # change that damage type to Psychic." — PHB 2024
+  - id: psychic_spells
+    display_name: Psychic Spells
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: >
+        When you cast a Warlock spell that deals damage, you can change the
+        damage type to Psychic.
+
+  # "Clairvoyant Combatant: As an Action, force a creature you can see within
+  # 30 ft to make a WIS save (your spell DC). On failure, it has Disadvantage
+  # on attack rolls and ability checks until end of your next turn." — PHB 2024
+  - id: clairvoyant_combatant
+    display_name: Clairvoyant Combatant
+    feature_type: custom_action
+    unlock_level: 6
+    body:
+      action_type: action
+      description: >
+        Target creature within 30 ft makes WIS save (your spell DC). On
+        failure, it has Disadvantage on attack rolls and ability checks until
+        end of your next turn.
+
+  # "Eldritch Hex: When you hit a creature with Eldritch Blast, you can
+  # impose one of the following: the target can't take reactions, or the
+  # target takes 1d8 psychic damage at the start of each of its turns
+  # (CON save ends)." — PHB 2024
+  - id: eldritch_hex
+    display_name: Eldritch Hex
+    feature_type: scripted_feature
+    unlock_level: 10
+    body:
+      description: >
+        When you hit with Eldritch Blast: target can't take reactions until
+        start of your next turn, or takes 1d8 psychic damage at start of each
+        turn (CON save ends).
+
+  # "Create Thrall: As an Action, touch an Incapacitated humanoid.
+  # It is charmed by you. When it takes damage, it makes a CHA save (your spell DC);
+  # on success the charm ends. Charmed creature follows your telepathic commands."
+  # — PHB 2024
+  - id: create_thrall
+    display_name: Create Thrall
+    feature_type: custom_action
+    unlock_level: 14
+    body:
+      action_type: action
+      description: >
+        Touch an Incapacitated humanoid to Charm it. Charm ends if it takes
+        damage and passes CHA save (your spell DC). Charmed creature follows
+        your telepathic commands.
