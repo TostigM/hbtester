@@ -65,6 +65,11 @@ _CLASS_DEFAULTS: dict[str, dict] = {
         ability_scores={"STR": 8, "DEX": 14, "CON": 15, "INT": 10, "WIS": 17, "CHA": 10},
         feat_ids=["alert"], armor_type="scale_mail", has_shield=True,
     ),
+    "sorcerer": dict(
+        species_id="human", background_id="charlatan",
+        ability_scores={"STR": 8, "DEX": 14, "CON": 16, "INT": 10, "WIS": 12, "CHA": 17},
+        feat_ids=["alert"], armor_type="none", uses_mage_armor=True,
+    ),
 }
 
 

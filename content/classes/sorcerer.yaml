@@ -1,0 +1,101 @@
+schema_version: "0.1"
+content_type: class
+id: sorcerer
+display_name: Sorcerer
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d6
+primary_ability_options: [CHA]
+saving_throw_proficiencies: [CON, CHA]
+spellcasting_ability: CHA
+spellcasting_progression: full
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: []
+  weapons: [simple]
+  tools: []
+  saving_throws: [CON, CHA]
+  skills_choose: 2
+  skills_available:
+    - arcana
+    - deception
+    - insight
+    - intimidation
+    - persuasion
+    - religion
+features:
+  - id: sorcerer_spellcasting
+    display_name: Spellcasting
+    feature_type: spellcasting
+    unlock_level: 1
+    body:
+      ability: CHA
+      progression: full
+      prepared: false
+      prep_formula: "known"
+      ritual_casting: false
+
+  - id: innate_sorcery
+    display_name: Innate Sorcery
+    feature_type: scripted_feature
+    unlock_level: 1
+    body:
+      description: >
+        Bonus Action: surge with power for 1 minute. While active, Advantage
+        on spell attack rolls and enemies have Disadvantage on saves vs your
+        spells. Uses = 2; recover on Long Rest.
+
+  - id: sorcerer_subclass
+    display_name: Sorcerer Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Sorcerer subclass (Sorcerous Origin)
+
+  # "Font of Magic: You have Sorcery Points equal to your Sorcerer level.
+  # You can transform unexpended Sorcery Points into spell slots and vice versa."
+  # — PHB 2024
+  - id: font_of_magic
+    display_name: Font of Magic
+    feature_type: sorcery_points
+    unlock_level: 2
+    body:
+      pool_formula: "level"
+      restore: long_rest
+
+  # "Metamagic: You gain two Metamagic options. Options include Careful,
+  # Distant, Empowered, Extended, Heightened, Quickened, Seeking, Subtle,
+  # Transmuted, Twinned." — PHB 2024
+  - id: metamagic
+    display_name: Metamagic
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      initial_options: 2
+      scaling:
+        - level: 10
+          options: 3
+        - level: 17
+          options: 4
+      description: >
+        Choose Metamagic options; apply by spending Sorcery Points when
+        casting a spell.
+
+  - id: sorcery_incarnate
+    display_name: Sorcery Incarnate
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: >
+        While Innate Sorcery is active, apply up to two Metamagic options
+        to a spell (normally limited to one). Also gain 2 temporary Sorcery
+        Points while active (don't carry over).
+
+  - id: arcane_apotheosis
+    display_name: Arcane Apotheosis
+    feature_type: passive_feature_grant
+    unlock_level: 20
+    body:
+      description: >
+        While Innate Sorcery is active, use one Metamagic option on each
+        of your turns without spending Sorcery Points.

@@ -1,0 +1,73 @@
+schema_version: "0.1"
+content_type: subclass
+id: wild_magic
+display_name: Wild Magic
+parent_class: sorcerer
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Your innate magic comes from the forces of chaos. Wild Magic Sorcerers can
+  channel that volatility into powerful — if unpredictable — results.
+subclass_feature_levels: [3, 6, 14, 18]
+features:
+  # "Wild Magic Surge: When you cast a spell of 1st level or higher, the DM
+  # can have you roll on the Wild Magic Surge table." — PHB 2024
+  - id: wild_magic_surge
+    display_name: Wild Magic Surge
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      description: >
+        When you cast a 1st-level or higher spell, roll d20. On a 1, roll on
+        the Wild Magic Surge table for a random effect.
+
+  # "Tides of Chaos: Gain Advantage on one attack roll, ability check, or
+  # saving throw. Once used, the DM can trigger Wild Magic Surge on any spell
+  # cast until you take a Long Rest (regains this feature after the surge)."
+  # — PHB 2024
+  - id: tides_of_chaos
+    display_name: Tides of Chaos
+    feature_type: passive_roll_modifier
+    unlock_level: 3
+    body:
+      modifier_type: advantage
+      recharge: long_rest
+      description: >
+        Once per Long Rest, gain Advantage on one attack roll, ability check,
+        or saving throw. Expending it may trigger Wild Magic Surge.
+
+  # "Bend Luck: When another creature you can see makes an attack roll, ability
+  # check, or save, spend 2 Sorcery Points as a Reaction to roll 1d4 and
+  # add or subtract it from the roll." — PHB 2024
+  - id: bend_luck
+    display_name: Bend Luck
+    feature_type: reaction
+    unlock_level: 6
+    body:
+      cost: 2
+      resource: sorcery_points
+      description: >
+        Reaction: spend 2 Sorcery Points to roll 1d4 and add/subtract from
+        any creature's attack roll, ability check, or saving throw.
+
+  # "Controlled Chaos: When you roll on the Wild Magic Surge table, roll twice
+  # and use either result." — PHB 2024
+  - id: controlled_chaos
+    display_name: Controlled Chaos
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: Roll twice on Wild Magic Surge table; choose which result applies.
+
+  # "Spell Bombardment: When you roll damage for a spell and roll the highest
+  # number possible on a damage die, pick one die of that type and roll it again
+  # and add that roll to the total. Once per spell." — PHB 2024
+  - id: spell_bombardment
+    display_name: Spell Bombardment
+    feature_type: passive_roll_modifier
+    unlock_level: 18
+    body:
+      modifier_type: reroll_max_die
+      description: >
+        Once per spell, when a spell damage die shows maximum, roll one of
+        those dice again and add the result.
