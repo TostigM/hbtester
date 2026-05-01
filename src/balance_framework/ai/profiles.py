@@ -158,6 +158,12 @@ def resources_from_features(
         # Pool = 5 × level HP; model as that many 5-HP uses
         pools["lay_on_hands"] = level
 
+    if "focus_points" in feature_types or "focus_points" in feature_ids:
+        pools["focus_points"] = level
+
+    if "sorcery_points" in feature_types or "sorcery_points" in feature_ids:
+        pools["sorcery_points"] = level
+
     pools.update(spell_slots_for(class_id, level))
 
     return pools

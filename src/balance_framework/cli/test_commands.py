@@ -55,6 +55,11 @@ _CLASS_DEFAULTS: dict[str, dict] = {
         feat_ids=["alert"], armor_type="studded_leather",
         selected_fighting_style="archery",
     ),
+    "monk": dict(
+        species_id="human", background_id="soldier",
+        ability_scores={"STR": 10, "DEX": 17, "CON": 14, "INT": 8, "WIS": 16, "CHA": 10},
+        feat_ids=["tough"], armor_type="none",
+    ),
 }
 
 

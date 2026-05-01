@@ -173,6 +173,15 @@ def build_character(build: CharacterBuild, registry: ContentRegistry) -> Charact
         has_defense_style=has_defense_style,
         uses_mage_armor=build.uses_mage_armor,
     )
+    # Override for Unarmored Defense (barbarian: 10+DEX+CON, monk: 10+DEX+WIS)
+    if build.armor_type == "none" and not build.uses_mage_armor:
+        ud = next((f for f in active if f.feature_type == "unarmored_defense"), None)
+        if ud:
+            formula = ud.body.get("formula", "")
+            ud_ac = _compute_unarmored_ac(formula, ability_mods)
+            if build.has_shield:
+                ud_ac += 2
+            ac = ud_ac
 
     # ----------------------------------------------------------------
     # Proficiencies
@@ -229,6 +238,15 @@ def _compute_hp(hit_die: str, level: int, con_mod: int, extra_per_level: int) ->
     level_1 = _HIT_DIE_MAX[hit_die] + con_mod + extra_per_level
     per_level = _HIT_DIE_AVERAGE[hit_die] + con_mod + extra_per_level
     return level_1 + (level - 1) * per_level
+
+
+def _compute_unarmored_ac(formula: str, ability_mods: dict[str, int]) -> int:
+    """Parse an unarmored_defense formula like '10 + DEX_mod + CON_mod'."""
+    base = 10
+    for stat in ("STR", "DEX", "CON", "INT", "WIS", "CHA"):
+        if f"{stat}_mod" in formula:
+            base += ability_mods.get(stat, 0)
+    return base
 
 
 def _compute_ac(
