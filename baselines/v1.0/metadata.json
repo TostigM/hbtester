@@ -1,0 +1,283 @@
+{
+  "baseline_version": "0.9",
+  "framework_version": "0.0.1",
+  "rules_version": "PHB_2024",
+  "tier": "A",
+  "generated_on": "2026-04-30",
+  "level": 5,
+  "runs_per_subclass": 100,
+  "base_seed": 0,
+  "subclass_count": 45,
+  "subclasses": [
+    {
+      "subclass_id": "battle_master",
+      "class_id": "fighter",
+      "win_rate": 1.0,
+      "avg_rounds": 3.03
+    },
+    {
+      "subclass_id": "champion",
+      "class_id": "fighter",
+      "win_rate": 1.0,
+      "avg_rounds": 3.03
+    },
+    {
+      "subclass_id": "eldritch_knight",
+      "class_id": "fighter",
+      "win_rate": 1.0,
+      "avg_rounds": 3.03
+    },
+    {
+      "subclass_id": "life_domain",
+      "class_id": "cleric",
+      "win_rate": 1.0,
+      "avg_rounds": 8.57
+    },
+    {
+      "subclass_id": "light_domain",
+      "class_id": "cleric",
+      "win_rate": 1.0,
+      "avg_rounds": 8.57
+    },
+    {
+      "subclass_id": "war_domain",
+      "class_id": "cleric",
+      "win_rate": 1.0,
+      "avg_rounds": 8.57
+    },
+    {
+      "subclass_id": "trickery_domain",
+      "class_id": "cleric",
+      "win_rate": 1.0,
+      "avg_rounds": 8.57
+    },
+    {
+      "subclass_id": "evoker",
+      "class_id": "wizard",
+      "win_rate": 1.0,
+      "avg_rounds": 3.64
+    },
+    {
+      "subclass_id": "abjurer",
+      "class_id": "wizard",
+      "win_rate": 1.0,
+      "avg_rounds": 3.64
+    },
+    {
+      "subclass_id": "diviner",
+      "class_id": "wizard",
+      "win_rate": 1.0,
+      "avg_rounds": 3.64
+    },
+    {
+      "subclass_id": "illusionist",
+      "class_id": "wizard",
+      "win_rate": 1.0,
+      "avg_rounds": 3.64
+    },
+    {
+      "subclass_id": "thief",
+      "class_id": "rogue",
+      "win_rate": 1.0,
+      "avg_rounds": 3.47
+    },
+    {
+      "subclass_id": "assassin",
+      "class_id": "rogue",
+      "win_rate": 1.0,
+      "avg_rounds": 3.47
+    },
+    {
+      "subclass_id": "arcane_trickster",
+      "class_id": "rogue",
+      "win_rate": 1.0,
+      "avg_rounds": 3.47
+    },
+    {
+      "subclass_id": "soulknife",
+      "class_id": "rogue",
+      "win_rate": 1.0,
+      "avg_rounds": 3.47
+    },
+    {
+      "subclass_id": "berserker",
+      "class_id": "barbarian",
+      "win_rate": 1.0,
+      "avg_rounds": 3.77
+    },
+    {
+      "subclass_id": "world_tree",
+      "class_id": "barbarian",
+      "win_rate": 1.0,
+      "avg_rounds": 3.77
+    },
+    {
+      "subclass_id": "zealot",
+      "class_id": "barbarian",
+      "win_rate": 1.0,
+      "avg_rounds": 3.77
+    },
+    {
+      "subclass_id": "lore",
+      "class_id": "bard",
+      "win_rate": 0.61,
+      "avg_rounds": 15.35
+    },
+    {
+      "subclass_id": "dance",
+      "class_id": "bard",
+      "win_rate": 0.61,
+      "avg_rounds": 15.35
+    },
+    {
+      "subclass_id": "glamour",
+      "class_id": "bard",
+      "win_rate": 0.61,
+      "avg_rounds": 15.35
+    },
+    {
+      "subclass_id": "devotion",
+      "class_id": "paladin",
+      "win_rate": 1.0,
+      "avg_rounds": 3.75
+    },
+    {
+      "subclass_id": "ancients",
+      "class_id": "paladin",
+      "win_rate": 1.0,
+      "avg_rounds": 3.75
+    },
+    {
+      "subclass_id": "glory",
+      "class_id": "paladin",
+      "win_rate": 1.0,
+      "avg_rounds": 3.75
+    },
+    {
+      "subclass_id": "vengeance",
+      "class_id": "paladin",
+      "win_rate": 1.0,
+      "avg_rounds": 3.75
+    },
+    {
+      "subclass_id": "gloom_stalker",
+      "class_id": "ranger",
+      "win_rate": 0.99,
+      "avg_rounds": 8.4
+    },
+    {
+      "subclass_id": "beast_master",
+      "class_id": "ranger",
+      "win_rate": 0.99,
+      "avg_rounds": 8.4
+    },
+    {
+      "subclass_id": "fey_wanderer",
+      "class_id": "ranger",
+      "win_rate": 0.99,
+      "avg_rounds": 8.4
+    },
+    {
+      "subclass_id": "hunter",
+      "class_id": "ranger",
+      "win_rate": 0.99,
+      "avg_rounds": 8.4
+    },
+    {
+      "subclass_id": "shadow",
+      "class_id": "monk",
+      "win_rate": 1.0,
+      "avg_rounds": 6.14
+    },
+    {
+      "subclass_id": "mercy",
+      "class_id": "monk",
+      "win_rate": 1.0,
+      "avg_rounds": 6.14
+    },
+    {
+      "subclass_id": "elements",
+      "class_id": "monk",
+      "win_rate": 1.0,
+      "avg_rounds": 6.14
+    },
+    {
+      "subclass_id": "open_hand",
+      "class_id": "monk",
+      "win_rate": 1.0,
+      "avg_rounds": 6.14
+    },
+    {
+      "subclass_id": "land",
+      "class_id": "druid",
+      "win_rate": 0.73,
+      "avg_rounds": 16.03
+    },
+    {
+      "subclass_id": "moon",
+      "class_id": "druid",
+      "win_rate": 0.73,
+      "avg_rounds": 16.03
+    },
+    {
+      "subclass_id": "sea",
+      "class_id": "druid",
+      "win_rate": 0.73,
+      "avg_rounds": 16.03
+    },
+    {
+      "subclass_id": "stars",
+      "class_id": "druid",
+      "win_rate": 0.73,
+      "avg_rounds": 16.03
+    },
+    {
+      "subclass_id": "wild_magic",
+      "class_id": "sorcerer",
+      "win_rate": 1.0,
+      "avg_rounds": 3.64
+    },
+    {
+      "subclass_id": "aberrant_mind",
+      "class_id": "sorcerer",
+      "win_rate": 1.0,
+      "avg_rounds": 3.64
+    },
+    {
+      "subclass_id": "clockwork_soul",
+      "class_id": "sorcerer",
+      "win_rate": 1.0,
+      "avg_rounds": 3.64
+    },
+    {
+      "subclass_id": "draconic",
+      "class_id": "sorcerer",
+      "win_rate": 1.0,
+      "avg_rounds": 3.64
+    },
+    {
+      "subclass_id": "great_old_one",
+      "class_id": "warlock",
+      "win_rate": 1.0,
+      "avg_rounds": 3.89
+    },
+    {
+      "subclass_id": "archfey",
+      "class_id": "warlock",
+      "win_rate": 1.0,
+      "avg_rounds": 3.89
+    },
+    {
+      "subclass_id": "celestial",
+      "class_id": "warlock",
+      "win_rate": 1.0,
+      "avg_rounds": 3.89
+    },
+    {
+      "subclass_id": "fiend",
+      "class_id": "warlock",
+      "win_rate": 1.0,
+      "avg_rounds": 3.89
+    }
+  ]
+}

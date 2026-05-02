@@ -1,0 +1,30 @@
+{
+  "subclass_id": "land",
+  "class_id": "druid",
+  "level": 5,
+  "n": 100,
+  "suite": {
+    "avg_rounds": 16.03,
+    "std_rounds": 3.7747980078409493,
+    "timed_out": 27,
+    "teams": {
+      "party": {
+        "win_rate": 0.73,
+        "avg_survivors": 1.0,
+        "avg_hp_fraction": 0.6486842105263158
+      },
+      "enemies": {
+        "win_rate": 0.0,
+        "avg_survivors": 0.27,
+        "avg_hp_fraction": 0.09142857142857143
+      }
+    }
+  },
+  "combatant_stats": {
+    "avg_damage_dealt": 28.56,
+    "avg_kills": 1.4,
+    "avg_healing_done": 0.0,
+    "avg_hp_fraction": 0.6486842105263159,
+    "survival_rate": 1.0
+  }
+}

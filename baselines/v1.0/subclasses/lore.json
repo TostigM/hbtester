@@ -1,0 +1,30 @@
+{
+  "subclass_id": "lore",
+  "class_id": "bard",
+  "level": 5,
+  "n": 100,
+  "suite": {
+    "avg_rounds": 15.35,
+    "std_rounds": 4.136121371526711,
+    "timed_out": 24,
+    "teams": {
+      "party": {
+        "win_rate": 0.61,
+        "avg_survivors": 0.85,
+        "avg_hp_fraction": 0.38710526315789473
+      },
+      "enemies": {
+        "win_rate": 0.15,
+        "avg_survivors": 0.47,
+        "avg_hp_fraction": 0.18857142857142858
+      }
+    }
+  },
+  "combatant_stats": {
+    "avg_damage_dealt": 24.59,
+    "avg_kills": 1.22,
+    "avg_healing_done": 0.0,
+    "avg_hp_fraction": 0.38710526315789473,
+    "survival_rate": 0.85
+  }
+}

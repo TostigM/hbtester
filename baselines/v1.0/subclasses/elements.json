@@ -1,0 +1,30 @@
+{
+  "subclass_id": "elements",
+  "class_id": "monk",
+  "level": 5,
+  "n": 100,
+  "suite": {
+    "avg_rounds": 6.14,
+    "std_rounds": 2.37073828163296,
+    "timed_out": 0,
+    "teams": {
+      "party": {
+        "win_rate": 1.0,
+        "avg_survivors": 1.0,
+        "avg_hp_fraction": 0.8539583333333333
+      },
+      "enemies": {
+        "win_rate": 0.0,
+        "avg_survivors": 0.0,
+        "avg_hp_fraction": 0.0
+      }
+    }
+  },
+  "combatant_stats": {
+    "avg_damage_dealt": 39.34,
+    "avg_kills": 1.86,
+    "avg_healing_done": 0.0,
+    "avg_hp_fraction": 0.8539583333333333,
+    "survival_rate": 1.0
+  }
+}

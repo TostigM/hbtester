@@ -1,0 +1,30 @@
+{
+  "subclass_id": "wild_magic",
+  "class_id": "sorcerer",
+  "level": 5,
+  "n": 100,
+  "suite": {
+    "avg_rounds": 3.64,
+    "std_rounds": 2.051925924588897,
+    "timed_out": 0,
+    "teams": {
+      "party": {
+        "win_rate": 1.0,
+        "avg_survivors": 1.0,
+        "avg_hp_fraction": 0.9024324324324324
+      },
+      "enemies": {
+        "win_rate": 0.0,
+        "avg_survivors": 0.0,
+        "avg_hp_fraction": 0.0
+      }
+    }
+  },
+  "combatant_stats": {
+    "avg_damage_dealt": 56.42,
+    "avg_kills": 1.99,
+    "avg_healing_done": 0.0,
+    "avg_hp_fraction": 0.9024324324324321,
+    "survival_rate": 1.0
+  }
+}

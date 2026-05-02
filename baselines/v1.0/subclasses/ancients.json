@@ -1,0 +1,30 @@
+{
+  "subclass_id": "ancients",
+  "class_id": "paladin",
+  "level": 5,
+  "n": 100,
+  "suite": {
+    "avg_rounds": 3.75,
+    "std_rounds": 1.2196310917650468,
+    "timed_out": 0,
+    "teams": {
+      "party": {
+        "win_rate": 1.0,
+        "avg_survivors": 1.0,
+        "avg_hp_fraction": 0.9427777777777777
+      },
+      "enemies": {
+        "win_rate": 0.0,
+        "avg_survivors": 0.0,
+        "avg_hp_fraction": 0.0
+      }
+    }
+  },
+  "combatant_stats": {
+    "avg_damage_dealt": 45.74,
+    "avg_kills": 1.96,
+    "avg_healing_done": 0.0,
+    "avg_hp_fraction": 0.9427777777777776,
+    "survival_rate": 1.0
+  }
+}

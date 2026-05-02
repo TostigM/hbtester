@@ -1,0 +1,30 @@
+{
+  "subclass_id": "eldritch_knight",
+  "class_id": "fighter",
+  "level": 5,
+  "n": 100,
+  "suite": {
+    "avg_rounds": 3.03,
+    "std_rounds": 1.0719608201795436,
+    "timed_out": 0,
+    "teams": {
+      "party": {
+        "win_rate": 1.0,
+        "avg_survivors": 1.0,
+        "avg_hp_fraction": 0.9635185185185184
+      },
+      "enemies": {
+        "win_rate": 0.0,
+        "avg_survivors": 0.0,
+        "avg_hp_fraction": 0.0
+      }
+    }
+  },
+  "combatant_stats": {
+    "avg_damage_dealt": 51.94,
+    "avg_kills": 1.96,
+    "avg_healing_done": 0.0,
+    "avg_hp_fraction": 0.963518518518518,
+    "survival_rate": 1.0
+  }
+}

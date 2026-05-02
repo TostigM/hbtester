@@ -1,0 +1,30 @@
+{
+  "subclass_id": "beast_master",
+  "class_id": "ranger",
+  "level": 5,
+  "n": 100,
+  "suite": {
+    "avg_rounds": 8.4,
+    "std_rounds": 3.358571124749333,
+    "timed_out": 0,
+    "teams": {
+      "party": {
+        "win_rate": 0.99,
+        "avg_survivors": 0.99,
+        "avg_hp_fraction": 0.7420454545454546
+      },
+      "enemies": {
+        "win_rate": 0.01,
+        "avg_survivors": 0.01,
+        "avg_hp_fraction": 0.01
+      }
+    }
+  },
+  "combatant_stats": {
+    "avg_damage_dealt": 38.72,
+    "avg_kills": 1.79,
+    "avg_healing_done": 0.0,
+    "avg_hp_fraction": 0.742045454545455,
+    "survival_rate": 0.99
+  }
+}

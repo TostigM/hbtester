@@ -1,0 +1,30 @@
+{
+  "subclass_id": "archfey",
+  "class_id": "warlock",
+  "level": 5,
+  "n": 100,
+  "suite": {
+    "avg_rounds": 3.89,
+    "std_rounds": 2.1302347288503207,
+    "timed_out": 0,
+    "teams": {
+      "party": {
+        "win_rate": 1.0,
+        "avg_survivors": 1.0,
+        "avg_hp_fraction": 0.8948837209302326
+      },
+      "enemies": {
+        "win_rate": 0.0,
+        "avg_survivors": 0.0,
+        "avg_hp_fraction": 0.0
+      }
+    }
+  },
+  "combatant_stats": {
+    "avg_damage_dealt": 55.48,
+    "avg_kills": 1.97,
+    "avg_healing_done": 0.0,
+    "avg_hp_fraction": 0.894883720930233,
+    "survival_rate": 1.0
+  }
+}

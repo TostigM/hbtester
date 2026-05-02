@@ -1,0 +1,30 @@
+{
+  "subclass_id": "soulknife",
+  "class_id": "rogue",
+  "level": 5,
+  "n": 100,
+  "suite": {
+    "avg_rounds": 3.47,
+    "std_rounds": 1.621449968392488,
+    "timed_out": 0,
+    "teams": {
+      "party": {
+        "win_rate": 1.0,
+        "avg_survivors": 1.0,
+        "avg_hp_fraction": 0.8947368421052632
+      },
+      "enemies": {
+        "win_rate": 0.0,
+        "avg_survivors": 0.0,
+        "avg_hp_fraction": 0.0
+      }
+    }
+  },
+  "combatant_stats": {
+    "avg_damage_dealt": 46.01,
+    "avg_kills": 1.98,
+    "avg_healing_done": 0.0,
+    "avg_hp_fraction": 0.8947368421052628,
+    "survival_rate": 1.0
+  }
+}
