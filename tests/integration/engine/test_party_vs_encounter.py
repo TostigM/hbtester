@@ -129,8 +129,10 @@ def test_party_all_members_participate(registry: ContentRegistry) -> None:
 def test_cleric_heals_during_combat(registry: ContentRegistry) -> None:
     """Elowyn should cast at least one healing spell if any ally takes damage."""
     party = _build_party(registry)
-    goblins = [_goblin(f"goblin{i}") for i in range(6)]  # more goblins = more damage taken
-    scenario = ScenarioState(combatants=party + goblins, dice=Dice(1))
+    # Wound the fighter so the cleric's heal threshold is met on round 1
+    party[0].hp_current = 1
+    goblins = [_goblin(f"goblin{i}") for i in range(4)]
+    scenario = ScenarioState(combatants=party + goblins, dice=Dice(42))
     run_combat(scenario, select_actions, max_rounds=20)
     heal_events = [e for e in scenario.events if "heals" in e.lower()]
     assert len(heal_events) >= 1, "Cleric never healed during the encounter"

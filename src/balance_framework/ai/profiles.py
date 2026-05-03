@@ -15,6 +15,7 @@ MARTIAL = "martial"
 HEALER = "healer"
 CASTER = "caster"
 ROGUE = "rogue"
+SUPPORT = "support"
 MONSTER_MELEE = "monster_melee"
 PASSIVE = "passive"
 
@@ -25,11 +26,11 @@ CLASS_PROFILE: dict[str, str] = {
     "wizard": CASTER,
     "rogue": ROGUE,
     "barbarian": MARTIAL,
-    "bard": HEALER,
+    "bard": SUPPORT,
     "paladin": MARTIAL,
     "ranger": MARTIAL,
     "monk": MARTIAL,
-    "druid": HEALER,
+    "druid": SUPPORT,
     "sorcerer": CASTER,
     "warlock": CASTER,
 }

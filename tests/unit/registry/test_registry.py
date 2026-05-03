@@ -59,8 +59,8 @@ def test_get_magic_item_exists(registry: ContentRegistry) -> None:
 
 
 def test_get_class_missing_raises(registry: ContentRegistry) -> None:
-    with pytest.raises(ContentReferenceError, match="paladin"):
-        registry.get_class("paladin")
+    with pytest.raises(ContentReferenceError, match="artificer"):
+        registry.get_class("artificer")
 
 
 def test_get_subclass_missing_raises(registry: ContentRegistry) -> None:

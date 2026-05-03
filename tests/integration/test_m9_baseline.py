@@ -79,7 +79,7 @@ def test_baseline_metadata_fields(tmp_path: Path, runner: CliRunner) -> None:
     meta = json.loads((tmp_path / "b" / "metadata.json").read_text())
     assert meta["tier"] == "A"
     assert meta["rules_version"] == "PHB_2024"
-    assert meta["subclass_count"] == 19
+    assert meta["subclass_count"] == 45
     assert "generated_on" in meta
 
 
@@ -100,11 +100,11 @@ def test_baseline_subclass_json_structure(tmp_path: Path, runner: CliRunner) -> 
 
 def test_committed_baselines_exist() -> None:
     """The baselines committed to the repo should exist and be valid JSON."""
-    meta_path = Path("baselines/v0.9/metadata.json")
-    assert meta_path.exists(), "baselines/v0.9/metadata.json not found in repo"
+    meta_path = Path("baselines/v1.0/metadata.json")
+    assert meta_path.exists(), "baselines/v1.0/metadata.json not found in repo"
     meta = json.loads(meta_path.read_text())
-    assert meta["subclass_count"] == 19
-    subclass_dir = Path("baselines/v0.9/subclasses")
+    assert meta["subclass_count"] == 45
+    subclass_dir = Path("baselines/v1.0/subclasses")
     assert subclass_dir.is_dir()
     json_files = list(subclass_dir.glob("*.json"))
-    assert len(json_files) == 19
+    assert len(json_files) == 45

@@ -3,7 +3,7 @@
   "framework_version": "0.0.1",
   "rules_version": "PHB_2024",
   "tier": "A",
-  "generated_on": "2026-04-30",
+  "generated_on": "2026-05-02",
   "level": 5,
   "runs_per_subclass": 100,
   "base_seed": 0,
@@ -120,20 +120,20 @@
     {
       "subclass_id": "lore",
       "class_id": "bard",
-      "win_rate": 0.61,
-      "avg_rounds": 15.35
+      "win_rate": 1.0,
+      "avg_rounds": 3.54
     },
     {
       "subclass_id": "dance",
       "class_id": "bard",
-      "win_rate": 0.61,
-      "avg_rounds": 15.35
+      "win_rate": 1.0,
+      "avg_rounds": 3.54
     },
     {
       "subclass_id": "glamour",
       "class_id": "bard",
-      "win_rate": 0.61,
-      "avg_rounds": 15.35
+      "win_rate": 1.0,
+      "avg_rounds": 3.54
     },
     {
       "subclass_id": "devotion",
@@ -210,26 +210,26 @@
     {
       "subclass_id": "land",
       "class_id": "druid",
-      "win_rate": 0.73,
-      "avg_rounds": 16.03
+      "win_rate": 1.0,
+      "avg_rounds": 3.61
     },
     {
       "subclass_id": "moon",
       "class_id": "druid",
-      "win_rate": 0.73,
-      "avg_rounds": 16.03
+      "win_rate": 1.0,
+      "avg_rounds": 3.61
     },
     {
       "subclass_id": "sea",
       "class_id": "druid",
-      "win_rate": 0.73,
-      "avg_rounds": 16.03
+      "win_rate": 1.0,
+      "avg_rounds": 3.61
     },
     {
       "subclass_id": "stars",
       "class_id": "druid",
-      "win_rate": 0.73,
-      "avg_rounds": 16.03
+      "win_rate": 1.0,
+      "avg_rounds": 3.61
     },
     {
       "subclass_id": "wild_magic",

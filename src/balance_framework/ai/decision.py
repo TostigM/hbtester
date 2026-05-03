@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from balance_framework.engine.scenario import ScenarioState
     from balance_framework.engine.combat.actions import Action
 
-from balance_framework.ai.profiles import MARTIAL, HEALER, CASTER, ROGUE, MONSTER_MELEE
+from balance_framework.ai.profiles import MARTIAL, HEALER, CASTER, ROGUE, SUPPORT, MONSTER_MELEE
 
 
 def select_actions(
@@ -36,6 +36,9 @@ def select_actions(
         case _ if profile == ROGUE:
             from balance_framework.ai.heuristics.support import rogue_selector
             return rogue_selector(combatant, scenario)
+        case _ if profile == SUPPORT:
+            from balance_framework.ai.heuristics.support import support_selector
+            return support_selector(combatant, scenario)
         case _ if profile == MONSTER_MELEE:
             from balance_framework.ai.monster import monster_melee_selector
             return monster_melee_selector(combatant, scenario)
