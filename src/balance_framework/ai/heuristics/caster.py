@@ -49,6 +49,7 @@ def caster_selector(
         return None
 
     spell_atk = combatant.spell_attack_bonus or 0
+    spell_dmg_bonus = combatant.bonus_damage_flat  # e.g. Elemental Affinity (Draconic CHA mod)
 
     # 1. Leveled spell (modelled as a powered-up spell attack)
     #    Uses the best available slot (highest level first)
@@ -66,7 +67,7 @@ def caster_selector(
                 attack_bonus=spell_atk,
                 damage_dice=dice,
                 damage_type="fire",
-                damage_bonus=0,
+                damage_bonus=spell_dmg_bonus,
                 is_ranged=True,
             )]
 
@@ -78,6 +79,6 @@ def caster_selector(
         attack_bonus=spell_atk,
         damage_dice=[(count, sides)],
         damage_type="fire",
-        damage_bonus=0,
+        damage_bonus=spell_dmg_bonus,
         is_ranged=True,
     )]

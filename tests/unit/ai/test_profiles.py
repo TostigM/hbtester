@@ -9,6 +9,7 @@ from balance_framework.ai.profiles import (
     MARTIAL, HEALER, CASTER, ROGUE, SUPPORT,
     spell_slots_for,
     resources_from_features,
+    combat_stats_from_features,
 )
 from balance_framework.schema.types import Feature
 
@@ -117,3 +118,57 @@ def test_resources_action_surge_doubles_at_level_17() -> None:
     features = [_feature("action_surge", "action_surge")]
     pools = resources_from_features(features, "fighter", 17)
     assert pools["action_surge"] == 2
+
+
+# ---------------------------------------------------------------------------
+# combat_stats_from_features
+# ---------------------------------------------------------------------------
+
+def test_combat_stats_default_crit_threshold() -> None:
+    stats = combat_stats_from_features([], "fighter", 5)
+    assert stats["crit_threshold"] == 20
+    assert stats["bonus_damage_dice"] == []
+    assert stats["bonus_damage_flat"] == 0
+
+
+def test_combat_stats_improved_critical() -> None:
+    features = [_feature("passive_feature_grant", "improved_critical")]
+    stats = combat_stats_from_features(features, "fighter", 5)
+    assert stats["crit_threshold"] == 19
+
+
+def test_combat_stats_superior_critical_overrides_improved() -> None:
+    features = [
+        _feature("passive_feature_grant", "improved_critical"),
+        _feature("passive_feature_grant", "superior_critical"),
+    ]
+    stats = combat_stats_from_features(features, "fighter", 15)
+    assert stats["crit_threshold"] == 18
+
+
+def test_combat_stats_bonus_damage_dice_from_hunters_prey() -> None:
+    features = [_feature(
+        "passive_roll_modifier", "hunters_prey",
+        body={"modifier_type": "bonus_damage", "die_count": 1, "die_size": 8},
+    )]
+    stats = combat_stats_from_features(features, "ranger", 5)
+    assert stats["bonus_damage_dice"] == [(1, 8)]
+
+
+def test_combat_stats_bonus_damage_flat_from_elemental_affinity() -> None:
+    features = [_feature(
+        "passive_roll_modifier", "elemental_affinity",
+        body={"modifier_type": "bonus_damage"},
+    )]
+    ability_mods = {"CHA": 3}
+    stats = combat_stats_from_features(features, "sorcerer", 6, ability_modifiers=ability_mods)
+    assert stats["bonus_damage_flat"] == 3
+
+
+def test_combat_stats_bonus_damage_flat_zero_if_no_cha() -> None:
+    features = [_feature(
+        "passive_roll_modifier", "elemental_affinity",
+        body={"modifier_type": "bonus_damage"},
+    )]
+    stats = combat_stats_from_features(features, "sorcerer", 6, ability_modifiers={"CHA": 0})
+    assert stats["bonus_damage_flat"] == 0

@@ -62,6 +62,7 @@ def support_selector(
         return None
 
     spell_atk = combatant.spell_attack_bonus or 0
+    spell_dmg_bonus = combatant.bonus_damage_flat
     for slot_level in range(5, 0, -1):
         pool = f"spell_slot_{slot_level}"
         if has_resource(combatant, pool):
@@ -73,7 +74,7 @@ def support_selector(
                 attack_bonus=spell_atk,
                 damage_dice=dice,
                 damage_type="fire",
-                damage_bonus=0,
+                damage_bonus=spell_dmg_bonus,
                 is_ranged=True,
             )]
 
@@ -85,7 +86,7 @@ def support_selector(
         attack_bonus=spell_atk,
         damage_dice=[(count, sides)],
         damage_type="fire",
-        damage_bonus=0,
+        damage_bonus=spell_dmg_bonus,
         is_ranged=True,
     )]
 

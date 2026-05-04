@@ -14,10 +14,14 @@ behavior_hints:
 features:
   - id: divine_fury
     display_name: Divine Fury
-    feature_type: passive_feature_grant
+    feature_type: passive_roll_modifier
     unlock_level: 3
     body:
-      description: "While Raging, the first creature you hit each turn takes extra damage equal to 1d6 + half Barbarian level. The type is radiant or necrotic (choose when you gain this feature)."
+      modifier_type: bonus_damage
+      die_count: 1
+      die_size: 6
+      once_per_turn: true
+      description: "While Raging, the first creature you hit each turn takes extra damage equal to 1d6 + half Barbarian level. The type is radiant or necrotic."
 
   - id: warrior_of_the_gods
     display_name: Warrior of the Gods

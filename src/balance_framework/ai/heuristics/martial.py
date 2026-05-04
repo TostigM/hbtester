@@ -54,22 +54,27 @@ def martial_selector(
     atk_bonus = stat_mod + combatant.proficiency_bonus
     dmg_bonus = stat_mod
 
+    # Once-per-turn bonus damage (e.g. Hunter's Prey, Divine Fury)
+    bonus_dice_remaining = list(combatant.bonus_damage_dice)
+
     for _ in range(combatant.extra_attack_count):
         # Re-check target is still alive between attacks
         if not target.is_alive:
             target = nearest_enemy(combatant, scenario)
             if target is None:
                 break
+        extra = bonus_dice_remaining
+        bonus_dice_remaining = []  # only first attack gets the bonus
         actions.append(WeaponAttackAction(
             attacker_id=combatant.id,
             target_id=target.id,
             attack_bonus=atk_bonus,
-            damage_dice=[(1, 8)],  # longsword / versatile
+            damage_dice=[(1, 8)] + extra,  # longsword / versatile + once-per-turn bonus
             damage_type="slashing",
             damage_bonus=dmg_bonus,
         ))
 
-    # 3. Action Surge: repeat the attack action
+    # 3. Action Surge: repeat the attack action (bonus dice already spent this turn)
     if has_resource(combatant, "action_surge") and target is not None and target.is_alive:
         spend(combatant, "action_surge")
         for _ in range(combatant.extra_attack_count):

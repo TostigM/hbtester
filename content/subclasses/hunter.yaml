@@ -20,6 +20,9 @@ features:
     unlock_level: 3
     body:
       modifier_type: bonus_damage
+      die_count: 1
+      die_size: 8
+      once_per_turn: true
       description: >
         Colossus Slayer: Once per turn, when you hit a creature below its HP
         maximum with a weapon attack, deal an extra 1d8 damage.
@@ -40,10 +43,9 @@ features:
   # Multiattack Defense (+4 AC when hit)." — PHB 2024
   - id: superior_hunters_prey
     display_name: Superior Hunter's Prey
-    feature_type: passive_roll_modifier
+    feature_type: passive_feature_grant
     unlock_level: 11
     body:
-      modifier_type: bonus_damage
       description: >
         Multiattack Defense: When a creature hits you with an attack, gain +4
         AC against all subsequent attacks from that creature until your next turn.

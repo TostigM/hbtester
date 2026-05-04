@@ -75,6 +75,8 @@ class CombatantState:
     extra_attack_count: int = 1   # total attacks per Attack action (1 = one, 2 = Extra Attack, etc.)
     sneak_attack_dice: int = 0    # number of d6 added to first sneak attack per turn
     primary_damage_dice: list[tuple[int, int]] = field(default_factory=lambda: [(1, 6)])
+    bonus_damage_dice: list[tuple[int, int]] = field(default_factory=list)   # once-per-turn bonus (e.g. Hunter's Prey, Divine Fury)
+    bonus_damage_flat: int = 0   # flat bonus added to spell damage rolls (e.g. Elemental Affinity)
 
     # Status flags
     is_alive: bool = True
@@ -96,12 +98,17 @@ class CombatantState:
         """Build a CombatantState from a resolved Character, populating resource pools
         from active features so the behavior AI can spend them."""
         from balance_framework.registry.character_builder import Character
-        from balance_framework.ai.profiles import resources_from_features
+        from balance_framework.ai.profiles import resources_from_features, combat_stats_from_features
 
         assert isinstance(character, Character)
         c = character
 
+        ability_mods = dict(c.ability_modifiers)
         resources = resources_from_features(c.active_features, c.build.class_id, c.build.level)
+        combat_stats = combat_stats_from_features(
+            c.active_features, c.build.class_id, c.build.level,
+            ability_modifiers=ability_mods,
+        )
 
         return cls(
             id=combatant_id,
@@ -111,7 +118,7 @@ class CombatantState:
             hp_current=c.hp_max,
             ac=c.ac,
             proficiency_bonus=c.proficiency_bonus,
-            ability_modifiers=dict(c.ability_modifiers),
+            ability_modifiers=ability_mods,
             saving_throw_proficiencies=c.saving_throw_proficiencies,
             spell_attack_bonus=c.spell_attack_bonus,
             spell_save_dc=c.spell_save_dc,
@@ -119,6 +126,9 @@ class CombatantState:
             extra_attack_count=max(1, c.extra_attack_count + 1),  # feature count=1 → 2 attacks total
             behavior_profile=behavior_profile,
             resources=resources,
+            crit_threshold=combat_stats["crit_threshold"],
+            bonus_damage_dice=combat_stats["bonus_damage_dice"],
+            bonus_damage_flat=combat_stats["bonus_damage_flat"],
         )
 
     @classmethod

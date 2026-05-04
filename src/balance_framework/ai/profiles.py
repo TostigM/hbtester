@@ -126,6 +126,45 @@ _RAGE_USES: dict[int, int] = {
 }
 
 
+def combat_stats_from_features(
+    features: "list[Feature]",
+    class_id: str,
+    level: int,
+    ability_modifiers: "dict[str, int] | None" = None,
+) -> "dict":
+    """Return combat stat overrides derived from active features.
+
+    Keys: crit_threshold (int), bonus_damage_dice (list[tuple[int,int]]),
+    bonus_damage_flat (int).
+    """
+    ability_modifiers = ability_modifiers or {}
+    result: dict = {
+        "crit_threshold": 20,
+        "bonus_damage_dice": [],
+        "bonus_damage_flat": 0,
+    }
+
+    feature_ids = {f.id for f in features}
+
+    if "superior_critical" in feature_ids:
+        result["crit_threshold"] = 18
+    elif "improved_critical" in feature_ids:
+        result["crit_threshold"] = 19
+
+    for f in features:
+        if f.feature_type == "passive_roll_modifier" and f.body.get("modifier_type") == "bonus_damage":
+            die_count = f.body.get("die_count")
+            die_size = f.body.get("die_size")
+            if die_count is not None and die_size is not None:
+                result["bonus_damage_dice"].append((int(die_count), int(die_size)))
+            else:
+                cha_mod = ability_modifiers.get("CHA", 0)
+                if cha_mod > 0:
+                    result["bonus_damage_flat"] += cha_mod
+
+    return result
+
+
 def spell_slots_for(class_id: str, level: int) -> dict[str, int]:
     """Return the spell slot pool dict for a caster at the given level."""
     if class_id in _FULL_CASTER_CLASSES:
