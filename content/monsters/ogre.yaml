@@ -1,0 +1,41 @@
+schema_version: "0.1"
+content_type: monster
+id: ogre
+display_name: Ogre
+source: MM_2024
+author: Wizards of the Coast
+creature_type: giant
+size: large
+alignment: chaotic_evil
+ac: 11
+ac_source: hide armor
+hp:
+  average: 59
+  formula: 7d10+21
+speed:
+  walk: 40
+abilities:
+  STR: 19
+  DEX: 8
+  CON: 16
+  INT: 5
+  WIS: 7
+  CHA: 7
+challenge_rating: 2
+proficiency_bonus: 2
+senses:
+  darkvision: 60
+languages: [giant, common]
+actions:
+  - name: Greatclub
+    attack_bonus: 6
+    damage: "2d8+4 bludgeoning"
+  - name: Javelin
+    attack_bonus: 6
+    damage: "2d6+4 piercing"
+    range: 30
+behavior_hints:
+  profile: monster_melee
+  multiattack: 1
+  damage_die: 8
+  damage_die_count: 2

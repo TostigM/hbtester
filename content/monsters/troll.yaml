@@ -1,0 +1,57 @@
+schema_version: "0.1"
+content_type: monster
+id: troll
+display_name: Troll
+source: MM_2024
+author: Wizards of the Coast
+creature_type: giant
+size: large
+alignment: chaotic_evil
+ac: 15
+ac_source: natural armor
+hp:
+  average: 84
+  formula: 8d10+40
+speed:
+  walk: 30
+abilities:
+  STR: 18
+  DEX: 13
+  CON: 20
+  INT: 7
+  WIS: 9
+  CHA: 7
+skill_proficiencies:
+  - skill: perception
+    bonus: 2
+challenge_rating: 5
+proficiency_bonus: 3
+senses:
+  darkvision: 60
+  passive_perception: 12
+languages: [giant]
+traits:
+  - id: regeneration
+    display_name: Regeneration
+    feature_type: passive_feature_grant
+    unlock_level: 0
+    body:
+      description: >
+        The troll regains 10 HP at the start of its turn. If the troll
+        takes acid or fire damage, this trait doesn't function until the
+        start of the troll's next turn. The troll dies only if it starts
+        its turn with 0 HP and doesn't regenerate.
+actions:
+  - name: Multiattack
+    description: The troll makes three attacks — one with its Bite and two with its Claws.
+  - name: Bite
+    attack_bonus: 7
+    damage: "1d6+4 piercing"
+  - name: Claw
+    attack_bonus: 7
+    damage: "2d6+4 slashing"
+behavior_hints:
+  profile: monster_melee
+  multiattack: 3
+  damage_die: 6
+  damage_die_count: 2

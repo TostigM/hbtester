@@ -28,6 +28,7 @@ def monster_melee_selector(
 
     str_mod = combatant.ability_modifiers.get("STR", 0)
     atk_bonus = str_mod + combatant.proficiency_bonus
+    dmg_dice = combatant.primary_damage_dice
 
     actions: list[Action] = []
     for _ in range(combatant.extra_attack_count):
@@ -39,7 +40,7 @@ def monster_melee_selector(
             attacker_id=combatant.id,
             target_id=target.id,
             attack_bonus=atk_bonus,
-            damage_dice=[(1, 6)],
+            damage_dice=dmg_dice,
             damage_type="slashing",
             damage_bonus=str_mod,
         ))

@@ -19,8 +19,21 @@ def standard_goblin(id: str) -> CombatantState:
     )
 
 
+def monster_combatant(monster_id: str, combatant_id: str, registry: object) -> CombatantState:
+    """Build a CombatantState from a monster in the registry."""
+    from balance_framework.registry.registry import ContentRegistry
+    assert isinstance(registry, ContentRegistry)
+    monster = registry.get_monster(monster_id)
+    return CombatantState.from_monster(monster, combatant_id)
+
+
 def default_enemy_band(count: int = 2) -> list[CombatantState]:
     return [standard_goblin(f"g{i}") for i in range(count)]
+
+
+def monster_enemy_band(monster_id: str, count: int, registry: object) -> list[CombatantState]:
+    """Build a band of identical monsters from the registry."""
+    return [monster_combatant(monster_id, f"{monster_id}_{i}", registry) for i in range(count)]
 
 
 def make_scenario(

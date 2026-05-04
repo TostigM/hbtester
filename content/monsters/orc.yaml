@@ -1,0 +1,47 @@
+schema_version: "0.1"
+content_type: monster
+id: orc
+display_name: Orc
+source: MM_2024
+author: Wizards of the Coast
+creature_type: humanoid
+size: medium
+alignment: chaotic_evil
+ac: 13
+ac_source: hide armor
+hp:
+  average: 15
+  formula: 2d8+6
+speed:
+  walk: 30
+abilities:
+  STR: 16
+  DEX: 12
+  CON: 16
+  INT: 7
+  WIS: 11
+  CHA: 10
+saving_throw_proficiencies: [STR]
+challenge_rating: "1/2"
+proficiency_bonus: 2
+senses:
+  darkvision: 60
+languages: [orc, common]
+traits:
+  - id: aggressive
+    display_name: Aggressive
+    feature_type: passive_feature_grant
+    unlock_level: 0
+    body:
+      description: >
+        As a Bonus Action, the orc can move up to its speed toward a
+        hostile creature it can see.
+actions:
+  - name: Greataxe
+    attack_bonus: 5
+    damage: "1d12+3 slashing"
+behavior_hints:
+  profile: monster_melee
+  multiattack: 1
+  damage_die: 12
+  damage_die_count: 1

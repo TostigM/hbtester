@@ -74,6 +74,7 @@ class CombatantState:
     # Attack economy
     extra_attack_count: int = 1   # total attacks per Attack action (1 = one, 2 = Extra Attack, etc.)
     sneak_attack_dice: int = 0    # number of d6 added to first sneak attack per turn
+    primary_damage_dice: list[tuple[int, int]] = field(default_factory=lambda: [(1, 6)])
 
     # Status flags
     is_alive: bool = True
@@ -118,6 +119,53 @@ class CombatantState:
             extra_attack_count=max(1, c.extra_attack_count + 1),  # feature count=1 → 2 attacks total
             behavior_profile=behavior_profile,
             resources=resources,
+        )
+
+    @classmethod
+    def from_monster(
+        cls,
+        monster: object,  # Monster — avoid circular import
+        combatant_id: str,
+        team: str = "enemies",
+    ) -> "CombatantState":
+        """Build a CombatantState from a Monster schema object."""
+        from balance_framework.schema.types import Monster as MonsterType
+        assert isinstance(monster, MonsterType)
+        m = monster
+
+        def _mod(score: int) -> int:
+            return (score - 10) // 2
+
+        ability_mods = {
+            stat: _mod(getattr(m.abilities, stat))
+            for stat in ("STR", "DEX", "CON", "INT", "WIS", "CHA")
+        }
+
+        hints = m.behavior_hints
+        profile = hints.get("profile", "monster_melee")
+        multiattack = int(hints.get("multiattack", 1))
+        die_count = int(hints.get("damage_die_count", 1))
+        die_size = int(hints.get("damage_die", 6))
+
+        avg_hp = m.hp.get("average", 7)
+
+        return cls(
+            id=combatant_id,
+            display_name=m.display_name,
+            team=team,
+            hp_max=avg_hp,
+            hp_current=avg_hp,
+            ac=m.ac,
+            proficiency_bonus=m.proficiency_bonus,
+            ability_modifiers=ability_mods,
+            saving_throw_proficiencies=frozenset(m.saving_throw_proficiencies),
+            damage_resistances=frozenset(m.damage_resistances),
+            damage_immunities=frozenset(m.damage_immunities),
+            damage_vulnerabilities=frozenset(m.damage_vulnerabilities),
+            condition_immunities=frozenset(m.condition_immunities),
+            behavior_profile=profile,
+            extra_attack_count=multiattack,
+            primary_damage_dice=[(die_count, die_size)],
         )
 
     # ------------------------------------------------------------------

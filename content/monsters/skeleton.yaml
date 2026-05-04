@@ -1,0 +1,44 @@
+schema_version: "0.1"
+content_type: monster
+id: skeleton
+display_name: Skeleton
+source: MM_2024
+author: Wizards of the Coast
+creature_type: undead
+size: medium
+alignment: lawful_evil
+ac: 13
+ac_source: armor scraps
+hp:
+  average: 13
+  formula: 2d8+4
+speed:
+  walk: 30
+abilities:
+  STR: 10
+  DEX: 14
+  CON: 15
+  INT: 6
+  WIS: 8
+  CHA: 5
+challenge_rating: "1/4"
+proficiency_bonus: 2
+damage_vulnerabilities: [bludgeoning]
+damage_immunities: [poison]
+condition_immunities: [exhaustion, poisoned]
+senses:
+  darkvision: 60
+languages: []
+actions:
+  - name: Shortsword
+    attack_bonus: 4
+    damage: "1d6+2 piercing"
+  - name: Shortbow
+    attack_bonus: 4
+    damage: "1d6+2 piercing"
+    range: 80
+behavior_hints:
+  profile: monster_melee
+  multiattack: 1
+  damage_die: 6
+  damage_die_count: 1
