@@ -3,28 +3,141 @@
   "class_id": "wizard",
   "level": 5,
   "n": 100,
-  "suite": {
-    "avg_rounds": 3.64,
-    "std_rounds": 2.051925924588897,
-    "timed_out": 0,
-    "teams": {
-      "party": {
-        "win_rate": 1.0,
-        "avg_survivors": 1.0,
-        "avg_hp_fraction": 0.8871875
+  "aggregate": {
+    "avg_win_rate": 0.776,
+    "min_win_rate": 0.56,
+    "avg_rounds": 5.56
+  },
+  "encounters": {
+    "goblin_band": {
+      "suite": {
+        "avg_rounds": 3.64,
+        "std_rounds": 2.051925924588897,
+        "timed_out": 0,
+        "teams": {
+          "party": {
+            "win_rate": 1.0,
+            "avg_survivors": 1.0,
+            "avg_hp_fraction": 0.8871875
+          },
+          "enemies": {
+            "win_rate": 0.0,
+            "avg_survivors": 0.0,
+            "avg_hp_fraction": 0.0
+          }
+        }
       },
-      "enemies": {
-        "win_rate": 0.0,
-        "avg_survivors": 0.0,
-        "avg_hp_fraction": 0.0
+      "combatant_stats": {
+        "avg_damage_dealt": 56.42,
+        "avg_kills": 1.99,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.8871875,
+        "survival_rate": 1.0
+      }
+    },
+    "skeleton_pack": {
+      "suite": {
+        "avg_rounds": 8.45,
+        "std_rounds": 3.040970239906994,
+        "timed_out": 0,
+        "teams": {
+          "party": {
+            "win_rate": 0.86,
+            "avg_survivors": 0.86,
+            "avg_hp_fraction": 0.4325
+          },
+          "enemies": {
+            "win_rate": 0.14,
+            "avg_survivors": 0.25,
+            "avg_hp_fraction": 0.09897435897435898
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 96.94,
+        "avg_kills": 2.55,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.4325,
+        "survival_rate": 0.86
+      }
+    },
+    "orc_pair": {
+      "suite": {
+        "avg_rounds": 5.39,
+        "std_rounds": 2.235598353908859,
+        "timed_out": 0,
+        "teams": {
+          "party": {
+            "win_rate": 0.71,
+            "avg_survivors": 0.71,
+            "avg_hp_fraction": 0.34375
+          },
+          "enemies": {
+            "win_rate": 0.29,
+            "avg_survivors": 0.39,
+            "avg_hp_fraction": 0.235
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 68.63,
+        "avg_kills": 1.38,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.34375,
+        "survival_rate": 0.71
+      }
+    },
+    "lone_bugbear": {
+      "suite": {
+        "avg_rounds": 4.93,
+        "std_rounds": 2.3675092396862993,
+        "timed_out": 0,
+        "teams": {
+          "party": {
+            "win_rate": 0.75,
+            "avg_survivors": 0.75,
+            "avg_hp_fraction": 0.516875
+          },
+          "enemies": {
+            "win_rate": 0.25,
+            "avg_survivors": 0.25,
+            "avg_hp_fraction": 0.10925925925925925
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 50.27,
+        "avg_kills": 0.53,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.516875,
+        "survival_rate": 0.75
+      }
+    },
+    "lone_ogre": {
+      "suite": {
+        "avg_rounds": 5.39,
+        "std_rounds": 1.6364290390970213,
+        "timed_out": 0,
+        "teams": {
+          "party": {
+            "win_rate": 0.56,
+            "avg_survivors": 0.56,
+            "avg_hp_fraction": 0.276875
+          },
+          "enemies": {
+            "win_rate": 0.44,
+            "avg_survivors": 0.44,
+            "avg_hp_fraction": 0.1064406779661017
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 76.92,
+        "avg_kills": 0.44,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.276875,
+        "survival_rate": 0.56
       }
     }
-  },
-  "combatant_stats": {
-    "avg_damage_dealt": 56.42,
-    "avg_kills": 1.99,
-    "avg_healing_done": 0.0,
-    "avg_hp_fraction": 0.8871875,
-    "survival_rate": 1.0
   }
 }

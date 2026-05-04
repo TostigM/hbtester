@@ -22,7 +22,7 @@ PASSIVE = "passive"
 # Maps class_id -> default behavior profile
 CLASS_PROFILE: dict[str, str] = {
     "fighter": MARTIAL,
-    "cleric": HEALER,
+    "cleric": SUPPORT,
     "wizard": CASTER,
     "rogue": ROGUE,
     "barbarian": MARTIAL,

@@ -47,10 +47,12 @@ def martial_selector(
     if target is None:
         return actions or None
 
-    atk_bonus = (
-        combatant.ability_modifiers.get("STR", 0) + combatant.proficiency_bonus
-    )
-    dmg_bonus = combatant.ability_modifiers.get("STR", 0)
+    # Use the better of STR or DEX (covers DEX-based martials like ranger/monk)
+    str_mod = combatant.ability_modifiers.get("STR", 0)
+    dex_mod = combatant.ability_modifiers.get("DEX", 0)
+    stat_mod = max(str_mod, dex_mod)
+    atk_bonus = stat_mod + combatant.proficiency_bonus
+    dmg_bonus = stat_mod
 
     for _ in range(combatant.extra_attack_count):
         # Re-check target is still alive between attacks

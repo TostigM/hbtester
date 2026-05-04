@@ -36,6 +36,17 @@ def monster_enemy_band(monster_id: str, count: int, registry: object) -> list[Co
     return [monster_combatant(monster_id, f"{monster_id}_{i}", registry) for i in range(count)]
 
 
+# Standard encounter set for solo-character baseline testing (calibrated for L5).
+# Each entry is (encounter_name, monster_id, count).
+STANDARD_ENCOUNTERS: list[tuple[str, str, int]] = [
+    ("goblin_band",    "goblin",   2),
+    ("skeleton_pack",  "skeleton", 3),
+    ("orc_pair",       "orc",      2),
+    ("lone_bugbear",   "bugbear",  1),
+    ("lone_ogre",      "ogre",     1),
+]
+
+
 def make_scenario(
     party: list[CombatantState],
     enemies: list[CombatantState],

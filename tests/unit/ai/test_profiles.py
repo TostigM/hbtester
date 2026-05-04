@@ -6,7 +6,7 @@ import pytest
 
 from balance_framework.ai.profiles import (
     CLASS_PROFILE,
-    MARTIAL, HEALER, CASTER, ROGUE,
+    MARTIAL, HEALER, CASTER, ROGUE, SUPPORT,
     spell_slots_for,
     resources_from_features,
 )
@@ -26,7 +26,7 @@ def test_class_profile_fighter() -> None:
 
 
 def test_class_profile_cleric() -> None:
-    assert CLASS_PROFILE["cleric"] == HEALER
+    assert CLASS_PROFILE["cleric"] == SUPPORT
 
 
 def test_class_profile_wizard() -> None:

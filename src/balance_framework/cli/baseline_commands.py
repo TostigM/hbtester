@@ -197,7 +197,7 @@ def _generate_tier_baselines(
     from balance_framework.registry.registry import ContentRegistry
     from balance_framework.registry.character_builder import CharacterBuild
     from balance_framework.harnesses.subclass import run_subclass_build
-    from balance_framework.reporting.formats.json import write_suite
+    from balance_framework.harnesses.base import STANDARD_ENCOUNTERS, monster_enemy_band
     from balance_framework.cli.test_commands import _CLASS_DEFAULTS
 
     click.echo(f"Loading content from {content_dir!r}...")
@@ -215,19 +215,38 @@ def _generate_tier_baselines(
             click.echo(f"  SKIP  {class_id}/{subclass_id} (no default build)", err=True)
             continue
 
-        click.echo(f"  Running {class_id}/{subclass_id} ({runs} encounters)...")
+        click.echo(f"  Running {class_id}/{subclass_id} ({runs}×{len(STANDARD_ENCOUNTERS)} encounters)...")
         try:
             build = CharacterBuild(class_id=class_id, subclass_id=subclass_id, level=level, **defaults)
-            result = run_subclass_build(build, subclass_id, registry, n=runs, base_seed=seed)
+            enc_results: dict[str, object] = {}
+            for enc_name, monster_id, count in STANDARD_ENCOUNTERS:
+                factory = (
+                    lambda s, mid=monster_id, cnt=count: monster_enemy_band(mid, cnt, registry)
+                )
+                enc_results[enc_name] = run_subclass_build(
+                    build, subclass_id, registry, n=runs, base_seed=seed, enemy_factory=factory
+                )
+
             out_path = subclasses_dir / f"{subclass_id}.json"
-            _write_subclass_baseline(result, class_id, subclass_id, level, runs, out_path)
-            wr = result.suite.win_rate("party")
-            click.echo(f"         win={wr:.1%}, avg_rounds={result.suite.avg_rounds:.1f}")
+            _write_subclass_baseline(enc_results, class_id, subclass_id, level, runs, out_path)
+
+            avg_wr = sum(
+                r.suite.win_rate("party") for r in enc_results.values()
+            ) / len(enc_results)
+            avg_rnd = sum(r.suite.avg_rounds for r in enc_results.values()) / len(enc_results)
+            click.echo(f"         avg_win={avg_wr:.1%}, avg_rounds={avg_rnd:.1f}")
             results_summary.append({
                 "subclass_id": subclass_id,
                 "class_id": class_id,
-                "win_rate": wr,
-                "avg_rounds": result.suite.avg_rounds,
+                "avg_win_rate": avg_wr,
+                "avg_rounds": avg_rnd,
+                "encounters": {
+                    enc_name: {
+                        "win_rate": enc_results[enc_name].suite.win_rate("party"),
+                        "avg_rounds": enc_results[enc_name].suite.avg_rounds,
+                    }
+                    for enc_name in enc_results
+                },
             })
         except Exception as exc:
             click.echo(f"  ERROR {class_id}/{subclass_id}: {exc}", err=True)
@@ -243,33 +262,49 @@ def _generate_tier_baselines(
 
 
 def _write_subclass_baseline(
-    result, class_id: str, subclass_id: str, level: int, runs: int, path: Path
+    enc_results: dict, class_id: str, subclass_id: str, level: int, runs: int, path: Path
 ) -> None:
-    cs = result.combatant_stats.get("variant")
+    def _suite_dict(result) -> dict:
+        cs = result.combatant_stats.get("variant")
+        return {
+            "suite": {
+                "avg_rounds": result.suite.avg_rounds,
+                "std_rounds": result.suite.std_rounds,
+                "timed_out": result.suite.timed_out,
+                "teams": {
+                    team: {
+                        "win_rate": ts.win_rate,
+                        "avg_survivors": ts.avg_survivors,
+                        "avg_hp_fraction": ts.avg_hp_fraction,
+                    }
+                    for team, ts in result.suite.teams.items()
+                },
+            },
+            "combatant_stats": {
+                "avg_damage_dealt": cs.avg_damage_dealt if cs else 0.0,
+                "avg_kills": cs.avg_kills if cs else 0.0,
+                "avg_healing_done": cs.avg_healing_done if cs else 0.0,
+                "avg_hp_fraction": cs.avg_hp_fraction if cs else 0.0,
+                "survival_rate": cs.survival_rate if cs else 0.0,
+            },
+        }
+
+    win_rates = [r.suite.win_rate("party") for r in enc_results.values()]
+    avg_rounds = [r.suite.avg_rounds for r in enc_results.values()]
+
     data = {
         "subclass_id": subclass_id,
         "class_id": class_id,
         "level": level,
         "n": runs,
-        "suite": {
-            "avg_rounds": result.suite.avg_rounds,
-            "std_rounds": result.suite.std_rounds,
-            "timed_out": result.suite.timed_out,
-            "teams": {
-                team: {
-                    "win_rate": ts.win_rate,
-                    "avg_survivors": ts.avg_survivors,
-                    "avg_hp_fraction": ts.avg_hp_fraction,
-                }
-                for team, ts in result.suite.teams.items()
-            },
+        "aggregate": {
+            "avg_win_rate": sum(win_rates) / len(win_rates),
+            "min_win_rate": min(win_rates),
+            "avg_rounds": sum(avg_rounds) / len(avg_rounds),
         },
-        "combatant_stats": {
-            "avg_damage_dealt": cs.avg_damage_dealt if cs else 0.0,
-            "avg_kills": cs.avg_kills if cs else 0.0,
-            "avg_healing_done": cs.avg_healing_done if cs else 0.0,
-            "avg_hp_fraction": cs.avg_hp_fraction if cs else 0.0,
-            "survival_rate": cs.survival_rate if cs else 0.0,
+        "encounters": {
+            enc_name: _suite_dict(result)
+            for enc_name, result in enc_results.items()
         },
     }
     path.write_text(json.dumps(data, indent=2), encoding="utf-8")

@@ -93,9 +93,13 @@ def test_baseline_subclass_json_structure(tmp_path: Path, runner: CliRunner) -> 
     champion = json.loads((tmp_path / "b" / "subclasses" / "champion.json").read_text())
     assert champion["subclass_id"] == "champion"
     assert champion["class_id"] == "fighter"
-    assert "suite" in champion
-    assert "combatant_stats" in champion
-    assert 0.0 <= champion["suite"]["teams"]["party"]["win_rate"] <= 1.0
+    assert "aggregate" in champion
+    assert "encounters" in champion
+    assert 0.0 <= champion["aggregate"]["avg_win_rate"] <= 1.0
+    first_enc = next(iter(champion["encounters"].values()))
+    assert "suite" in first_enc
+    assert "combatant_stats" in first_enc
+    assert 0.0 <= first_enc["suite"]["teams"]["party"]["win_rate"] <= 1.0
 
 
 def test_committed_baselines_exist() -> None:
