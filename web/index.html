@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HB Tester — D&D 5e Balance Dashboard</title>
+  <style>
+    :root {
+      --bg:          #0f1117;
+      --surface:     #1a1d27;
+      --surface2:    #222636;
+      --border:      #2d3148;
+      --text:        #e0e0e8;
+      --muted:       #6e7490;
+      --gold:        #d4af37;
+      --gold-dim:    #9a7f25;
+
+      --fighter:   #4a90d9;
+      --cleric:    #d4af37;
+      --wizard:    #9b59b6;
+      --rogue:     #27ae60;
+      --barbarian: #e74c3c;
+      --bard:      #1abc9c;
+      --paladin:   #5dade2;
+      --ranger:    #2ecc71;
+      --monk:      #e67e22;
+      --druid:     #a0714f;
+      --sorcerer:  #e91e8c;
+      --warlock:   #8e44ad;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* ── Header ─────────────────────────────────────────────────────────── */
+    header {
+      background: var(--surface);
+      border-bottom: 2px solid var(--gold-dim);
+      padding: 1.25rem 2rem 1rem;
+    }
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .subtitle { color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+    .meta-bar {
+      display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem;
+    }
+    .meta-pill {
+      background: var(--surface2); border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem; border-radius: 999px;
+      font-size: 0.75rem; color: var(--muted);
+    }
+
+    /* ── Main ───────────────────────────────────────────────────────────── */
+    main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+    /* ── Controls ───────────────────────────────────────────────────────── */
+    .controls { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem; }
+    .filter-row {
+      display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center;
+    }
+    .filter-label {
+      font-size: 0.7rem; color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.08em; margin-right: 0.25rem; white-space: nowrap;
+    }
+    .fbtn {
+      padding: 0.28rem 0.65rem; border-radius: 5px;
+      border: 1px solid var(--border); background: var(--surface2);
+      color: var(--muted); cursor: pointer; font-size: 0.78rem;
+      transition: border-color 0.12s, color 0.12s, background 0.12s;
+      white-space: nowrap;
+    }
+    .fbtn:hover { border-color: var(--gold-dim); color: var(--text); }
+
+    /* "All" active = gold */
+    .fbtn.active { background: var(--gold-dim); border-color: var(--gold); color: #fff; font-weight: 600; }
+
+    /* Class-specific active state */
+    .fbtn[data-class="fighter"].active  { background: var(--fighter);   border-color: var(--fighter);   color: #fff; }
+    .fbtn[data-class="cleric"].active   { background: var(--cleric);    border-color: var(--cleric);    color: #111; }
+    .fbtn[data-class="wizard"].active   { background: var(--wizard);    border-color: var(--wizard);    color: #fff; }
+    .fbtn[data-class="rogue"].active    { background: var(--rogue);     border-color: var(--rogue);     color: #fff; }
+    .fbtn[data-class="barbarian"].active{ background: var(--barbarian); border-color: var(--barbarian); color: #fff; }
+    .fbtn[data-class="bard"].active     { background: var(--bard);      border-color: var(--bard);      color: #111; }
+    .fbtn[data-class="paladin"].active  { background: var(--paladin);   border-color: var(--paladin);   color: #111; }
+    .fbtn[data-class="ranger"].active   { background: var(--ranger);    border-color: var(--ranger);    color: #111; }
+    .fbtn[data-class="monk"].active     { background: var(--monk);      border-color: var(--monk);      color: #111; }
+    .fbtn[data-class="druid"].active    { background: var(--druid);     border-color: var(--druid);     color: #fff; }
+    .fbtn[data-class="sorcerer"].active { background: var(--sorcerer);  border-color: var(--sorcerer);  color: #fff; }
+    .fbtn[data-class="warlock"].active  { background: var(--warlock);   border-color: var(--warlock);   color: #fff; }
+
+    /* Encounter active = blue-tinted */
+    .fbtn[data-enc].active { background: #1e2d4a; border-color: #4a90d9; color: #a8d8ff; }
+
+    /* ── Table ──────────────────────────────────────────────────────────── */
+    .table-wrap {
+      overflow-x: auto; border-radius: 8px; border: 1px solid var(--border);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    thead th {
+      padding: 0.55rem 1rem; background: var(--surface);
+      color: var(--muted); text-transform: uppercase;
+      font-size: 0.7rem; letter-spacing: 0.07em;
+      text-align: left; white-space: nowrap; cursor: pointer;
+      user-select: none; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 1;
+    }
+    thead th:hover { color: var(--text); }
+    thead th.sort-asc::after  { content: ' ↑'; color: var(--gold); }
+    thead th.sort-desc::after { content: ' ↓'; color: var(--gold); }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: background 0.1s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover   { background: var(--surface2); }
+    tbody tr.selected { background: #1a2040; }
+    td { padding: 0.55rem 1rem; vertical-align: middle; }
+
+    .sc-name { font-weight: 500; }
+
+    /* Class badge */
+    .badge {
+      display: inline-block; padding: 0.12rem 0.45rem;
+      border-radius: 4px; font-size: 0.72rem; font-weight: 600; color: #fff;
+    }
+    .badge.fighter   { background: var(--fighter); }
+    .badge.cleric    { background: var(--cleric);    color: #111; }
+    .badge.wizard    { background: var(--wizard); }
+    .badge.rogue     { background: var(--rogue); }
+    .badge.barbarian { background: var(--barbarian); }
+    .badge.bard      { background: var(--bard);      color: #111; }
+    .badge.paladin   { background: var(--paladin);   color: #111; }
+    .badge.ranger    { background: var(--ranger);    color: #111; }
+    .badge.monk      { background: var(--monk);      color: #111; }
+    .badge.druid     { background: var(--druid); }
+    .badge.sorcerer  { background: var(--sorcerer); }
+    .badge.warlock   { background: var(--warlock); }
+
+    /* Win-rate bar */
+    .wr-cell { display: flex; align-items: center; gap: 0.5rem; min-width: 150px; }
+    .wr-track {
+      flex: 1; height: 7px; background: var(--border);
+      border-radius: 4px; overflow: hidden;
+    }
+    .wr-fill { height: 100%; border-radius: 4px; transition: width 0.25s; }
+    .wr-pct  { font-weight: 600; font-size: 0.82rem; min-width: 3.4rem; text-align: right; }
+
+    /* Encounter mini-dots */
+    .enc-dots { display: flex; gap: 3px; }
+    .enc-dot  { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── Detail panel ───────────────────────────────────────────────────── */
+    #detail-panel {
+      margin-top: 1.5rem; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;
+    }
+    .detail-hdr {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .detail-title { font-size: 1.2rem; font-weight: 700; color: var(--gold); }
+    .detail-sub   { font-size: 0.82rem; color: var(--muted); margin-top: 0.15rem; }
+    .close-btn {
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--muted); padding: 0.28rem 0.75rem; border-radius: 5px;
+      cursor: pointer; font-size: 0.82rem; transition: all 0.12s;
+    }
+    .close-btn:hover { border-color: var(--gold-dim); color: var(--text); }
+
+    .detail-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    @media (max-width: 680px) { .detail-grid { grid-template-columns: 1fr; } }
+
+    .chart-card {
+      background: var(--surface2); border-radius: 6px; padding: 1rem;
+    }
+    .chart-card-title {
+      font-size: 0.7rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.6rem;
+    }
+
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 500px) { .stats-row { grid-template-columns: 1fr 1fr; } }
+    .stat-card {
+      background: var(--surface2); border-radius: 6px; padding: 0.7rem 0.9rem;
+    }
+    .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat-val   { font-size: 1.15rem; font-weight: 700; margin-top: 0.1rem; }
+
+    /* ── Status messages ────────────────────────────────────────────────── */
+    .status-msg {
+      text-align: center; padding: 3rem 1rem; color: var(--muted);
+    }
+    .status-msg code {
+      background: var(--surface2); padding: 0.2rem 0.5rem; border-radius: 4px;
+      font-size: 0.85rem; color: var(--text);
+    }
+    .status-msg.error { color: #e74c3c; }
+
+    /* ── Footer ─────────────────────────────────────────────────────────── */
+    footer {
+      text-align: center; padding: 2rem 1rem; color: var(--muted);
+      font-size: 0.78rem; border-top: 1px solid var(--border); margin-top: 3rem;
+    }
+    footer a { color: var(--gold-dim); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>HB Tester</h1>
+  <p class="subtitle">D&amp;D 5e 2024 &middot; Combat Balance Dashboard</p>
+  <div id="meta-bar" class="meta-bar"></div>
+</header>
+
+<main>
+  <div id="loading" class="status-msg">Loading baseline data&hellip;</div>
+  <div id="error-msg" class="status-msg error" hidden></div>
+
+  <div id="app" hidden>
+    <div class="controls">
+      <div class="filter-row" id="class-filters">
+        <span class="filter-label">Class</span>
+        <button class="fbtn active" data-class="all">All</button>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Encounter</span>
+        <button class="fbtn active" data-enc="overall">Overall</button>
+        <button class="fbtn" data-enc="goblin_band">Goblin Band</button>
+        <button class="fbtn" data-enc="skeleton_pack">Skeleton Pack</button>
+        <button class="fbtn" data-enc="orc_pair">Orc Pair</button>
+        <button class="fbtn" data-enc="lone_bugbear">Lone Bugbear</button>
+        <button class="fbtn" data-enc="lone_ogre">Lone Ogre</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-sort="name">Subclass</th>
+            <th data-sort="class">Class</th>
+            <th data-sort="wr">Win Rate</th>
+            <th data-sort="rounds">Avg Rounds</th>
+            <th>Encounters</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <div id="detail-panel" hidden>
+      <div class="detail-hdr">
+        <div>
+          <div id="d-title" class="detail-title"></div>
+          <div id="d-sub"   class="detail-sub"></div>
+        </div>
+        <button class="close-btn" id="close-btn">&#x2715; Close</button>
+      </div>
+      <div id="d-loading" class="status-msg">Loading&hellip;</div>
+      <div id="d-content" hidden>
+        <div class="detail-grid">
+          <div class="chart-card">
+            <div class="chart-card-title">Win Rate by Encounter</div>
+            <canvas id="wr-chart"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-title">Avg Damage Dealt by Encounter</div>
+            <canvas id="dmg-chart"></canvas>
+          </div>
+        </div>
+        <div id="stats-row" class="stats-row"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>
+    Baseline <strong id="footer-ver"></strong> &middot;
+    <a href="https://github.com/TostigM/hbtester" target="_blank" rel="noopener">hbtester</a>
+    &middot; PHB 2024 rules &middot; Level 5 &middot; Solo encounter format
+  </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script>
+// ── Config ─────────────────────────────────────────────────────────────────
+const DATA_ROOT = 'data'; // relative to index.html; change if needed
+
+// ── Constants ──────────────────────────────────────────────────────────────
+const ENCOUNTERS = ['goblin_band','skeleton_pack','orc_pair','lone_bugbear','lone_ogre'];
+const ENC_LABEL  = { goblin_band:'Goblin Band', skeleton_pack:'Skeleton Pack',
+                     orc_pair:'Orc Pair', lone_bugbear:'Lone Bugbear', lone_ogre:'Lone Ogre' };
+const CLASSES    = ['fighter','cleric','wizard','rogue','barbarian','bard',
+                    'paladin','ranger','monk','druid','sorcerer','warlock'];
+
+// ── State ──────────────────────────────────────────────────────────────────
+let subclasses = [];
+let meta       = {};
+let filterClass = 'all';
+let filterEnc   = 'overall';
+let sortKey     = 'wr';
+let sortDir     = -1;         // -1 desc, 1 asc
+let selectedId  = null;
+let wrChart = null, dmgChart = null;
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+const fmt = s => s.replace(/_/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+
+function wrColor(v) {
+  if (v >= 0.95) return '#27ae60';
+  if (v >= 0.88) return '#2ecc71';
+  if (v >= 0.78) return '#f1c40f';
+  if (v >= 0.68) return '#e67e22';
+  return '#e74c3c';
+}
+
+function getWR(sc) {
+  return filterEnc === 'overall' ? sc.avg_win_rate
+       : (sc.encounters[filterEnc]?.win_rate ?? 0);
+}
+function getRounds(sc) {
+  return filterEnc === 'overall' ? sc.avg_rounds
+       : (sc.encounters[filterEnc]?.avg_rounds ?? 0);
+}
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    const r = await fetch(`${DATA_ROOT}/metadata.json`);
+    if (!r.ok) throw new Error(`HTTP ${r.status} fetching metadata.json`);
+    meta = await r.json();
+    subclasses = meta.subclasses;
+
+    document.getElementById('meta-bar').innerHTML = [
+      meta.subclass_count + ' subclasses',
+      CLASSES.length + ' classes',
+      'Level ' + meta.level,
+      meta.rules_version,
+      meta.runs_per_subclass + ' runs / encounter',
+      'Generated ' + meta.generated_on,
+    ].map(t => `<span class="meta-pill">${t}</span>`).join('');
+
+    document.getElementById('footer-ver').textContent =
+      `v${meta.baseline_version} · ${meta.generated_on}`;
+
+    buildClassFilters();
+    bindEncounterFilters();
+    bindSortHeaders();
+    renderTable();
+
+    document.getElementById('loading').hidden = true;
+    document.getElementById('app').hidden = false;
+    document.getElementById('close-btn').addEventListener('click', closeDetail);
+
+  } catch (err) {
+    document.getElementById('loading').hidden = true;
+    const el = document.getElementById('error-msg');
+    el.hidden = false;
+    const isCors = /fetch|CORS|network/i.test(err.message);
+    el.innerHTML = isCors
+      ? `<strong>Could not load data.</strong><br>Run a local web server first:<br>
+         <code>python -m http.server 8000</code><br>
+         then open <a href="http://localhost:8000" style="color:var(--gold)">http://localhost:8000</a>`
+      : `Error: ${err.message}`;
+  }
+}
+
+// ── Class filter buttons ───────────────────────────────────────────────────
+function buildClassFilters() {
+  const row = document.getElementById('class-filters');
+  for (const cls of CLASSES) {
+    const b = document.createElement('button');
+    b.className = 'fbtn';
+    b.dataset.class = cls;
+    b.textContent = fmt(cls);
+    b.addEventListener('click', () => setClass(cls));
+    row.appendChild(b);
+  }
+  row.querySelector('[data-class="all"]')
+     .addEventListener('click', () => setClass('all'));
+}
+
+function setClass(cls) {
+  filterClass = cls;
+  document.querySelectorAll('.fbtn[data-class]').forEach(b =>
+    b.classList.toggle('active', b.dataset.class === cls));
+  renderTable();
+}
+
+// ── Encounter filter buttons ───────────────────────────────────────────────
+function bindEncounterFilters() {
+  document.querySelectorAll('.fbtn[data-enc]').forEach(b => {
+    b.addEventListener('click', () => {
+      filterEnc = b.dataset.enc;
+      document.querySelectorAll('.fbtn[data-enc]').forEach(x =>
+        x.classList.toggle('active', x.dataset.enc === filterEnc));
+      renderTable();
+    });
+  });
+}
+
+// ── Sort headers ───────────────────────────────────────────────────────────
+function bindSortHeaders() {
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.sort;
+      if (sortKey === key) { sortDir *= -1; }
+      else { sortKey = key; sortDir = (key === 'name' || key === 'class') ? 1 : -1; }
+      document.querySelectorAll('th[data-sort]').forEach(h =>
+        h.classList.remove('sort-asc','sort-desc'));
+      th.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
+      renderTable();
+    });
+  });
+  document.querySelector('th[data-sort="wr"]').classList.add('sort-desc');
+}
+
+// ── Table render ───────────────────────────────────────────────────────────
+function renderTable() {
+  const rows = (filterClass === 'all' ? subclasses
+                : subclasses.filter(s => s.class_id === filterClass))
+    .slice()
+    .sort((a, b) => {
+      let av, bv;
+      if      (sortKey === 'name')   { av = a.subclass_id; bv = b.subclass_id; }
+      else if (sortKey === 'class')  { av = a.class_id;    bv = b.class_id; }
+      else if (sortKey === 'wr')     { av = getWR(a);      bv = getWR(b); }
+      else                           { av = getRounds(a);  bv = getRounds(b); }
+      if (typeof av === 'string') return sortDir * av.localeCompare(bv);
+      return sortDir * (bv - av);
+    });
+
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+
+  for (const sc of rows) {
+    const wr  = getWR(sc);
+    const rnd = getRounds(sc);
+    const col = wrColor(wr);
+
+    const dots = ENCOUNTERS.map(enc => {
+      const v = sc.encounters[enc]?.win_rate ?? 0;
+      const dim = (filterEnc !== 'overall' && filterEnc !== enc) ? '40%' : '100%';
+      return `<div class="enc-dot" title="${ENC_LABEL[enc]}: ${(v*100).toFixed(0)}%"
+                   style="background:${wrColor(v)};opacity:${dim}"></div>`;
+    }).join('');
+
+    const tr = document.createElement('tr');
+    tr.dataset.id = sc.subclass_id;
+    if (sc.subclass_id === selectedId) tr.classList.add('selected');
+    tr.innerHTML = `
+      <td class="sc-name">${fmt(sc.subclass_id)}</td>
+      <td><span class="badge ${sc.class_id}">${fmt(sc.class_id)}</span></td>
+      <td>
+        <div class="wr-cell">
+          <div class="wr-track">
+            <div class="wr-fill" style="width:${(wr*100).toFixed(1)}%;background:${col}"></div>
+          </div>
+          <span class="wr-pct" style="color:${col}">${(wr*100).toFixed(1)}%</span>
+        </div>
+      </td>
+      <td style="color:var(--muted)">${rnd.toFixed(2)}</td>
+      <td><div class="enc-dots">${dots}</div></td>`;
+    tr.addEventListener('click', () => openDetail(sc.subclass_id));
+    tbody.appendChild(tr);
+  }
+}
+
+// ── Detail panel ───────────────────────────────────────────────────────────
+async function openDetail(id) {
+  selectedId = id;
+  renderTable();
+
+  const sc = subclasses.find(s => s.subclass_id === id);
+  document.getElementById('d-title').textContent = fmt(id);
+  document.getElementById('d-sub').textContent =
+    `${fmt(sc.class_id)} · Level ${meta.level} · ${meta.runs_per_subclass} runs / encounter`;
+
+  const panel = document.getElementById('detail-panel');
+  panel.hidden = false;
+  document.getElementById('d-loading').hidden = false;
+  document.getElementById('d-content').hidden  = true;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  try {
+    const r = await fetch(`${DATA_ROOT}/subclasses/${id}.json`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    renderDetail(await r.json());
+  } catch (err) {
+    document.getElementById('d-loading').textContent = `Could not load detail: ${err.message}`;
+  }
+}
+
+function renderDetail(d) {
+  document.getElementById('d-loading').hidden = true;
+  document.getElementById('d-content').hidden = false;
+
+  const labels   = ENCOUNTERS.map(e => ENC_LABEL[e]);
+  const wrVals   = ENCOUNTERS.map(e => (d.encounters[e]?.suite.teams.party.win_rate ?? 0) * 100);
+  const dmgVals  = ENCOUNTERS.map(e => d.encounters[e]?.combatant_stats.avg_damage_dealt ?? 0);
+  const wrColors = wrVals.map(v => wrColor(v / 100));
+
+  const base = {
+    responsive: true,
+    plugins: { legend: { display: false }, tooltip: { callbacks: {} } },
+    scales: {
+      x: { grid: { color: '#2d3148' }, ticks: { color: '#6e7490', font: { size: 11 } } },
+      y: { grid: { color: '#2d3148' }, ticks: { color: '#6e7490', font: { size: 11 } } },
+    },
+  };
+
+  if (wrChart)  wrChart.destroy();
+  if (dmgChart) dmgChart.destroy();
+
+  wrChart = new Chart(document.getElementById('wr-chart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: wrVals, backgroundColor: wrColors, borderRadius: 4 }],
+    },
+    options: { ...base, scales: { ...base.scales,
+      y: { ...base.scales.y, min: 0, max: 100,
+           ticks: { ...base.scales.y.ticks, callback: v => v + '%' } } } },
+  });
+
+  dmgChart = new Chart(document.getElementById('dmg-chart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: dmgVals, backgroundColor: '#4a90d988',
+                   borderColor: '#4a90d9', borderWidth: 1, borderRadius: 4 }],
+    },
+    options: base,
+  });
+
+  // Aggregate stat cards
+  const killsAvg = ENCOUNTERS
+    .map(e => d.encounters[e]?.combatant_stats.avg_kills ?? 0)
+    .reduce((a, b) => a + b, 0) / ENCOUNTERS.length;
+  const healAvg = ENCOUNTERS
+    .map(e => d.encounters[e]?.combatant_stats.avg_healing_done ?? 0)
+    .reduce((a, b) => a + b, 0) / ENCOUNTERS.length;
+  const survAvg = ENCOUNTERS
+    .map(e => d.encounters[e]?.combatant_stats.survival_rate ?? 0)
+    .reduce((a, b) => a + b, 0) / ENCOUNTERS.length;
+
+  const cards = [
+    { label: 'Overall Win Rate',  val: (d.aggregate.avg_win_rate * 100).toFixed(1) + '%',
+      color: wrColor(d.aggregate.avg_win_rate) },
+    { label: 'Worst Encounter',   val: (d.aggregate.min_win_rate * 100).toFixed(1) + '%',
+      color: wrColor(d.aggregate.min_win_rate) },
+    { label: 'Avg Rounds',        val: d.aggregate.avg_rounds.toFixed(2), color: 'var(--text)' },
+    { label: 'Avg Kills / Run',   val: killsAvg.toFixed(2), color: 'var(--text)' },
+    { label: 'Avg Healing / Run', val: healAvg.toFixed(1),  color: 'var(--text)' },
+    { label: 'Survival Rate',     val: (survAvg * 100).toFixed(1) + '%',
+      color: wrColor(survAvg) },
+  ];
+
+  document.getElementById('stats-row').innerHTML = cards.map(c => `
+    <div class="stat-card">
+      <div class="stat-label">${c.label}</div>
+      <div class="stat-val" style="color:${c.color}">${c.val}</div>
+    </div>`).join('');
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').hidden = true;
+  selectedId = null;
+  renderTable();
+  if (wrChart)  { wrChart.destroy();  wrChart  = null; }
+  if (dmgChart) { dmgChart.destroy(); dmgChart = null; }
+}
+
+// ── Go ─────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
