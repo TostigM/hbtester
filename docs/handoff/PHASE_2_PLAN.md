@@ -507,4 +507,120 @@ LLM-generated code may have subtle bugs, inconsistent patterns, or style violati
 
 ## Revision History
 
-- **v0.1 (current):** Initial Phase 2 plan with engine-first approach. Covers M0-M10 milestones, week-by-week plan, parallel work streams.
+- **v0.1:** Initial Phase 2 plan with engine-first approach. Covers M0-M10 milestones, week-by-week plan, parallel work streams.
+- **v0.2 (current):** Phase 2 complete (M10 shipped). Phase 3 roadmap appended below.
+
+---
+
+## Phase 3 Roadmap
+
+Phase 2 delivered a working simulation engine, 45 subclass baselines, and a static web dashboard. Phase 3 expands simulation fidelity and the web product.
+
+### Phase 3 Milestone Sequence
+
+#### M11: Encounter Variety Expansion *(highest priority)*
+
+The current encounter suite uses five fixed compositions, all standard humanoid monsters with simple melee AI. This limits the simulator's ability to surface class weaknesses that only appear against certain enemy types.
+
+**Target enemy categories to add:**
+
+| Category | Examples | Why it matters |
+|---|---|---|
+| Spellcasting monsters | Mage, Priest, Banshee, Lich | Tests spell interruption, concentration, save-vs-AOE |
+| Undead | Zombie horde, Wight, Vampire Spawn | Immunity to conditions, frightened, necrotic |
+| Beasts | Wolf pack, Giant Ape, Owlbear pack | Pack tactics, multiattack variety, grapple |
+| Fiends | Quasit, Hell Hound, Cambion | Fire immunity, darkness, charm |
+| Dragons | Young dragons (CR 7-10) | Breath weapon save, Frightful Presence, legendary feel |
+| Constructs | Animated Armor, Iron Golem | Magic immunity, condition immunity |
+
+**Engine work required:**
+
+1. **Spellcasting monster AI profile** — a `monster_caster` behavior profile that spends spell slots (stored in `behavior_hints`) to cast AOE or single-target spells, mirroring `caster_selector` logic
+2. **Breath weapon / AOE mechanic** — a `BreathWeaponAction` that hits all enemy combatants in range with a DEX/CON save for half; recharge mechanic (recharges on 5-6)
+3. **Mixed-composition encounters** — encounter templates with heterogeneous enemy groups (e.g., 1 caster + 2 warriors, dragon + 2 kobolds), not just N copies of the same monster
+4. **Encounter difficulty calibration** — after adding harder enemies, recalibrate so win rates span ~40-90% (currently 78-99% for most classes; not enough spread to see subclass differences)
+
+**Content work required:**
+
+- 20-30 additional monster YAMLs covering the categories above (currently have 10)
+- At minimum: mage, priest, zombie, wight, hell hound, young red dragon, iron golem
+- `behavior_hints` extended with `spell_slots`, `breath_weapon_damage`, `breath_weapon_save`
+- New `STANDARD_ENCOUNTERS` set (replace or extend the current 5-encounter suite)
+
+**Verification:**
+- At least 3 spellcasting monsters in the encounter pool
+- At least 1 dragon-type encounter (breath weapon fires, frightful presence applies)
+- Win rates across all 45 subclasses span a meaningful range (target: some encounters at 40-60% for casters/rogues)
+- Existing 540 tests still pass
+
+**Estimated effort:** 2-3 weeks
+
+---
+
+#### M12: Subclass Feature Simulation Depth
+
+Currently only 4 features are simulated (champion crit, hunter's prey, divine fury, elemental affinity). Most subclasses score identically to their class baseline because their defining features aren't wired into the engine.
+
+**Priority features to simulate:**
+
+| Subclass | Feature | Mechanism |
+|---|---|---|
+| Battle Master | Superiority dice (4d8) | Spend die on first attack for bonus damage + maneuver effect |
+| Eldritch Knight | Spell slots + cantrip | Switch to `caster_selector` when no melee targets, or use War Magic |
+| Berserker | Frenzy (bonus action attack) | Extra `WeaponAttackAction` appended as bonus action |
+| Life Domain | +bonus healing | Heal bonus = `2 + spell_level` added to `HealAction` |
+| Wild Magic | Surge table | Random additional effect on spell cast (1-in-20 chance) |
+| Gloom Stalker | First-round bonus attack | Extra attack on round 1 only |
+| Open Hand | Knockdown on hit | Apply `prone` condition after successful unarmed strike |
+
+This milestone also includes regenerating `baselines/v1.0/` and `web/data/` after each batch of features lands, so the dashboard reflects actual differentiation.
+
+**Estimated effort:** 3-4 weeks (iterative; each feature is a self-contained PR)
+
+---
+
+#### M13: Web Interface Phase 2 — Flask API
+
+Add a Python backend on a cloud host (Render/Railway free tier) so the dashboard can run on-demand small tests without pre-generated data.
+
+**Endpoints:**
+- `POST /api/character/build` — accepts `CharacterBuild` JSON, returns stat block
+- `POST /api/encounter/quick-test` — runs 10 encounters, returns win rate + summary
+- `POST /api/validate` — accepts YAML text, returns validation errors or success
+
+**Key constraints:**
+- Runs on Render/Railway (not Bluehost — shared hosting can't run persistent Python)
+- Bluehost serves the static frontend; CORS allows it to call the API subdomain
+- Encounter runs capped at 20 per request to stay within free-tier CPU limits
+
+**Estimated effort:** 1-2 weeks
+
+---
+
+#### M14: Homebrew Submission Workflow
+
+The end goal of the tool: a DM pastes their homebrew subclass YAML, gets a balance report in under a minute.
+
+**Deliverables:**
+- YAML editor in the dashboard with schema hints
+- "Run Quick Test" button → calls M13 API → displays results inline
+- Comparison against the nearest class baseline ("Your Ranger subclass vs Hunter baseline")
+- Shareable result URL (encoded in query string or stored as a short-lived server-side key)
+
+**Estimated effort:** 2-3 weeks (depends on M13 landing first)
+
+---
+
+### Phase 3 Priority Order
+
+```
+M11 (encounter variety)  ← start here; unlocks meaningful differentiation
+    ↓
+M12 (feature simulation) ← makes subclass scores diverge
+    ↓
+M13 (Flask API)          ← enables interactive testing
+    ↓
+M14 (homebrew workflow)  ← the product
+```
+
+M11 is the gate. Until the encounter pool is harder and more varied, expanding simulation depth (M12) produces numbers that cluster too tightly to be useful.
