@@ -39,11 +39,14 @@ def monster_enemy_band(monster_id: str, count: int, registry: object) -> list[Co
 # Standard encounter set for solo-character baseline testing (calibrated for L5).
 # Each entry is (encounter_name, monster_id, count).
 STANDARD_ENCOUNTERS: list[tuple[str, str, int]] = [
-    ("goblin_band",    "goblin",   2),
-    ("skeleton_pack",  "skeleton", 3),
-    ("orc_pair",       "orc",      2),
-    ("lone_bugbear",   "bugbear",  1),
-    ("lone_ogre",      "ogre",     1),
+    ("goblin_band",       "goblin",              2),
+    ("skeleton_pack",     "skeleton",            3),
+    ("orc_pair",          "orc",                 2),
+    ("lone_ogre",         "ogre",                1),
+    ("hell_hound_pair",   "hell_hound",          2),
+    ("lone_banshee",      "banshee",             1),
+    ("lone_mage",         "mage",                1),
+    ("dragon_wyrmling",   "black_dragon_wyrmling", 1),
 ]
 
 

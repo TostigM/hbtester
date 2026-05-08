@@ -1,0 +1,41 @@
+schema_version: "0.1"
+content_type: monster
+id: animated_armor
+display_name: Animated Armor
+source: MM_2024
+author: Wizards of the Coast
+creature_type: construct
+size: medium
+ac: 18
+ac_source: natural armor
+hp:
+  average: 33
+  formula: 6d8+6
+speed:
+  walk: 25
+abilities:
+  STR: 14
+  DEX: 11
+  CON: 13
+  INT: 1
+  WIS: 3
+  CHA: 1
+challenge_rating: 1
+proficiency_bonus: 2
+senses:
+  blindsight: 60
+condition_immunities:
+  - exhaustion
+  - frightened
+  - paralyzed
+  - petrified
+  - poisoned
+actions:
+  - name: Slam
+    attack_bonus: 4
+    damage: "1d6+2 bludgeoning"
+behavior_hints:
+  profile: monster_melee
+  multiattack: 2
+  damage_die: 6
+  damage_die_count: 1

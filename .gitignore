@@ -33,5 +33,6 @@ Thumbs.db
 # Project-specific
 baselines/v*/
 !baselines/v1.0/
+!baselines/v1.1/
 !baselines/README.md
 *.log

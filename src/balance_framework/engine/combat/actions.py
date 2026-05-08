@@ -73,7 +73,19 @@ class HealAction:
     resource_cost: int = 1
 
 
-Action = WeaponAttackAction | DodgeAction | HelpAction | DeathSaveAction | HealAction
+@dataclass
+class BreathWeaponAction:
+    """Breath weapon: hits all living enemies with a DEX/CON save for half."""
+
+    action_type: str = "breath_weapon"
+    attacker_id: str = ""
+    damage_dice: list[tuple[int, int]] = field(default_factory=list)  # (count, sides)
+    damage_type: str = "fire"
+    save_ability: str = "DEX"
+    save_dc: int = 13
+
+
+Action = WeaponAttackAction | DodgeAction | HelpAction | DeathSaveAction | HealAction | BreathWeaponAction
 
 
 # ---------------------------------------------------------------------------
@@ -97,6 +109,8 @@ def resolve_action(action: Action, scenario: "ScenarioState") -> list[str]:
             return []  # handled by turns.start_turn
         case "heal":
             return _resolve_heal(action, scenario)  # type: ignore[arg-type]
+        case "breath_weapon":
+            return _resolve_breath_weapon(action, scenario)  # type: ignore[arg-type]
         case _:
             raise ValueError(f"Unknown action type: {action.action_type!r}")
 
@@ -235,3 +249,53 @@ def _resolve_heal(action: HealAction, scenario: "ScenarioState") -> list[str]:
         f"{caster.display_name} heals {target.display_name} for {gained} HP "
         f"({target.hp_current}/{target.hp_max})"
     ]
+
+
+def _resolve_breath_weapon(action: BreathWeaponAction, scenario: "ScenarioState") -> list[str]:
+    from balance_framework.engine.combat.saves import resolve_save
+    from balance_framework.engine.combat.damage import apply_damage
+    from balance_framework.engine.combat.resources import spend, InsufficientResourceError
+
+    attacker = scenario.get_combatant(action.attacker_id)
+
+    try:
+        spend(attacker, "breath_weapon")
+    except (KeyError, InsufficientResourceError):
+        return [f"{attacker.display_name} has no breath weapon charges remaining"]
+
+    enemies = [c for c in scenario.combatants if c.team != attacker.team and c.is_alive]
+    if not enemies:
+        return [f"{attacker.display_name} uses its breath weapon but hits no one"]
+
+    events = [f"{attacker.display_name} uses its breath weapon!"]
+
+    for target in enemies:
+        total_damage = sum(
+            scenario.dice.roll_sum(sides, count)
+            for count, sides in action.damage_dice
+        )
+
+        save_result = resolve_save(target, action.save_ability, action.save_dc, scenario.dice)
+        actual_damage = total_damage // 2 if save_result.success else total_damage
+
+        dmg = apply_damage(target, actual_damage, action.damage_type, False)
+        aid = action.attacker_id
+        scenario.damage_dealt[aid] = scenario.damage_dealt.get(aid, 0) + dmg.applied_damage
+        if dmg.killed:
+            scenario.kills[aid] = scenario.kills.get(aid, 0) + 1
+            from balance_framework.logging.event_log import DeathEvent
+            scenario.structured_events.append(DeathEvent(
+                round_number=scenario.round_number,
+                combatant_id=target.id,
+                team=target.team,
+                instant_death=dmg.instant_death,
+            ))
+
+        events.append(
+            f"  {target.display_name}: {'saved' if save_result.success else 'failed'} "
+            f"({action.save_ability} DC {action.save_dc}), "
+            f"{dmg.applied_damage} {action.damage_type} dmg "
+            f"→ {dmg.hp_after}/{target.hp_max} HP"
+        )
+
+    return events

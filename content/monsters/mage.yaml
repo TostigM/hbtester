@@ -1,0 +1,42 @@
+schema_version: "0.1"
+content_type: monster
+id: mage
+display_name: Mage
+source: MM_2024
+author: Wizards of the Coast
+creature_type: humanoid
+size: medium
+ac: 12
+ac_source: natural (15 with mage armor)
+hp:
+  average: 40
+  formula: 9d8
+speed:
+  walk: 30
+abilities:
+  STR: 9
+  DEX: 14
+  CON: 11
+  INT: 17
+  WIS: 12
+  CHA: 11
+challenge_rating: 6
+proficiency_bonus: 3
+saving_throw_proficiencies: [INT, WIS]
+senses: {}
+languages: [common]
+actions:
+  - name: Dagger
+    attack_bonus: 5
+    damage: "1d4+2 piercing"
+  - name: Spell (Fire Bolt)
+    attack_bonus: 6
+    damage: "2d10 fire"
+behavior_hints:
+  profile: monster_caster
+  spell_attack_bonus: 6
+  spell_save_dc: 14
+  spell_slots:
+    "3": 3
+    "2": 3
+    "1": 4

@@ -17,6 +17,7 @@ CASTER = "caster"
 ROGUE = "rogue"
 SUPPORT = "support"
 MONSTER_MELEE = "monster_melee"
+MONSTER_CASTER = "monster_caster"
 PASSIVE = "passive"
 
 # Maps class_id -> default behavior profile

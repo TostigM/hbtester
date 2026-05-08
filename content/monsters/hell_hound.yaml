@@ -1,0 +1,44 @@
+schema_version: "0.1"
+content_type: monster
+id: hell_hound
+display_name: Hell Hound
+source: MM_2024
+author: Wizards of the Coast
+creature_type: fiend
+size: medium
+alignment: lawful_evil
+ac: 15
+ac_source: natural armor
+hp:
+  average: 45
+  formula: 7d8+14
+speed:
+  walk: 50
+abilities:
+  STR: 17
+  DEX: 12
+  CON: 14
+  INT: 6
+  WIS: 13
+  CHA: 6
+challenge_rating: 3
+proficiency_bonus: 2
+senses:
+  darkvision: 60
+languages: [infernal]
+damage_immunities: [fire]
+actions:
+  - name: Bite
+    attack_bonus: 5
+    damage: "1d8+3 piercing plus 2d6 fire"
+behavior_hints:
+  profile: monster_melee
+  multiattack: 1
+  damage_die: 8
+  damage_die_count: 1
+  breath_weapon:
+    damage_die_count: 6
+    damage_die: 10
+    damage_type: fire
+    save_ability: DEX
+    save_dc: 12

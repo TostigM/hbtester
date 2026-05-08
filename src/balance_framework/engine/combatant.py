@@ -78,6 +78,10 @@ class CombatantState:
     bonus_damage_dice: list[tuple[int, int]] = field(default_factory=list)   # once-per-turn bonus (e.g. Hunter's Prey, Divine Fury)
     bonus_damage_flat: int = 0   # flat bonus added to spell damage rolls (e.g. Elemental Affinity)
 
+    # Monster special attacks
+    breath_weapon_config: dict | None = None   # None if no breath weapon
+    melee_attack_bonus: int | None = None      # overrides STR-based calc if set
+
     # Status flags
     is_alive: bool = True
     is_stable: bool = False  # True = unconscious but no longer rolling saves
@@ -157,6 +161,18 @@ class CombatantState:
         die_count = int(hints.get("damage_die_count", 1))
         die_size = int(hints.get("damage_die", 6))
 
+        breath_cfg: dict | None = hints.get("breath_weapon")
+        atk_bonus_override = hints.get("attack_bonus")
+        spell_atk = hints.get("spell_attack_bonus")
+        spell_dc = hints.get("spell_save_dc")
+
+        resources: dict[str, int] = {}
+        if profile == "monster_caster":
+            for lvl_str, count in hints.get("spell_slots", {}).items():
+                resources[f"spell_slot_{lvl_str}"] = int(count)
+        if breath_cfg is not None:
+            resources["breath_weapon"] = 1
+
         avg_hp = m.hp.get("average", 7)
 
         return cls(
@@ -176,6 +192,11 @@ class CombatantState:
             behavior_profile=profile,
             extra_attack_count=multiattack,
             primary_damage_dice=[(die_count, die_size)],
+            resources=resources,
+            spell_attack_bonus=int(spell_atk) if spell_atk is not None else None,
+            spell_save_dc=int(spell_dc) if spell_dc is not None else None,
+            breath_weapon_config=breath_cfg,
+            melee_attack_bonus=int(atk_bonus_override) if atk_bonus_override is not None else None,
         )
 
     # ------------------------------------------------------------------

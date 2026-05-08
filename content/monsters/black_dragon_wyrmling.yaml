@@ -1,0 +1,46 @@
+schema_version: "0.1"
+content_type: monster
+id: black_dragon_wyrmling
+display_name: Black Dragon Wyrmling
+source: MM_2024
+author: Wizards of the Coast
+creature_type: dragon
+size: medium
+ac: 17
+ac_source: natural armor
+hp:
+  average: 33
+  formula: 6d8+6
+speed:
+  walk: 30
+  fly: 60
+  swim: 30
+abilities:
+  STR: 15
+  DEX: 14
+  CON: 13
+  INT: 10
+  WIS: 11
+  CHA: 13
+saving_throw_proficiencies: [DEX, CON, WIS, CHA]
+challenge_rating: 2
+proficiency_bonus: 2
+senses:
+  blindsight: 10
+  darkvision: 60
+damage_immunities: [acid]
+actions:
+  - name: Bite
+    attack_bonus: 4
+    damage: "1d10+2 piercing plus 2d4 acid"
+behavior_hints:
+  profile: monster_melee
+  multiattack: 1
+  damage_die: 10
+  damage_die_count: 1
+  breath_weapon:
+    damage_die_count: 5
+    damage_die: 8
+    damage_type: acid
+    save_ability: DEX
+    save_dc: 11
