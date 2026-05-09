@@ -78,6 +78,12 @@ class CombatantState:
     bonus_damage_dice: list[tuple[int, int]] = field(default_factory=list)   # once-per-turn bonus (e.g. Hunter's Prey, Divine Fury)
     bonus_damage_flat: int = 0   # flat bonus added to spell damage rolls (e.g. Elemental Affinity)
 
+    # Subclass combat flags (set by from_character via combat_stats_from_features)
+    frenzy_bonus_attack: bool = False    # Berserker: bonus action attack while raging
+    dread_ambusher: bool = False         # Gloom Stalker: extra attack on round 1 with +2d6
+    assassinate: bool = False            # Assassin: advantage on round-1 attacks
+    war_priest_attack: bool = False      # War Domain: bonus action weapon attack
+
     # Monster special attacks
     breath_weapon_config: dict | None = None   # None if no breath weapon
     melee_attack_bonus: int | None = None      # overrides STR-based calc if set
@@ -114,6 +120,10 @@ class CombatantState:
             ability_modifiers=ability_mods,
         )
 
+        # War Priest uses = WIS mod (min 1), tracked as a resource pool
+        if combat_stats["has_war_priest"]:
+            resources["war_priest"] = max(1, ability_mods.get("WIS", 0))
+
         return cls(
             id=combatant_id,
             display_name=display_name,
@@ -133,6 +143,10 @@ class CombatantState:
             crit_threshold=combat_stats["crit_threshold"],
             bonus_damage_dice=combat_stats["bonus_damage_dice"],
             bonus_damage_flat=combat_stats["bonus_damage_flat"],
+            frenzy_bonus_attack=combat_stats["frenzy_bonus_attack"],
+            dread_ambusher=combat_stats["dread_ambusher"],
+            assassinate=combat_stats["assassinate"],
+            war_priest_attack=combat_stats["has_war_priest"],
         )
 
     @classmethod

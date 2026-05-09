@@ -3,6 +3,9 @@
 Priority order per turn:
   1. Second Wind (bonus action) when HP <= 30% and available.
   2. Attack up to extra_attack_count times against the nearest living enemy.
+     - Battle Master: spend a superiority die (1d8) on each attack.
+     - Gloom Stalker: on round 1, one extra attack with +2d6 damage (Dread Ambusher).
+     - Berserker: after attacks, bonus action weapon attack (Frenzy).
   3. Action Surge: spend it if any enemies remain after the main attack.
 """
 
@@ -39,42 +42,77 @@ def martial_selector(
             caster_id=combatant.id,
             target_id=combatant.id,
             heal_dice=[(1, 10)],
-            heal_bonus=combatant.proficiency_bonus,  # approx fighter level bonus
+            heal_bonus=combatant.proficiency_bonus,
         ))
 
-    # 2. Attack action (up to extra_attack_count attacks)
+    # 2. Attack action
     target = nearest_enemy(combatant, scenario)
     if target is None:
         return actions or None
 
-    # Use the better of STR or DEX (covers DEX-based martials like ranger/monk)
     str_mod = combatant.ability_modifiers.get("STR", 0)
     dex_mod = combatant.ability_modifiers.get("DEX", 0)
     stat_mod = max(str_mod, dex_mod)
     atk_bonus = stat_mod + combatant.proficiency_bonus
     dmg_bonus = stat_mod
 
-    # Once-per-turn bonus damage (e.g. Hunter's Prey, Divine Fury)
+    # Once-per-turn bonus damage (Hunter's Prey, Divine Fury, etc.)
     bonus_dice_remaining = list(combatant.bonus_damage_dice)
 
-    for _ in range(combatant.extra_attack_count):
-        # Re-check target is still alive between attacks
+    # Dread Ambusher: one extra attack with +2d6 on round 1
+    extra_attacks = combatant.extra_attack_count
+    dread_active = combatant.dread_ambusher and scenario.round_number == 1
+
+    for i in range(extra_attacks + (1 if dread_active else 0)):
         if not target.is_alive:
             target = nearest_enemy(combatant, scenario)
             if target is None:
                 break
-        extra = bonus_dice_remaining
-        bonus_dice_remaining = []  # only first attack gets the bonus
+
+        dice: list[tuple[int, int]] = [(1, 8)]
+
+        # Once-per-turn bonus dice (only on first attack)
+        if bonus_dice_remaining:
+            dice += bonus_dice_remaining
+            bonus_dice_remaining = []
+
+        # Dread Ambusher extra attack gets +2d6 and is the last in the loop
+        if dread_active and i == extra_attacks:
+            dice.append((2, 6))
+
+        # Battle Master: spend a superiority die for +1d8 per attack
+        if has_resource(combatant, "superiority_dice"):
+            spend(combatant, "superiority_dice")
+            dice.append((1, 8))
+
         actions.append(WeaponAttackAction(
             attacker_id=combatant.id,
             target_id=target.id,
             attack_bonus=atk_bonus,
-            damage_dice=[(1, 8)] + extra,  # longsword / versatile + once-per-turn bonus
+            damage_dice=dice,
             damage_type="slashing",
             damage_bonus=dmg_bonus,
         ))
 
-    # 3. Action Surge: repeat the attack action (bonus dice already spent this turn)
+    # Berserker Frenzy: bonus action attack (models rage being active)
+    if (
+        combatant.frenzy_bonus_attack
+        and combatant.bonus_actions_remaining > 0
+        and has_resource(combatant, "rage")
+    ):
+        t = target if target.is_alive else nearest_enemy(combatant, scenario)
+        if t is not None:
+            combatant.bonus_actions_remaining -= 1
+            actions.append(WeaponAttackAction(
+                attacker_id=combatant.id,
+                target_id=t.id,
+                attack_bonus=atk_bonus,
+                damage_dice=[(1, 8)],
+                damage_type="slashing",
+                damage_bonus=dmg_bonus,
+            ))
+
+    # 3. Action Surge: repeat the attack action (bonus dice already spent)
     if has_resource(combatant, "action_surge") and target is not None and target.is_alive:
         spend(combatant, "action_surge")
         for _ in range(combatant.extra_attack_count):
@@ -82,11 +120,15 @@ def martial_selector(
                 target = nearest_enemy(combatant, scenario)
                 if target is None:
                     break
+            dice = [(1, 8)]
+            if has_resource(combatant, "superiority_dice"):
+                spend(combatant, "superiority_dice")
+                dice.append((1, 8))
             actions.append(WeaponAttackAction(
                 attacker_id=combatant.id,
                 target_id=target.id,
                 attack_bonus=atk_bonus,
-                damage_dice=[(1, 8)],
+                damage_dice=dice,
                 damage_type="slashing",
                 damage_bonus=dmg_bonus,
             ))

@@ -143,6 +143,10 @@ def combat_stats_from_features(
         "crit_threshold": 20,
         "bonus_damage_dice": [],
         "bonus_damage_flat": 0,
+        "frenzy_bonus_attack": False,
+        "dread_ambusher": False,
+        "assassinate": False,
+        "has_war_priest": False,
     }
 
     feature_ids = {f.id for f in features}
@@ -152,6 +156,15 @@ def combat_stats_from_features(
     elif "improved_critical" in feature_ids:
         result["crit_threshold"] = 19
 
+    if "frenzy" in feature_ids:
+        result["frenzy_bonus_attack"] = True
+    if "dread_ambusher" in feature_ids:
+        result["dread_ambusher"] = True
+    if "assassinate" in feature_ids:
+        result["assassinate"] = True
+    if "war_priest" in feature_ids:
+        result["has_war_priest"] = True
+
     for f in features:
         if f.feature_type == "passive_roll_modifier" and f.body.get("modifier_type") == "bonus_damage":
             die_count = f.body.get("die_count")
@@ -159,9 +172,10 @@ def combat_stats_from_features(
             if die_count is not None and die_size is not None:
                 result["bonus_damage_dice"].append((int(die_count), int(die_size)))
             else:
-                cha_mod = ability_modifiers.get("CHA", 0)
-                if cha_mod > 0:
-                    result["bonus_damage_flat"] += cha_mod
+                stat = f.body.get("stat", "CHA")
+                mod = ability_modifiers.get(stat, 0)
+                if mod > 0:
+                    result["bonus_damage_flat"] += mod
 
     return result
 

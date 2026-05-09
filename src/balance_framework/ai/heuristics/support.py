@@ -1,13 +1,15 @@
 """Support and Rogue heuristics.
 
-support_selector (Bard, Druid) priority:
+support_selector (Bard, Druid, Cleric) priority:
   1. Heal an unconscious ally (L1 slot).
   2. Heal any ally below 30% HP (L1 slot).
   3. Cast a leveled offensive spell (highest available slot).
   4. Cantrip attack using spell_attack_bonus.
+  War Domain: after any offensive action, fire War Priest bonus attack.
 
 rogue_selector (Rogue) priority:
   1. Attack nearest enemy with Sneak Attack damage.
+  Assassin: advantage on all attacks in round 1 (Assassinate).
 """
 
 from __future__ import annotations
@@ -29,7 +31,7 @@ def support_selector(
     combatant: "CombatantState",
     scenario: "ScenarioState",
 ) -> "list[Action] | None":
-    """Action selector for support casters (bard, druid)."""
+    """Action selector for support casters (bard, druid, cleric)."""
     cast_mod = (combatant.spell_attack_bonus or 0) - combatant.proficiency_bonus
 
     # 1. Revive an unconscious ally
@@ -68,7 +70,7 @@ def support_selector(
         if has_resource(combatant, pool):
             spend(combatant, pool)
             dice = [(8, 6)] if slot_level >= 3 else [(slot_level + 1, 10)]
-            return [WeaponAttackAction(
+            main = WeaponAttackAction(
                 attacker_id=combatant.id,
                 target_id=target.id,
                 attack_bonus=spell_atk,
@@ -76,11 +78,12 @@ def support_selector(
                 damage_type="fire",
                 damage_bonus=spell_dmg_bonus,
                 is_ranged=True,
-            )]
+            )
+            return [main] + _war_priest_bonus(combatant, target)
 
     # 4. Cantrip
     count, sides = _cantrip_count_sides(combatant.proficiency_bonus)
-    return [WeaponAttackAction(
+    main = WeaponAttackAction(
         attacker_id=combatant.id,
         target_id=target.id,
         attack_bonus=spell_atk,
@@ -88,6 +91,32 @@ def support_selector(
         damage_type="fire",
         damage_bonus=spell_dmg_bonus,
         is_ranged=True,
+    )
+    return [main] + _war_priest_bonus(combatant, target)
+
+
+def _war_priest_bonus(
+    combatant: "CombatantState",
+    target: "CombatantState",
+) -> "list[Action]":
+    """Return a bonus action weapon attack if War Priest is available."""
+    if (
+        not combatant.war_priest_attack
+        or combatant.bonus_actions_remaining <= 0
+        or not has_resource(combatant, "war_priest")
+        or not target.is_alive
+    ):
+        return []
+    spend(combatant, "war_priest")
+    combatant.bonus_actions_remaining -= 1
+    str_mod = combatant.ability_modifiers.get("STR", 0)
+    return [WeaponAttackAction(
+        attacker_id=combatant.id,
+        target_id=target.id,
+        attack_bonus=str_mod + combatant.proficiency_bonus,
+        damage_dice=[(1, 8)],
+        damage_type="slashing",
+        damage_bonus=str_mod,
     )]
 
 
@@ -132,11 +161,13 @@ def rogue_selector(
     # Base weapon damage: short sword / rapier (1d6 finesse)
     damage_dice: list[tuple[int, int]] = [(1, 6)]
 
-    # Sneak attack dice (the rogue gets these once per turn when conditions met)
-    # In the abstract arena an ally is always adjacent, so sneak attack fires.
+    # Sneak attack (fires every turn — ally always adjacent in the abstract arena)
     sneak_dice = combatant.sneak_attack_dice
     if sneak_dice > 0:
         damage_dice.append((sneak_dice, 6))
+
+    # Assassinate: advantage on all attacks in round 1 (before enemies have acted)
+    advantage = combatant.assassinate and scenario.round_number == 1
 
     return [WeaponAttackAction(
         attacker_id=combatant.id,
@@ -145,4 +176,5 @@ def rogue_selector(
         damage_dice=damage_dice,
         damage_type="piercing",
         damage_bonus=dex_mod,
+        advantage=advantage,
     )]
