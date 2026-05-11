@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: hbtester-api
+    runtime: python
+    buildCommand: pip install -r api/requirements.txt
+    startCommand: gunicorn api.app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
+    envVars:
+      - key: PYTHONPATH
+        value: src
+      - key: CONTENT_DIR
+        value: content
+      - key: BASELINES_DIR
+        value: baselines/v1.3
+      - key: MAX_RUNS
+        value: "100"

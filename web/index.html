@@ -222,6 +222,59 @@
     footer a:hover { color: var(--gold); }
 
     [hidden] { display: none !important; }
+
+    /* ── Homebrew Test Panel ────────────────────────────────────────────── */
+    .hb-panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; margin-top: 2rem; overflow: hidden;
+    }
+    .hb-hdr {
+      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+    .hb-title { font-weight: 700; font-size: 1rem; color: var(--gold); }
+    .hb-sub   { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .hb-body  { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .hb-textarea {
+      width: 100%; height: 220px; resize: vertical;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text);
+      font-family: 'Courier New', monospace; font-size: 0.82rem; padding: 0.75rem;
+    }
+    .hb-textarea:focus { outline: none; border-color: var(--gold-dim); }
+    .hb-controls { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .hb-controls label { font-size: 0.85rem; color: var(--muted); }
+    .hb-num {
+      width: 64px; padding: 0.3rem 0.5rem; margin-left: 0.4rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text); font-size: 0.9rem;
+    }
+    .hb-run-btn {
+      padding: 0.5rem 1.5rem; background: var(--gold-dim);
+      border: none; border-radius: 6px; color: #111;
+      font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: background 0.15s;
+    }
+    .hb-run-btn:hover:not(:disabled) { background: var(--gold); }
+    .hb-run-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .hb-status {
+      padding: 0.7rem 1rem; border-radius: 6px; font-size: 0.875rem;
+    }
+    .hb-status.loading { background: var(--surface2); color: var(--muted); }
+    .hb-status.error   { background: #3c1515; color: #f08080; border: 1px solid #7a2020; }
+    .hb-summary { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .hb-sum-card {
+      background: var(--surface2); border-radius: 6px; padding: 0.6rem 1rem; min-width: 130px;
+    }
+    .hb-sum-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .hb-sum-val   { font-size: 1.15rem; font-weight: 700; margin-top: 0.1rem; }
+    .hb-enc-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.6rem; margin-top: 0.5rem;
+    }
+    .hb-enc-card { background: var(--surface2); border-radius: 6px; padding: 0.65rem 0.9rem; }
+    .hb-enc-name { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.3rem; }
+    .hb-enc-wr   { font-size: 1.2rem; font-weight: 700; }
+    .hb-enc-rnd  { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
   </style>
 </head>
 <body>
@@ -292,6 +345,25 @@
           </div>
         </div>
         <div id="stats-row" class="stats-row"></div>
+      </div>
+    </div>
+
+    <!-- ── Homebrew Test Panel ─────────────────────────────────────────── -->
+    <div class="hb-panel">
+      <div class="hb-hdr">
+        <div class="hb-title">⚗ Test Homebrew Subclass</div>
+        <div class="hb-sub">Paste your subclass YAML and run a live simulation against all 8 encounters.</div>
+      </div>
+      <div class="hb-body">
+        <textarea id="hb-yaml" class="hb-textarea"
+          placeholder="schema_version: &quot;0.1&quot;&#10;content_type: subclass&#10;id: my_fighter_subclass&#10;display_name: My Fighter Subclass&#10;parent_class: fighter&#10;source: Homebrew&#10;author: You&#10;features: []&#10;resource_pools: []"></textarea>
+        <div class="hb-controls">
+          <label>Runs <input type="number" id="hb-runs"  value="50" min="10" max="100" class="hb-num"></label>
+          <label>Level <input type="number" id="hb-level" value="5"  min="1"  max="10"  class="hb-num"></label>
+          <button id="hb-run-btn" class="hb-run-btn">Run Simulation</button>
+        </div>
+        <div id="hb-status"  class="hb-status" hidden></div>
+        <div id="hb-results" hidden></div>
       </div>
     </div>
   </div>
@@ -597,6 +669,86 @@ function closeDetail() {
   if (wrChart)  { wrChart.destroy();  wrChart  = null; }
   if (dmgChart) { dmgChart.destroy(); dmgChart = null; }
 }
+
+// ── Homebrew Test Panel ─────────────────────────────────────────────────────
+// Override HB_API_BASE in a <script> before this file to point at a local dev server.
+const API_BASE = window.HB_API_BASE || 'https://hbtester-api.onrender.com';
+
+function _hbStatus(type, msg) {
+  const el = document.getElementById('hb-status');
+  el.className = `hb-status ${type}`;
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function _hbShowResults(d) {
+  const encs = Object.keys(d.encounters);
+  document.getElementById('hb-results').innerHTML = `
+    <div class="hb-summary">
+      <div class="hb-sum-card">
+        <div class="hb-sum-label">Avg Win Rate</div>
+        <div class="hb-sum-val" style="color:${wrColor(d.aggregate.avg_win_rate)}">
+          ${(d.aggregate.avg_win_rate * 100).toFixed(1)}%
+        </div>
+      </div>
+      <div class="hb-sum-card">
+        <div class="hb-sum-label">Worst Encounter</div>
+        <div class="hb-sum-val" style="color:${wrColor(d.aggregate.min_win_rate)}">
+          ${(d.aggregate.min_win_rate * 100).toFixed(1)}%
+        </div>
+      </div>
+      <div class="hb-sum-card">
+        <div class="hb-sum-label">Avg Rounds</div>
+        <div class="hb-sum-val">${d.aggregate.avg_rounds.toFixed(2)}</div>
+      </div>
+      <div class="hb-sum-card">
+        <div class="hb-sum-label">Class / Subclass</div>
+        <div class="hb-sum-val" style="font-size:0.88rem">${fmt(d.class_id)} / ${fmt(d.subclass_id)}</div>
+      </div>
+    </div>
+    <div class="hb-enc-grid">
+      ${encs.map(enc => {
+        const e = d.encounters[enc];
+        return `<div class="hb-enc-card">
+          <div class="hb-enc-name">${ENC_LABEL[enc] || fmt(enc)}</div>
+          <div class="hb-enc-wr" style="color:${wrColor(e.win_rate)}">${(e.win_rate*100).toFixed(0)}%</div>
+          <div class="hb-enc-rnd">${e.avg_rounds.toFixed(1)} rounds avg</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  document.getElementById('hb-results').hidden = false;
+}
+
+async function runHomebrew() {
+  const btn   = document.getElementById('hb-run-btn');
+  const yamlTxt = document.getElementById('hb-yaml').value.trim();
+  const runs  = parseInt(document.getElementById('hb-runs').value)  || 50;
+  const level = parseInt(document.getElementById('hb-level').value) || 5;
+
+  if (!yamlTxt) { _hbStatus('error', 'Paste a subclass YAML first.'); return; }
+
+  btn.disabled = true;
+  document.getElementById('hb-results').hidden = true;
+  _hbStatus('loading', 'Simulating… this can take 10–30 s on a cold server start.');
+
+  try {
+    const resp = await fetch(`${API_BASE}/api/simulate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ yaml_content: yamlTxt, runs, level }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { _hbStatus('error', data.error || `Server error ${resp.status}`); return; }
+    document.getElementById('hb-status').hidden = true;
+    _hbShowResults(data);
+  } catch (e) {
+    _hbStatus('error', `Network error: ${e.message}. Check that the API is deployed and CORS is enabled.`);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('hb-run-btn').addEventListener('click', runHomebrew);
 
 // ── Go ─────────────────────────────────────────────────────────────────────
 init();
