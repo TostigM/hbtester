@@ -45,6 +45,14 @@ def martial_selector(
             heal_bonus=combatant.proficiency_bonus,
         ))
 
+    # Sacred Weapon (Devotion) / Vow of Enmity (Vengeance): bonus action CD buff
+    # Activate on first turn; bonus persists the whole combat via cd_offensive_active.
+    if not combatant.cd_offensive_active and combatant.bonus_actions_remaining > 0:
+        if (combatant.sacred_weapon or combatant.vow_of_enmity) and has_resource(combatant, "channel_divinity"):
+            spend(combatant, "channel_divinity")
+            combatant.cd_offensive_active = True
+            combatant.bonus_actions_remaining -= 1
+
     # 2. Attack action
     target = nearest_enemy(combatant, scenario)
     if target is None:
@@ -55,6 +63,13 @@ def martial_selector(
     stat_mod = max(str_mod, dex_mod)
     atk_bonus = stat_mod + combatant.proficiency_bonus
     dmg_bonus = stat_mod
+
+    # Sacred Weapon: +CHA mod to attack rolls while buff is active
+    if combatant.sacred_weapon and combatant.cd_offensive_active:
+        atk_bonus += max(0, combatant.ability_modifiers.get("CHA", 0))
+
+    # Vow of Enmity: advantage on all attacks while buff is active
+    vow_advantage = combatant.vow_of_enmity and combatant.cd_offensive_active
 
     # Once-per-turn bonus damage (Hunter's Prey, Divine Fury, etc.)
     bonus_dice_remaining = list(combatant.bonus_damage_dice)
@@ -92,6 +107,7 @@ def martial_selector(
             damage_dice=dice,
             damage_type="slashing",
             damage_bonus=dmg_bonus,
+            advantage=vow_advantage,
         ))
 
     # Berserker Frenzy: bonus action attack (models rage being active)
@@ -131,6 +147,7 @@ def martial_selector(
                 damage_dice=dice,
                 damage_type="slashing",
                 damage_bonus=dmg_bonus,
+                advantage=vow_advantage,
             ))
 
     return actions or None

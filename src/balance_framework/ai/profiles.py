@@ -147,6 +147,9 @@ def combat_stats_from_features(
         "dread_ambusher": False,
         "assassinate": False,
         "has_war_priest": False,
+        "sacred_weapon": False,
+        "vow_of_enmity": False,
+        "arcane_ward_hp": 0,
     }
 
     feature_ids = {f.id for f in features}
@@ -164,6 +167,13 @@ def combat_stats_from_features(
         result["assassinate"] = True
     if "war_priest" in feature_ids:
         result["has_war_priest"] = True
+    if "sacred_weapon" in feature_ids:
+        result["sacred_weapon"] = True
+    if "vow_of_enmity" in feature_ids:
+        result["vow_of_enmity"] = True
+    if "arcane_ward" in feature_ids:
+        int_mod = ability_modifiers.get("INT", 0)
+        result["arcane_ward_hp"] = 2 * level + int_mod
 
     for f in features:
         if f.feature_type == "passive_roll_modifier" and f.body.get("modifier_type") == "bonus_damage":

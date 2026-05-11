@@ -83,6 +83,9 @@ class CombatantState:
     dread_ambusher: bool = False         # Gloom Stalker: extra attack on round 1 with +2d6
     assassinate: bool = False            # Assassin: advantage on round-1 attacks
     war_priest_attack: bool = False      # War Domain: bonus action weapon attack
+    sacred_weapon: bool = False          # Devotion Paladin: spend CD → +CHA to attacks
+    vow_of_enmity: bool = False          # Vengeance Paladin: spend CD → advantage on attacks
+    cd_offensive_active: bool = False    # Tracks whether CD offensive buff is running
 
     # Monster special attacks
     breath_weapon_config: dict | None = None   # None if no breath weapon
@@ -137,9 +140,10 @@ class CombatantState:
             spell_attack_bonus=c.spell_attack_bonus,
             spell_save_dc=c.spell_save_dc,
             sneak_attack_dice=c.sneak_attack_dice,
-            extra_attack_count=max(1, c.extra_attack_count + 1),  # feature count=1 → 2 attacks total
+            extra_attack_count=max(1, c.extra_attack_count + 1),
             behavior_profile=behavior_profile,
             resources=resources,
+            temp_hp=combat_stats["arcane_ward_hp"],
             crit_threshold=combat_stats["crit_threshold"],
             bonus_damage_dice=combat_stats["bonus_damage_dice"],
             bonus_damage_flat=combat_stats["bonus_damage_flat"],
@@ -147,6 +151,8 @@ class CombatantState:
             dread_ambusher=combat_stats["dread_ambusher"],
             assassinate=combat_stats["assassinate"],
             war_priest_attack=combat_stats["has_war_priest"],
+            sacred_weapon=combat_stats["sacred_weapon"],
+            vow_of_enmity=combat_stats["vow_of_enmity"],
         )
 
     @classmethod
