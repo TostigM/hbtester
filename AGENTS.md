@@ -16,13 +16,13 @@ Read this document in full at the start of every session. Treat it as authoritat
 
 **Primary users:**
 
-1. The project owner (referred to as "the user" or "My Lord" in existing documentation) — a D&D DM designing homebrew content for home games (notably the "Ferrystones family game" and "Tides and Time" campaigns)
+1. The project owner (referred to as "the user" in documentation) — a D&D DM designing homebrew content for home games (notably the "Ferrystones family game" and "Tides and Time" campaigns)
 2. Other DMs wanting to validate homebrew balance (Phase 4 product audience)
 3. Content creators publishing homebrew who want baseline comparisons (Phase 4)
 
-**Target language:** Python (3.11+)
+**Target language:** Python (3.11+). Use `C:\Users\tosti\AppData\Local\Programs\Python\Python312\python.exe` on this machine — not `python` or `python3`, which may resolve to wrong installations.
 
-**Target deployment:** Open-source Python library with CLI. Later phases include a hosted web application.
+**Target deployment:** Open-source Python library with CLI. Flask REST API for web use. Static HTML dashboard hosted on Bluehost; API deployed on Render.com free tier.
 
 ---
 
@@ -46,7 +46,7 @@ You are a coding agent. Your job is to build, maintain, and extend the codebase 
 
 - **Introducing new architectural patterns.** If a task seems to require a pattern not yet in the codebase (new library, new abstraction layer, new schema type), flag it first.
 - **Modifying schemas.** The schemas are contracts between content authors and the engine. Changes affect every content file. Never change a schema silently.
-- **Adding dependencies.** New packages in `pyproject.toml` affect the environment. Propose first.
+- **Adding dependencies.** New packages in `pyproject.toml` or `api/requirements.txt` affect the environment. Propose first.
 - **Deleting or heavily restructuring existing code.** Unless the user asked for it, do not delete working code.
 - **Skipping tests to ship faster.** If tests are failing or missing, that is a signal, not an obstacle.
 - **Changing the `main` branch directly.** Always use feature branches per `GIT_WORKFLOW.md`.
@@ -56,7 +56,7 @@ You are a coding agent. Your job is to build, maintain, and extend the codebase 
 - **Do not invent mechanics.** The framework implements D&D 5.5e rules. If a rule is unclear, say so and ask. Do not guess.
 - **Do not fabricate content.** Subclass features come from the PHB. Monsters come from the Monster Manual. Never make up numbers to fill gaps.
 - **Do not bypass validation.** If content does not pass schema validation, do not work around it; fix the content or the schema, with the user's knowledge.
-- **Do not run simulations or claim results without an actual engine.** Until the engine is built, all "results" are design estimates. Phase 1 produced zero simulations.
+- **Do not claim results without running the engine.** Report actual run outputs, not estimates.
 - **Do not change the `main` branch history.** Rebase feature branches freely; never rewrite `main`.
 - **Do not commit secrets, API keys, or personal information.** There should be none in this project anyway.
 
@@ -64,131 +64,113 @@ You are a coding agent. Your job is to build, maintain, and extend the codebase 
 
 ## 3. Current Phase
 
-**Phase 1 (Design): Complete.** All design documentation, schemas, character templates, architecture specifications, authoring guides, and handoff documents are finalized.
+**Phase 1 (Design): Complete.**
 
-**Phase 2 (Implementation): Starting now.** You are being engaged to build the Python library, CLI, and generate the initial baseline.
+**Phase 2 (Implementation M0–M10): Complete.** All seven content types validate, standard party builds at all levels, engine runs, 45 subclasses baselined at L5, CLI functional.
 
-**Phase 3 (Balance homebrew): Future.** Testing user's homebrew content, starting with the Legion Warlock subclass. Blocked on Phase 2.
+**Phase 3 (Encounter depth + feature simulation): In progress.** M11–M13 complete. Encounter pool expanded to 8 scenarios; key subclass features simulate meaningfully; Flask API and homebrew test panel built.
 
-**Phase 4 (Productize as web app): Future.** Optional monetization path. Blocked on Phase 3.
+**Phase 4 (Productize as web app): Underway** via M13 (API + static dashboard).
 
-### Your current assignment
+### Phase 3 milestones completed
 
-Execute Phase 2 as described in `PHASE_2_PLAN.md`. This is engine-first development: build the complete engine shell with stubs, then fill in mechanics incrementally.
+| Milestone | Description | Commit |
+|---|---|---|
+| M11 | Encounter variety expansion — breath weapons, casters, undead, dragons | c03445c |
+| M12 | Subclass feature simulation — Battle Master, Berserker, Gloom Stalker, Assassin | 49bab60 |
+| M12b | Paladin CD buffs (Sacred Weapon, Vow of Enmity) + Abjurer Arcane Ward | 339b9ea |
+| M13 | Flask REST API + homebrew test panel in static dashboard | 5f162ad |
 
-The sequence of milestones is M0 through M10. Start with M0 (repository setup) unless the user directs otherwise.
+### Immediate next step
+
+Deploy to Render.com (user action required — see Section 17). After deploy, update `const API_BASE` in `web/index.html` with the live URL.
 
 ---
 
 ## 4. Repository Layout
 
-The current folder structure (as delivered by the user):
-
 ```
 <project root>/
-├── AGENTS.md                         ← This file
-├── architecture_spec_v0_1.md         ← Master architecture document
-│
-├── class schemas/                    ← Content schema definitions
-│   ├── background_schema_v0_1.md
-│   ├── class_schema_v0_1.md
-│   ├── feat_and_epic_boon_schema_v0_1.md
-│   ├── magic_item_schema_v0_1.md
-│   ├── monster_schema_v0_1.md
-│   ├── species_schema_v0_1.md
-│   ├── spell_schema_v0_1.md
-│   └── subclass_schema_v0_1.md
-│
-├── class templates/                  ← Character sheets for supplementary classes
-│   ├── 00_Supplementary_Templates_Index.md
-│   ├── 05_Thaddeus_Alchemist_Artificer.md
-│   ├── 06_Brunhilda_WildHeart_Barbarian.md
-│   ├── 07_Caspian_Valor_Bard.md
-│   ├── 08_Astra_Stars_Druid.md
-│   ├── 09_Kenji_OpenHand_Monk.md
-│   ├── 10_Aldric_Devotion_Paladin.md
-│   ├── 11_Finnian_Hunter_Ranger.md
-│   ├── 12_Vesper_Draconic_Sorcerer.md
-│   └── 13_Morgaine_Fiend_Warlock.md
-│
-├── framework/                        ← Handoff package (the Phase 2 plan)
-│   ├── README.md
-│   ├── PHASE_2_PLAN.md
-│   ├── PROMPT_LIBRARY.md
-│   ├── MILESTONE_CHECKLISTS.md
-│   ├── GIT_WORKFLOW.md
-│   └── PROJECT_STRUCTURE.md
-│
-├── std party files/                  ← Standard test party character sheets
-│   ├── 00_Party_Summary_v0_2.md
-│   ├── 01_Garrick_BattleMaster_Fighter_v0_2.md
-│   ├── 02_Elowyn_Life_Cleric_v0_2.md
-│   ├── 03_Varian_Evocation_Wizard_v0_2.md
-│   └── 04_Mira_Thief_Rogue_v0_2.md
-│
-└── subclass authoring guide/         ← Guide for authoring subclass YAML files
-    ├── subclass_authoring_guide_v0_1.md
-    └── champion_fighter_example.yaml
-```
-
-### Recommended target structure
-
-As you execute Phase 2, reorganize files into the structure specified in `framework/PROJECT_STRUCTURE.md`. This target structure is:
-
-```
-balance-framework/
-├── README.md                    ← from framework/README.md
 ├── AGENTS.md                    ← This file
-├── LICENSE
-├── pyproject.toml               ← (to be created in M0)
+├── Procfile                     ← gunicorn start command for Render/Heroku
+├── render.yaml                  ← Render.com deployment config
+├── pyproject.toml
 ├── .gitignore
-├── .pre-commit-config.yaml
-├── .github/workflows/ci.yml
 │
-├── docs/
-│   ├── architecture_spec.md     ← moved from root
-│   ├── party_sheets/            ← moved from "std party files/" and "class templates/"
-│   ├── schemas/                 ← moved from "class schemas/"
-│   ├── authoring_guides/        ← moved from "subclass authoring guide/"
-│   └── handoff/                 ← moved from "framework/"
+├── api/                         ← Flask REST API (M13)
+│   ├── app.py                   ← Routes, rate limiter, registry injection, simulation helper
+│   └── requirements.txt         ← flask, flask-cors, gunicorn, pydantic, pyyaml, numpy
 │
-├── src/balance_framework/       ← Python source code (to be created in M0)
-├── content/                     ← YAML content files (to be authored throughout Phase 2)
-├── tests/                       ← Test suite (to be built throughout Phase 2)
-├── baselines/                   ← Generated baseline docs (Phase 2 output)
-└── scripts/                     ← Utility scripts
+├── src/balance_framework/
+│   ├── schema/                  ← Pydantic models for all 7 content types
+│   ├── registry/                ← Content loading, ContentRegistry, CharacterBuild
+│   ├── engine/
+│   │   ├── combat/              ← CombatEngine, actions.py
+│   │   ├── noncombat/           ← Non-combat stubs
+│   │   ├── combatant.py         ← CombatantState (all simulation mutable fields)
+│   │   ├── dice.py              ← Seeded dice roller
+│   │   └── scenario.py          ← CombatScenario, round_number
+│   ├── ai/
+│   │   ├── profiles.py          ← AI profile constants; combat_stats_from_features()
+│   │   ├── decision.py          ← Dispatcher: profile → selector function
+│   │   ├── monster.py           ← monster_melee_selector, monster_caster_selector
+│   │   ├── scorer.py            ← Target-scoring heuristics
+│   │   └── heuristics/
+│   │       ├── martial.py       ← Fighter/Barbarian/Ranger/Rogue action selectors
+│   │       ├── support.py       ← Cleric/Paladin/Bard selectors; _war_priest_bonus
+│   │       ├── caster.py        ← Wizard/Sorcerer/Warlock selectors
+│   │       └── healer.py        ← Healing heuristics
+│   ├── harnesses/               ← Per-content-type test harnesses (subclass, monster, …)
+│   ├── cli/                     ← Click CLI; _CLASS_DEFAULTS dict; test_commands
+│   ├── runner/                  ← SimulationRunner, SuiteResult
+│   └── reporting/               ← Baseline generation, metadata.json writer
+│
+├── content/
+│   ├── classes/                 ← 12 class YAMLs (all PHB 2024 classes)
+│   ├── subclasses/              ← 45 subclass YAMLs
+│   ├── monsters/                ← 16 monster YAMLs (see Section 16)
+│   ├── spells/
+│   ├── feats/
+│   ├── magic_items/
+│   ├── species/
+│   └── backgrounds/
+│
+├── baselines/
+│   ├── v0.9/                    ← Early partial baseline
+│   ├── v1.0/                    ← 45 subclasses, single encounter
+│   ├── v1.1/                    ← 8 encounters (M11)
+│   ├── v1.2/                    ← Feature simulation depth (M12)
+│   └── v1.3/                    ← Paladin CD + Abjurer ward (M12b) — CURRENT
+│
+├── web/
+│   ├── index.html               ← Static balance dashboard + homebrew test panel
+│   └── data/                    ← Bundled baseline data for offline/local viewing
+│
+├── tests/                       ← pytest suite
+├── scripts/                     ← CLI utilities (validate_content, gen_baseline, …)
+└── docs/                        ← Architecture spec, schemas, authoring guides
 ```
-
-**The reorganization should happen as one of the first tasks in M0.** Preserve all existing files; just move them to their target locations. Do not delete anything. Note: the files on disk use underscores (e.g., `subclass_schema_v0_1.md`) rather than periods (`v0.1`), so reference them that way.
 
 ---
 
 ## 5. Document Map
-
-Every document has a specific purpose. Read the right one at the right time.
 
 ### Read before starting any work
 
 - **`AGENTS.md`** (this file) — orientation for every session
 - **`framework/README.md`** — top-level project overview
 
-### Read before starting Phase 2 M0
-
-- **`framework/PHASE_2_PLAN.md`** — the week-by-week implementation plan
-- **`framework/PROJECT_STRUCTURE.md`** — target repository layout
-- **`framework/GIT_WORKFLOW.md`** — branching, commits, PRs
-
 ### Read when working on engine or content code
 
-- **`architecture_spec_v0_1.md`** — master architecture document, 18 sections covering every design decision. Reference this constantly.
-- **`framework/MILESTONE_CHECKLISTS.md`** — verification criteria for the current milestone
-- **`framework/PROMPT_LIBRARY.md`** — starter prompts and patterns for common tasks
+- **`docs/architecture_spec_v0_1.md`** (or `architecture_spec_v0_1.md` at root) — master architecture document; 18 sections covering every design decision
+- **`framework/MILESTONE_CHECKLISTS.md`** — verification criteria per milestone
+- **`framework/GIT_WORKFLOW.md`** — branching, commits, PRs
 
 ### Read when authoring content
 
-- The relevant schema file in `class schemas/` (note: despite the folder name, these are all content schemas, not just classes)
+- **`docs/schemas/`** or **`class schemas/`** — schema definitions for all 7 content types
 - **`subclass authoring guide/subclass_authoring_guide_v0_1.md`** — full authoring methodology
-- **`subclass authoring guide/champion_fighter_example.yaml`** — canonical format reference
+- **`subclass authoring guide/champion_fighter_example.yaml`** — canonical YAML format reference
 
 ### Read when implementing a specific content type
 
@@ -196,23 +178,21 @@ Every document has a specific purpose. Read the right one at the right time.
 |---|---|
 | Classes | `class schemas/class_schema_v0_1.md` |
 | Subclasses | `class schemas/subclass_schema_v0_1.md` |
+| Monsters | `class schemas/monster_schema_v0_1.md` |
 | Species | `class schemas/species_schema_v0_1.md` |
 | Backgrounds | `class schemas/background_schema_v0_1.md` |
 | Spells | `class schemas/spell_schema_v0_1.md` |
 | Magic items | `class schemas/magic_item_schema_v0_1.md` |
-| Monsters | `class schemas/monster_schema_v0_1.md` |
 | Feats and Epic Boons | `class schemas/feat_and_epic_boon_schema_v0_1.md` |
 
 ### Read when building a character
 
-The standard party and supplementary templates define concrete characters that the engine must be able to build. Use them as test cases:
-
 - `std party files/00_Party_Summary_v0_2.md` — overview of the 4-person test party
-- `std party files/01_Garrick_BattleMaster_Fighter_v0_2.md` — Fighter (Battle Master) at all 20 levels
+- `std party files/01_Garrick_BattleMaster_Fighter_v0_2.md` — Fighter (Battle Master)
 - `std party files/02_Elowyn_Life_Cleric_v0_2.md` — Cleric (Life Domain)
 - `std party files/03_Varian_Evocation_Wizard_v0_2.md` — Wizard (Evocation)
 - `std party files/04_Mira_Thief_Rogue_v0_2.md` — Rogue (Thief)
-- `class templates/` — nine supplementary characters covering all remaining classes (for subclass testing when the test subclass is not in the main party)
+- `class templates/` — nine supplementary characters covering all remaining classes
 
 ---
 
@@ -220,35 +200,46 @@ The standard party and supplementary templates define concrete characters that t
 
 ### The standard party
 
-Four characters (Garrick, Elowyn, Varian, Mira) are the fixed control group. They are Human, use standard array, and are fully specified at every level 1-20. Every simulation uses this party unless overridden.
+Four characters (Garrick, Elowyn, Varian, Mira) are the fixed control group. They use standard array and are fully specified. Every simulation uses this party unless overridden.
 
-When testing a subclass not covered by the main party (e.g., a homebrew Paladin), the engine swaps the subclass into a supplementary class template (Aldric the Paladin) and uses that character as the fifth party member for delta measurement.
+When testing a subclass not in the main party (e.g., a homebrew Paladin), the engine builds a character using `_CLASS_DEFAULTS` from `cli/test_commands.py` and sets the test subclass on it. The standard party is not extended — class defaults determine stats.
 
 ### Test methodology
 
-- **1000 runs** per scenario configuration
-- **~12-15 million simulations** for full baseline generation
-- **Categorized tracking** (not filtering): participation tier (fully/partial/none) + impact tier (high/moderate/low-mechanical/low-random)
-- **Per-class distribution bands** (not global)
-- **Pillar-by-pillar evaluation**: combat, solo endurance, social, exploration, investigation
+- **Development runs:** 50–100 per scenario (fast iteration)
+- **Baseline generation:** 200 runs per scenario (currently used for v1.x baselines)
+- **Full production baseline:** 1000 runs (Phase 4 target)
+- **Current standard encounters:** 8 scenarios across `STANDARD_ENCOUNTERS` in `harnesses/base.py`
+- **Categorized tracking:** win rate, avg rounds, avg damage dealt, avg kills, survival rate per combatant
 
-Never reduce the sample size to save time without the user's approval. Statistical significance depends on run count.
+Never reduce sample size without the user's approval.
+
+### The 8 standard encounters (as of M11)
+
+| Key | Monster | Count |
+|---|---|---|
+| `goblin_band` | goblin | 2 |
+| `skeleton_pack` | skeleton | 3 |
+| `orc_pair` | orc | 2 |
+| `lone_ogre` | ogre | 1 |
+| `hell_hound_pair` | hell_hound | 2 |
+| `lone_banshee` | banshee | 1 |
+| `lone_mage` | mage | 1 |
+| `dragon_wyrmling` | black_dragon_wyrmling | 1 |
+
+If you add encounters, update both `STANDARD_ENCOUNTERS` in `harnesses/base.py` **and** the encounter filter buttons + JS constants in `web/index.html`.
 
 ### Seven content types
 
-The framework handles seven distinct content categories, each with its own schema, test harness, and baseline:
+1. **Subclasses** — primary test target
+2. **Monsters** — encounter components
+3. **Magic items** — character capability impact
+4. **Spells** — power relative to slot level
+5. **Feats** (including Epic Boons) — opportunity cost
+6. **Backgrounds** — ASI distribution and origin feat value
+7. **Species** — point-based trait scoring
 
-1. **Subclasses** — primary test target; also primary use of the supplementary templates
-2. **Monsters** — tested as encounter components
-3. **Magic items** — tested for impact on character capability
-4. **Spells** — tested for power relative to slot level
-5. **Feats** (including Epic Boons) — tested for opportunity cost
-6. **Backgrounds** — tested for ASI distribution and origin feat value
-7. **Species** — tested via point-based trait scoring
-
-### Engine layers
-
-Seven layers, strict downward dependency:
+### Engine layers (strict downward dependency)
 
 1. Schema validation
 2. Content registry
@@ -258,7 +249,7 @@ Seven layers, strict downward dependency:
 6. Test harnesses
 7. Reporting
 
-Never import upward (engine must not import from reporting). If you find a circular dependency, the architecture is wrong; flag it.
+Never import upward. Circular dependency = architectural error; flag it.
 
 ### Deterministic simulation
 
@@ -266,46 +257,213 @@ Every simulation is reproducible from its random seed. Same seed + same content 
 
 ---
 
-## 7. Execution Protocol
+## 7. AI Profiles and Subclass Feature Simulation
+
+This section documents decisions made in M11–M12b that are not obvious from the code alone.
+
+### AI profile constants (`ai/profiles.py`)
+
+| Constant | Used by |
+|---|---|
+| `MARTIAL` | Fighter, Barbarian, Ranger |
+| `CASTER` | Wizard, Sorcerer, Warlock |
+| `SUPPORT` | Cleric, Paladin, Bard, Druid |
+| `ROGUE` | Rogue |
+| `MONSTER_MELEE` | Default monster profile |
+| `MONSTER_CASTER` | Monsters with `behavior_hints.spell_slots` |
+
+### `combat_stats_from_features()` output keys
+
+This function reads a subclass's feature list and returns a dict that `CombatantState.from_character()` consumes. Keys added in M12/M12b:
+
+```
+frenzy_bonus_attack    # Berserker: bonus attack using Frenzy
+dread_ambusher         # Gloom Stalker: extra attack + damage on round 1
+assassinate            # Assassin: advantage on round 1
+has_war_priest         # War Priest: bonus attack after Attack action
+sacred_weapon          # Oath of Devotion: CHA to attack rolls via CD
+vow_of_enmity          # Oath of Ancients: advantage via CD
+arcane_ward_hp         # Abjurer: temp HP = 2*level + INT mod
+```
+
+### `CombatantState` fields added in M11–M12b
+
+All fields default to `False` / `None` / `0` so existing content is unaffected:
+
+```python
+frenzy_bonus_attack: bool = False
+dread_ambusher: bool = False
+assassinate: bool = False
+war_priest_attack: bool = False
+sacred_weapon: bool = False
+vow_of_enmity: bool = False
+cd_offensive_active: bool = False   # tracks one-time CD spend for sacred_weapon/vow
+breath_weapon_config: dict | None = None
+melee_attack_bonus: int | None = None  # override for monsters with non-STR attacks
+```
+
+### Battle Master superiority dice
+
+Tracked as a resource pool (`"superiority_dice": ResourcePool(current, max)`). In `martial.py`, each attack action call to `has_resource("superiority_dice")` + `spend()` appends `(1, 8)` to `damage_dice`. Action Surge attacks also spend superiority dice.
+
+### Berserker Frenzy
+
+After the main attack loop, if `frenzy_bonus_attack=True` and `bonus_actions_remaining > 0` and `has_resource("rage")`, a bonus `WeaponAttackAction` is appended. Frenzy does **not** spend the rage resource (rage lasts the encounter); it only checks that rage is active.
+
+### Gloom Stalker Dread Ambusher
+
+On `round_number == 1`: `extra_attack_count + 1`, and the last attack in the sequence appends `(2, 6)` to `damage_dice`. No effect on rounds 2+.
+
+### Assassin Assassinate
+
+`advantage = combatant.assassinate and scenario.round_number == 1`. No resource tracking needed — advantage is purely conditional.
+
+### Paladin Channel Divinity (Sacred Weapon / Vow of Enmity)
+
+Both use the `cd_offensive_active` flag:
+1. Before the attack loop, if `cd_offensive_active=False` and `bonus_actions_remaining > 0` and `has_resource("channel_divinity")`: spend CD, set flag, decrement bonus action.
+2. Sacred Weapon: `atk_bonus += max(0, CHA mod)` while flag is set.
+3. Vow of Enmity: all attacks use `advantage=True` while flag is set.
+
+`cd_offensive_active` resets to `False` each new encounter because `from_character()` creates a fresh `CombatantState`.
+
+### War Priest
+
+`_war_priest_bonus(combatant, target)` in `support.py` fires after any offensive action (spell or cantrip). Spends 1 `war_priest` resource, decrements bonus action, returns a `WeaponAttackAction`. War Priest pool max = `max(1, WIS mod)`, reset on long rest.
+
+### Arcane Ward (Abjurer)
+
+Set directly in `from_character()`: `state.temp_hp = combat_stats["arcane_ward_hp"]`. Value = `2 * level + INT_mod`. No runtime recharge logic — the ward absorbs hits via the standard temp HP subtraction in the damage resolver.
+
+### BreathWeaponAction
+
+`BreathWeaponAction` in `engine/combat/actions.py` hits **all living enemies**. Each makes a DEX (or specified) save vs `save_dc`; failure = full damage, success = half. Spends the `"breath_weapon"` resource (max 1). Monsters get `breath_weapon: 1` in their resource pool if `behavior_hints.breath_weapon` is set.
+
+### Monster caster profile
+
+If a monster YAML has `behavior_hints.spell_slots`, the monster gets `ai_profile: monster_caster`. `monster_caster_selector` in `ai/monster.py` delegates to `caster_selector`. The monster's spell attack bonus, spell save DC, and spell slots are read from `behavior_hints`.
+
+### Banshee / non-STR melee
+
+Set `melee_attack_bonus: int` in `behavior_hints` to override the default STR-based attack bonus. The banshee uses CHA (+4) instead of STR (-5).
+
+---
+
+## 8. Flask API (`api/app.py`)
+
+### Endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/health` | Liveness probe — returns `{"status":"ok","version":"0.1.0"}` |
+| GET | `/api/baselines` | Serves `baselines/v1.3/metadata.json` |
+| GET | `/api/subclasses/<id>` | Serves `baselines/v1.3/subclasses/<id>.json` |
+| POST | `/api/simulate` | Accepts homebrew YAML, runs simulation, returns results |
+
+### `/api/simulate` request schema
+
+```json
+{
+  "yaml_content": "<full subclass YAML as a string>",
+  "runs": 50,
+  "level": 5
+}
+```
+
+`runs` is clamped to `[1, MAX_RUNS]` (default 100). `level` is clamped to `[1, MAX_LEVEL]` (default 10).
+
+### Registry injection pattern
+
+The shared `ContentRegistry` is loaded once at startup. Simulations inject the homebrew subclass temporarily:
+
+```python
+old = registry._subclasses.get(sc_id)
+registry._subclasses[sc_id] = subclass_obj
+try:
+    # run harness
+finally:
+    if old is None: registry._subclasses.pop(sc_id, None)
+    else: registry._subclasses[sc_id] = old
+```
+
+`_sim_lock` (threading.Lock) serializes all simulations to prevent concurrent registry mutations.
+
+### Rate limiter
+
+In-memory dict of `IP → [monotonic timestamps]`. 5 requests per 60-second window. Resets on process restart (acceptable for free tier). Reads `X-Forwarded-For` header (set by Render).
+
+### Environment variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `PYTHONPATH` | — | Must be set to `src` |
+| `CONTENT_DIR` | `content` | Path to content YAML directory |
+| `BASELINES_DIR` | `baselines/v1.3` | Path to baseline JSON files |
+| `MAX_RUNS` | `100` | Max simulation runs per API request |
+| `MAX_LEVEL` | `10` | Max character level per API request |
+| `PORT` | `5000` | Port for gunicorn (set automatically by Render) |
+
+### Running locally
+
+```powershell
+$env:PYTHONPATH="src"; $env:CONTENT_DIR="content"; $env:BASELINES_DIR="baselines/v1.3"; $env:PORT="5000"
+C:\Users\tosti\AppData\Local\Programs\Python\Python312\python.exe api/app.py
+```
+
+---
+
+## 9. Static Web Dashboard (`web/index.html`)
+
+The dashboard is a single self-contained HTML file. Key constants at the top of the `<script>` block:
+
+```js
+const API_BASE = window.HB_API_BASE || 'https://hbtester-api.onrender.com';
+const ENCOUNTERS = ['goblin_band','skeleton_pack','orc_pair','lone_ogre',
+                    'hell_hound_pair','lone_banshee','lone_mage','dragon_wyrmling'];
+```
+
+**When the API is deployed**, replace the `onrender.com` URL with the actual Render service URL. `window.HB_API_BASE` can also be set in a `<script>` tag on the hosting page as an override.
+
+The "Test Homebrew Subclass" panel sends a `POST /api/simulate` request and renders aggregate summary cards + per-encounter grid. The placeholder YAML in the textarea is a valid minimal subclass skeleton.
+
+---
+
+## 10. Execution Protocol
 
 When the user assigns a task, follow this protocol.
 
 ### Step 1: Orient
 
 - Re-read AGENTS.md if you have not this session
-- Read the relevant milestone section of `PHASE_2_PLAN.md`
-- Read the relevant milestone checklist in `MILESTONE_CHECKLISTS.md`
+- Run `git status` and `git log --oneline -10`
+- Read the relevant section of `framework/PHASE_2_PLAN.md` if it exists for the task
 - Read any schema or architecture section the task touches
 
 ### Step 2: Plan
 
 Before writing code:
 
-- State what you are about to do, in 2-4 sentences
-- Identify what existing code or documentation the work touches
-- Identify any ambiguities in the specification; ask the user before proceeding
-- If the task is larger than one commit, break it into logical units
+- State what you are about to do, in 2–4 sentences
+- Identify what existing code the work touches
+- Identify any ambiguities; ask the user before proceeding
 
 ### Step 3: Implement
 
 - Follow established patterns in the codebase
 - Write tests for new or changed behavior
-- Use descriptive names; avoid single-letter variables except in mathematical contexts
-- Add type hints
+- Use descriptive names; add type hints
 - Keep functions under 100 lines and modules under 300 lines where practical
 
 ### Step 4: Verify
 
-- Run relevant tests: `pytest tests/unit/<area>` or `pytest tests/integration/<area>`
-- Run the full suite if changes are cross-cutting: `pytest`
-- Run pre-commit: `pre-commit run --all-files`
-- Check the milestone checklist: does this work tick any boxes?
+- Run relevant tests: `C:\Users\tosti\AppData\Local\Programs\Python\Python312\python.exe -m pytest tests/`
+- Check that baselines still generate if combat engine changed
+- For API changes, run the server locally and hit the endpoints manually
 
 ### Step 5: Commit
 
-- Follow commit conventions in `GIT_WORKFLOW.md` (Conventional Commits format)
-- One logical change per commit
-- If multiple logical changes occurred, split into multiple commits
+- Follow Conventional Commits format: `type(scope): subject`
+- One logical change per commit; split multi-concern changes
 - Reference the milestone in the commit body when helpful
 
 ### Step 6: Report
@@ -314,258 +472,212 @@ When the task is complete, tell the user:
 
 - What was done (in plain language)
 - What tests now pass
-- What milestone checklist items are now complete
 - Any caveats, known limitations, or follow-up work needed
 
 ---
 
-## 8. Quality Standards
+## 11. Quality Standards
 
 ### Code quality
 
-- **Type hints required.** Public functions need complete type signatures. Private helpers should have them when non-obvious.
-- **Docstrings required** for public functions and classes. Use concise descriptions; no reformatted restating of the signature.
-- **Tests required** for every non-trivial function. If you cannot write a test, the function is probably wrong.
-- **No silent exception handling.** Never `except Exception: pass`. Catch specific exceptions; log or re-raise with context.
-- **No magic numbers.** Constants get named. `WEAPON_DAMAGE_BONUS_CAP = 10` is clearer than `10`.
+- **Type hints required** on public functions.
+- **No silent exception handling.** Never `except Exception: pass`.
+- **No magic numbers.** Named constants only.
+- **No unnecessary comments.** Only comment the non-obvious WHY.
 
 ### Test quality
 
-- **Tests are deterministic.** Use fixed seeds for anything involving randomness.
-- **Tests are isolated.** No global state; no dependencies between tests; no order sensitivity.
-- **Tests are fast.** Unit tests under 1 second each. Integration tests under 30 seconds.
-- **Tests are specific.** `test_attack_hits_when_roll_meets_ac` is better than `test_attack_works`.
+- **Tests are deterministic.** Use fixed seeds for randomness.
+- **Tests are isolated.** No global state; no order sensitivity.
+- **Tests are fast.** Unit tests < 1 second each.
 
 ### Content quality
 
-- **Quote the source text** in comments above each feature in YAML files. Makes review trivially easy.
-- **Use schema-compliant field names.** Do not invent fields not in the schema.
-- **Use `scripted_feature` sparingly.** Every `scripted_feature` requires custom engine logic; use standard types first.
-- **Verify against the 2024 PHB.** Subclass feature levels changed from 2014. Do not work from memory.
+- **Quote source text** in YAML comments above each feature.
+- **Schema-compliant fields only.** Do not invent fields.
+- **`scripted_feature` sparingly.** Every use requires custom engine logic.
+- **Verify against 2024 PHB.** Do not work from memory.
 
 ### Commit quality
 
-- **Subject under 72 characters.**
-- **Body explains why, not how.** Code shows how.
-- **Conventional Commits format.** `type(scope): subject`
-- **One logical change per commit.** No "and" in commit subjects.
-
-### Documentation quality
-
-- **Update docs when code changes.** If a public API changes, the docs that reference it must change in the same PR.
-- **Examples over prose.** Short code examples are worth more than paragraphs.
-- **Link to architecture spec** when referring to design decisions; do not re-explain them inline.
+- Subject under 72 characters.
+- Body explains why, not how.
+- `type(scope): subject` format.
 
 ---
 
-## 9. Specific Guardrails
+## 12. Specific Guardrails
 
 ### On D&D rules
 
-The project targets **D&D 5.5e (2024 PHB)**, not 2014 fifth edition. Differences that have caused confusion already:
+The project targets **D&D 5.5e (2024 PHB)**, not 2014 fifth edition. Known differences:
 
-- **Ability score increases come from backgrounds**, not species (species no longer grant ASI in 2024)
-- **Human 2024** grants Origin Feat + Skillful + Resourceful, no ASI
-- **Cleric Divine Intervention at L10** now casts any 5th-level-or-lower spell (no d100 roll); Greater Divine Intervention at L20 casts Wish
-- **Life Domain** 2024 spell list differs substantially from 2014; Preserve Life only targets Bloodied creatures; Blessed Strikes is a L7 base Cleric feature (not subclass)
-- **Battle Master subclass levels:** 3, 7, 10, 15, 18 (not the 2014 timing)
-- **Thief subclass levels:** 3, 9, 13, 17 (specifically not 14)
+- **Ability score increases come from backgrounds**, not species
+- **Human 2024:** Origin Feat + Skillful + Resourceful, no ASI
+- **Cleric Divine Intervention at L10:** casts any ≤5th-level spell (no d100 roll)
+- **Life Domain 2024:** Preserve Life only targets Bloodied creatures; Blessed Strikes is base Cleric L7
+- **Battle Master subclass levels:** 3, 7, 10, 15, 18
+- **Thief subclass levels:** 3, 9, 13, 17
 - **Evoker subclass levels:** 3, 6, 10, 14
-- **2025 Monster Manual:** legendary actions are SINGLE-USE per action (not recharge); unified ability score + modifier + save table; monsters in lair get bonus legendary resistance/action uses
+- **2025 Monster Manual:** legendary actions are single-use per action (not recharge); monsters in lair get bonus uses
 
-When in doubt about a rule, search the web or ask the user rather than guessing. Do not invent mechanics.
+### On schema changes
 
-### On file paths with spaces
-
-Current folders use spaces (`class schemas/`, `std party files/`, etc.). When reorganizing to target structure (which uses underscores or no separator — `docs/schemas/`, `docs/party_sheets/`), preserve git history via `git mv` rather than delete + create.
-
-### On version suffixes
-
-Some files use `v0_1` (underscore); the architecture spec internally references `v0.1` (period). Both refer to the same version. When creating new versions, use the period format inside documents and underscore in filenames.
-
-### On simulation claims
-
-**No simulations have been run.** Phase 1 was design only. Any document or comment suggesting otherwise is in error. Never claim simulation results before the engine exists and has been validated.
-
-When you do run simulations (Phase 2 onward), always report:
-- The engine version used
-- The content version used
-- The random seed(s) used
-- The number of runs
-- The statistical confidence bounds
-
-### On the Legion Warlock
-
-The user has a homebrew Legion Warlock subclass (written for 2014 rules) that is the primary motivating use case for this framework. It needs to be converted to 2024 rules. **Do not attempt this conversion without the user's explicit direction** — it is Phase 3 work, and the user may have specific design intent that is not documented.
-
-### On breaking changes
-
-The schemas are versioned. If you must change a schema in a breaking way:
+The schemas are versioned contracts. If you must change a schema in a breaking way:
 
 1. Flag it to the user before making the change
 2. Bump the schema version (v0.1 → v0.2)
-3. Provide a migration path for any existing content files
-4. Update the architecture spec and this AGENTS.md to reflect the change
+3. Provide a migration path for existing content files
+4. Update AGENTS.md and the architecture spec
+
+### On simulation claims
+
+Simulations have been run from M5 onward. Always report the baseline version, run count, and level when citing results. Current canonical baseline: **v1.3**, 200 runs, L5.
+
+### On the Legion Warlock
+
+The user has a homebrew Legion Warlock subclass (written for 2014 rules) that is the primary motivating use case. It needs conversion to 2024 rules. **Do not attempt this without explicit direction** — it is Phase 3 work with user-specific design intent.
 
 ### On asking the user
 
-The user is knowledgeable about D&D and the design of this framework. When you ask a question:
-
-- Be specific about what you need to know
-- State the options you see
-- Recommend one, with reasoning
-- Accept that the user may choose an option you did not foresee
-
-Do not ask trivial questions (style preferences, variable names); make reasonable choices and flag them in the commit message.
-
-The user is addressed as "My Lord" / "Liege" in existing documentation. This is a style preference, not a required form of address. Natural professional tone is fine.
+- Be specific: state what you need, list the options you see, recommend one with reasoning.
+- Do not ask trivial questions (style, variable names); make reasonable choices and note them in commits.
 
 ---
 
-## 10. First-Session Checklist
+## 13. Every-Session Start Habits
 
-If this is your first session on the project, do the following in order:
+1. Check `git status` and `git log --oneline -20` to understand current state
+2. Read any AGENTS.md sections relevant to the current task
+3. Identify where the previous session left off
+4. Report your understanding of the current state and propose the next step
+5. Before working on any class's subclasses, verify class infrastructure exists: class YAML in `content/classes/`, `_CLASS_DEFAULTS` entry in `cli/test_commands.py`, `CLASS_PROFILE` mapping in `ai/profiles.py` or `ai/decision.py`
 
-1. [ ] Read this AGENTS.md in full
-2. [ ] Read `framework/README.md`
-3. [ ] Read `architecture_spec_v0_1.md` sections 1-5 (the overview and layer descriptions)
-4. [ ] Read `framework/PHASE_2_PLAN.md` sections 1-3
-5. [ ] Read `framework/MILESTONE_CHECKLISTS.md` M0 section
-6. [ ] Read `framework/GIT_WORKFLOW.md` (full)
-7. [ ] Report to the user: "I have oriented on the project. I am ready to begin Phase 2 Milestone M0 (Repository Setup). Shall I proceed?"
-
-Wait for the user's go-ahead before executing M0. Do not begin creating files until the user confirms.
+**Do not assume state from memory.** The repository is the source of truth.
 
 ---
 
-## 11. Every-Session Start Habits
+## 14. Common Pitfalls to Avoid
 
-At the start of every session (after the first), do the following:
+### Pitfall: Wrong Python executable
 
-1. Check `git status` and `git log --oneline -20` to understand the current repository state
-2. Read the current milestone section in `PHASE_2_PLAN.md` and the matching checklist in `MILESTONE_CHECKLISTS.md`
-3. Identify where the previous session left off (look at recent commits, open PRs, TODO comments)
-4. Re-read any AGENTS.md sections relevant to the current task
-5. Report your understanding of the current state and propose the next step to the user
-6. If you are about to author or test subclasses for a class you have not touched before, verify that class's infrastructure exists (class YAML in `content/classes/`, `_CLASS_DEFAULTS` entry, `CLASS_PROFILE` mapping). If any are missing, halt subclass work and add the infrastructure first per `framework/PHASE_2_PLAN.md` M10 prerequisite section.
-
-**Do not assume state from memory.** The repository is the source of truth; your memory across sessions is not.
-
----
-
-## 12. Common Pitfalls to Avoid
-
-Based on the design process that produced Phase 1, these errors are likely and should be watched for:
+On this machine, use `C:\Users\tosti\AppData\Local\Programs\Python\Python312\python.exe` explicitly. `python` and `python3` may resolve to Windows Store stubs or a different install.
 
 ### Pitfall: Using 2014 rules data from memory
 
-LLM training data includes substantial 2014 fifth edition content. When authoring content for 2024 rules, always verify against the 2024 PHB or 2025 Monster Manual. Do not trust your initial recall.
+LLM training data includes substantial 2014 content. Always verify against the 2024 PHB. Do not trust initial recall.
 
 ### Pitfall: Paraphrasing mechanics
 
-When encoding a feature from the PHB, quote the exact text in a comment, then translate mechanically. Do not summarize "in your own words" — summarization drops constraints like "once per turn" or "creatures you can see."
+Quote the exact PHB text in a YAML comment, then translate mechanically. Summarization drops constraints like "once per turn" or "creatures you can see."
 
 ### Pitfall: Skipping the schema validator
 
-It is tempting to author content directly without running validation. This creates subtle bugs that only surface later. Run `python scripts/validate_content.py` after every content change.
+Run `python scripts/validate_content.py` after every content change. Do not author content without validating.
 
 ### Pitfall: Overusing `scripted_feature`
 
-The `scripted_feature` feature type is an escape hatch for genuinely novel mechanics. Every use requires custom engine code. Before using it, check whether an existing feature type fits.
+Every `scripted_feature` requires custom engine code. Use standard feature types first.
 
-### Pitfall: Inflating test sample sizes
+### Pitfall: Inflating encounter pool without updating the dashboard
 
-1000 runs per configuration is the standard. More runs do not improve results meaningfully and slow development. Fewer runs compromise statistical significance. Do not tune this number without the user's approval.
+`STANDARD_ENCOUNTERS` in `harnesses/base.py` and the `ENCOUNTERS` / `ENC_LABEL` constants in `web/index.html` must stay in sync. The encounter filter buttons must also match.
 
-### Pitfall: Large, multi-concern PRs
+### Pitfall: Forgetting `_sim_lock` when extending the API
 
-Keep PRs focused. A PR titled "schema layer, registry, and character builder" is three PRs. Split them.
+Any code that mutates `registry._subclasses` must run inside `_sim_lock`. The lock is in `api/app.py`.
+
+### Pitfall: Assuming class infrastructure exists
+
+All 12 PHB classes have infrastructure as of M10. If you add a new class (homebrew or supplement), add: class YAML + `_CLASS_DEFAULTS` entry + `CLASS_PROFILE` mapping + smoke test, in that order.
 
 ### Pitfall: Forgetting about determinism
 
-Anything that uses randomness must accept a seed. If you find yourself unable to reproduce a test failure, non-determinism has crept in; fix it immediately.
+Anything that uses randomness must accept a seed. Non-determinism is a bug, not a feature.
 
 ### Pitfall: Silent content duplication
 
-If a mechanic appears in both a class and a subclass (e.g., Fighter's Second Wind vs. a subclass that grants an additional Second Wind use), the class defines the pool; the subclass modifies it. Never duplicate the pool definition.
-
-### Pitfall: Assuming class infrastructure exists when authoring subclasses
-
-Subclasses cannot be authored or tested in isolation. Each subclass requires
-its parent class to have complete infrastructure in place: a class YAML, a
-`_CLASS_DEFAULTS` entry in the character builder, and a `CLASS_PROFILE`
-mapping in the AI layer. After M2 (standard party) and M9 (Tier A), only 6
-of 12 PHB classes (Fighter, Cleric, Wizard, Rogue, Barbarian, Bard) have
-this infrastructure. The other 6 (Druid, Monk, Paladin, Ranger, Sorcerer,
-Warlock) need it added during M10 before their subclasses can be authored.
-
-**Symptom:** Authoring a Land Druid subclass and finding that the validator
-or engine cannot process it because `parent_class: druid` has no class YAML
-or AI profile to attach to.
-
-**Fix:** Before authoring subclasses for any class, verify the class's
-infrastructure exists. If it does not, add it (class YAML + defaults +
-profile + smoke test) and only then proceed to subclass authoring.
-
-This is documented in `framework/PHASE_2_PLAN.md` M10 section under
-"Class-level groundwork."
-
-### Pitfall: Drifting from the architecture spec
-
-The architecture spec is authoritative. If implementation reveals a design that seems wrong, flag it for discussion and possible spec revision; do not quietly implement a different design.
+The class defines resource pools; the subclass modifies them. Never duplicate pool definitions.
 
 ---
 
-## 13. When Stuck
-
-If you are stuck on a task:
+## 15. When Stuck
 
 1. **Re-read the relevant specification.** The architecture spec and milestone checklists contain more detail than any summary.
-2. **Search the existing codebase.** Similar problems have likely been solved already.
-3. **Write a test case first.** If you cannot write a test, the requirements are unclear; clarify them before coding.
+2. **Search the existing codebase.** Similar problems have been solved already.
+3. **Write a test case first.** If you cannot write a test, the requirements are unclear.
 4. **Ask the user.** State what you are trying to do, what you have tried, and what is blocking you.
 
-Do not:
-
-- Guess and ship
-- Write code you cannot justify
-- Mark a milestone complete when checklist items remain unchecked
-- Skip tests because "they are hard for this feature"
+Do not guess and ship. Do not skip tests. Do not mark a milestone complete when checklist items remain.
 
 ---
 
-## 14. Success Criteria for Phase 2
+## 16. Content Inventory
 
-Phase 2 is complete when all of these are true:
+### Monster YAMLs (`content/monsters/`)
 
-- [ ] All seven content types validate from YAML (M1)
-- [ ] Standard party builds correctly at all levels 1-20 (M2)
-- [ ] Engine passes the full sanity check suite (M5)
-- [ ] Subclass test harness produces reports for at least the 16 Tier A subclasses (M6-M9)
-- [ ] Partial baseline v0.9 is published and usable (M9)
-- [ ] At least one homebrew subclass has been tested end-to-end with a real report
-- [ ] CLI is usable without Python knowledge
+16 monsters as of M11:
 
-Stretch goals (Phase 2.5):
+| File | CR | Notes |
+|---|---|---|
+| `goblin.yaml` | 1/4 | Standard melee |
+| `skeleton.yaml` | 1/4 | Undead; archer |
+| `orc.yaml` | 1/2 | Melee |
+| `ogre.yaml` | 2 | Large, high damage |
+| `bugbear.yaml` | 1 | Melee |
+| `kobold.yaml` | 1/8 | Pack tactics |
+| `wolf.yaml` | 1/4 | Pack tactics, knockdown |
+| `owlbear.yaml` | 3 | Multiattack |
+| `troll.yaml` | 5 | Regeneration |
+| `ghoul.yaml` | 1 | Undead; paralysis |
+| `manticore.yaml` | 3 | Multiattack 3 |
+| `animated_armor.yaml` | 1 | Construct; multiattack 2 |
+| `hell_hound.yaml` | 3 | Fiend; breath weapon (6d10 fire, DEX DC12) |
+| `banshee.yaml` | 4 | Undead; CHA attack bonus override (+4) |
+| `mage.yaml` | 6 | Humanoid; monster_caster profile; spell slots |
+| `black_dragon_wyrmling.yaml` | 2 | Dragon; breath weapon (5d8 acid, DEX DC11) |
 
-- [ ] All 61 subclass YAMLs authored
-- [ ] Full baseline v1.0 published
-- [ ] Monster test harness functional
+### Subclasses (`content/subclasses/`) — 45 total
 
-See `framework/PHASE_2_PLAN.md` §6 for details.
+All 12 PHB 2024 classes represented. Run `python scripts/list_baselines.py` or check `baselines/v1.3/metadata.json` for the full list with win rates.
 
 ---
 
-## 15. Beyond Phase 2
+## 17. Deployment
 
-Phase 3 (balancing the user's homebrew) and Phase 4 (productizing as web app) are out of scope for the current work.
+### Render.com (API)
 
-If you complete Phase 2 successfully, report the completion and wait for direction on Phase 3. Do not pre-emptively begin Phase 3 work.
+1. Create a free account at render.com
+2. New → Web Service → connect GitHub repo
+3. Render auto-detects `render.yaml` — no manual config needed
+4. After deploy, copy the service URL (e.g. `https://hbtester-api.onrender.com`)
+5. Update `const API_BASE` in `web/index.html` with the live URL
+
+**Cold start warning:** Free tier spins down after 15 min idle. First request after idle takes 30–60 s. The dashboard's loading state handles this gracefully.
+
+### Static dashboard (Bluehost)
+
+Upload `web/index.html` and `web/data/` to the hosting directory. No server-side processing needed. CORS is enabled on the API for all origins.
+
+---
+
+## 18. Success Criteria
+
+### Phase 3 remaining work
+
+- [ ] Deploy API to Render and update `API_BASE` in dashboard
+- [ ] Test homebrew panel end-to-end against live API
+- [ ] Validate that all 8 encounters render correctly in the web dashboard
+
+### Phase 4 targets
+
+- [ ] Full 1000-run baseline for all 45 subclasses
+- [ ] Homebrew subclass testing via web UI (Legion Warlock conversion)
+- [ ] User authentication and saved results (optional)
 
 ---
 
 ## Revision History
 
-- **v0.1 (initial):** First AGENTS.md for the project. Captures Phase 2 starting state with the folder layout delivered by the user.
-
-If you update this file, increment the version, add a revision entry, and summarize the change.
+- **v0.1 (initial):** First AGENTS.md for the project. Captures Phase 2 starting state.
+- **v0.2 (M11–M13 update):** Reflects completed Phase 2 (M0–M10) and Phase 3 progress through M13. Updated repository layout, added Sections 7–9 (AI profiles, Flask API, web dashboard), added Section 16 (content inventory), added Section 17 (deployment), updated success criteria, updated pitfalls, corrected Python executable path, removed M0 first-session checklist (obsolete).
