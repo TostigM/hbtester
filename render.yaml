@@ -3,7 +3,7 @@ services:
     name: hbtester-api
     runtime: python
     buildCommand: pip install -r api/requirements.txt
-    startCommand: gunicorn api.app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
+    startCommand: python -m gunicorn api.app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
     envVars:
       - key: PYTHONPATH
         value: src
