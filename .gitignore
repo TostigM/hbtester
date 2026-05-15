@@ -36,5 +36,6 @@ baselines/v*/
 !baselines/v1.1/
 !baselines/v1.2/
 !baselines/v1.3/
+!baselines/v2.0/
 !baselines/README.md
 *.log

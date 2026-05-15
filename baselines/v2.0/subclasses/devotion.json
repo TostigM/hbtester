@@ -1,0 +1,221 @@
+{
+  "subclass_id": "devotion",
+  "class_id": "paladin",
+  "level": 5,
+  "n": 1000,
+  "aggregate": {
+    "avg_win_rate": 0.839125,
+    "min_win_rate": 0.074,
+    "avg_rounds": 5.83325
+  },
+  "encounters": {
+    "goblin_band": {
+      "suite": {
+        "avg_rounds": 3.279,
+        "std_rounds": 0.9752738077073535,
+        "timed_out": 0,
+        "teams": {
+          "enemies": {
+            "win_rate": 0.0,
+            "avg_survivors": 0.0,
+            "avg_hp_fraction": 0.0
+          },
+          "party": {
+            "win_rate": 1.0,
+            "avg_survivors": 1.0,
+            "avg_hp_fraction": 0.9633518518518518
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 45.559,
+        "avg_kills": 1.98,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.9633518518518531,
+        "survival_rate": 1.0
+      }
+    },
+    "skeleton_pack": {
+      "suite": {
+        "avg_rounds": 6.964,
+        "std_rounds": 1.030875356190068,
+        "timed_out": 0,
+        "teams": {
+          "enemies": {
+            "win_rate": 0.0,
+            "avg_survivors": 0.0,
+            "avg_hp_fraction": 0.0
+          },
+          "party": {
+            "win_rate": 1.0,
+            "avg_survivors": 1.0,
+            "avg_hp_fraction": 0.8242222222222222
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 109.416,
+        "avg_kills": 2.659,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.8242222222222245,
+        "survival_rate": 1.0
+      }
+    },
+    "orc_pair": {
+      "suite": {
+        "avg_rounds": 5.102,
+        "std_rounds": 0.9641555891037504,
+        "timed_out": 0,
+        "teams": {
+          "enemies": {
+            "win_rate": 0.024,
+            "avg_survivors": 0.029,
+            "avg_hp_fraction": 0.016833333333333332
+          },
+          "party": {
+            "win_rate": 0.976,
+            "avg_survivors": 0.976,
+            "avg_hp_fraction": 0.6497222222222222
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 76.546,
+        "avg_kills": 1.668,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.6497222222222224,
+        "survival_rate": 0.976
+      }
+    },
+    "lone_ogre": {
+      "suite": {
+        "avg_rounds": 5.648,
+        "std_rounds": 0.9132885633796144,
+        "timed_out": 0,
+        "teams": {
+          "enemies": {
+            "win_rate": 0.051,
+            "avg_survivors": 0.051,
+            "avg_hp_fraction": 0.008389830508474576
+          },
+          "party": {
+            "win_rate": 0.949,
+            "avg_survivors": 0.949,
+            "avg_hp_fraction": 0.5735185185185184
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 79.926,
+        "avg_kills": 0.715,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.5735185185185185,
+        "survival_rate": 0.949
+      }
+    },
+    "hell_hound_pair": {
+      "suite": {
+        "avg_rounds": 4.716,
+        "std_rounds": 2.871122428598265,
+        "timed_out": 0,
+        "teams": {
+          "enemies": {
+            "win_rate": 0.926,
+            "avg_survivors": 1.725,
+            "avg_hp_fraction": 0.7312444444444444
+          },
+          "party": {
+            "win_rate": 0.074,
+            "avg_survivors": 0.074,
+            "avg_hp_fraction": 0.009481481481481481
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 34.975,
+        "avg_kills": 0.191,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.009481481481481478,
+        "survival_rate": 0.074
+      }
+    },
+    "lone_banshee": {
+      "suite": {
+        "avg_rounds": 10.844,
+        "std_rounds": 1.3362873942382305,
+        "timed_out": 0,
+        "teams": {
+          "enemies": {
+            "win_rate": 0.022,
+            "avg_survivors": 0.022,
+            "avg_hp_fraction": 0.005568965517241379
+          },
+          "party": {
+            "win_rate": 0.978,
+            "avg_survivors": 0.978,
+            "avg_hp_fraction": 0.6293148148148148
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 68.275,
+        "avg_kills": 0.754,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.6293148148148155,
+        "survival_rate": 0.978
+      }
+    },
+    "lone_mage": {
+      "suite": {
+        "avg_rounds": 4.892,
+        "std_rounds": 1.7053844141424537,
+        "timed_out": 0,
+        "teams": {
+          "enemies": {
+            "win_rate": 0.255,
+            "avg_survivors": 0.255,
+            "avg_hp_fraction": 0.11109999999999999
+          },
+          "party": {
+            "win_rate": 0.745,
+            "avg_survivors": 0.745,
+            "avg_hp_fraction": 0.4290185185185185
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 52.34,
+        "avg_kills": 0.561,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.42901851851851835,
+        "survival_rate": 0.745
+      }
+    },
+    "dragon_wyrmling": {
+      "suite": {
+        "avg_rounds": 5.221,
+        "std_rounds": 1.3893016231186086,
+        "timed_out": 0,
+        "teams": {
+          "enemies": {
+            "win_rate": 0.009,
+            "avg_survivors": 0.009,
+            "avg_hp_fraction": 0.0033333333333333335
+          },
+          "party": {
+            "win_rate": 0.991,
+            "avg_survivors": 0.991,
+            "avg_hp_fraction": 0.562
+          }
+        }
+      },
+      "combatant_stats": {
+        "avg_damage_dealt": 55.221,
+        "avg_kills": 0.735,
+        "avg_healing_done": 0.0,
+        "avg_hp_fraction": 0.5619999999999993,
+        "survival_rate": 0.991
+      }
+    }
+  }
+}
