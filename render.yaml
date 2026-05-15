@@ -2,8 +2,8 @@ services:
   - type: web
     name: hbtester-api
     runtime: python
-    buildCommand: bash scripts/build.sh
-    startCommand: bash scripts/start.sh
+    buildCommand: pip install -r requirements.txt
+    startCommand: /opt/render/project/src/.venv/bin/gunicorn api.app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
     envVars:
       - key: PYTHONPATH
         value: src
