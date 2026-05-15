@@ -1,0 +1,280 @@
+schema_version: "0.1"
+content_type: subclass
+id: legion
+display_name: The Legion
+parent_class: warlock
+source: homebrew
+author: TostigM
+flavor: >
+  Your patron is not one voice—but many. You are the vessel of a lost
+  community: a village massacred, a town razed, a people forgotten by the
+  world. Their spirits now live within you, guiding your path and acting
+  through you as guardian, witness, and vengeance. You are not one voice.
+  You are many.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+
+  # Patron Spells — 2024 convention: always prepared, don't count against
+  # spells known. Replaces 2014 "Expanded Spell List" language.
+  - id: legion_patron_spells
+    display_name: Patron Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - heroism
+        - dissonant_whispers
+        - detect_thoughts
+        - hold_person
+        - counterspell
+        - fear
+        - confusion
+        - phantasmal_killer
+        - scrying
+        - wall_of_force
+
+  # 2024 change: was "1st-level feature" → now 3rd-level (subclass choice moves
+  # to level 3 in PHB 2024). Uses = proficiency bonus, restored on Long Rest.
+  - id: echoes_of_the_fallen
+    display_name: Echoes of the Fallen
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      uses: proficiency_bonus
+      recharge: long_rest
+      description: >
+        As part of any Action, Bonus Action, Reaction, or triggered event, you
+        may channel one spirit from your lost community. You may only channel
+        one spirit per use unless another feature allows more. You have a number
+        of uses equal to your Proficiency Bonus, all restored on a Long Rest.
+
+        Community Spirits — choose one per use:
+
+        The Apprentice: On a missed spell attack, reroll with −1 penalty.
+        (1/short rest; no action; triggers on missed spell attack.)
+
+        The Beggar: While below half your Hit Point maximum, your next spell
+        costs no spell slot.
+        (1/long rest; no action; passive when casting below half HP.)
+
+        The Bellringer: When you cast a spell, enemies within 60 feet make a WIS
+        save or are Deafened until the end of their next turn.
+        (1/short rest; no action; triggers when you cast a spell.)
+
+        The Blacksmith: One hit gains +2 force damage; on a Critical Hit,
+        shatter a nonmagical weapon or armor piece on the target.
+        (1/short rest; no action; triggers on a hit.)
+
+        The Carpenter: Create a 5×5 ft floating, immobile platform within 30
+        feet lasting 1 minute (AC = 10 + PB; HP = 10 × warlock level; holds up
+        to 500 lb).
+        (1/short rest; Bonus Action.)
+
+        The Chirurgeon: One creature within 30 feet regains 1d4 + your CHA
+        modifier Hit Points but has Disadvantage on its next attack roll or
+        saving throw before the end of its next turn.
+        (1/short rest; Bonus Action.)
+
+        The Crone: Force a creature to reroll one successful saving throw against
+        your spell or subclass feature.
+        (1/short rest; no action; declared after a successful save.)
+
+        The Farmer: Reroll one Athletics or Acrobatics check using your Reaction,
+        declared after rolling but before knowing the result.
+        (1/short rest; Reaction.)
+
+        The Father: Gain Temporary Hit Points equal to your warlock level.
+        (1/short rest; Bonus Action.)
+
+        The Forester: Gain Advantage on your next Stealth or Perception check,
+        which must be made before the end of your next turn.
+        (1/short rest; Bonus Action.)
+
+        The Gambler: Roll a d6. On 4–6, the triggering effect is empowered
+        (+1d6 damage, +1 to its DC, or +50% duration). On a 1, the effect
+        fizzles and any spell slot is spent.
+        (1/short rest; no action; declared as you activate the effect.)
+
+        The Gravedigger: When you reduce a creature to 0 Hit Points, force one
+        creature within 10 feet to make a WIS save or become Frightened of you
+        until the end of its next turn.
+        (1/short rest; no action; triggers when you drop a creature to 0 HP.)
+
+        The Guard: When you or an ally within 5 feet is hit by an attack, impose
+        Disadvantage on that attack roll, declared after the hit is confirmed but
+        before damage is rolled.
+        (1/short rest; Reaction.)
+
+        The Herbalist: End one condition (Poisoned, Charmed, Frightened, or
+        Blinded) affecting you or one ally within 30 feet.
+        (1/short rest; Bonus Action.)
+
+        The Hunter: On a successful hit, reduce the target's Speed by 10 feet
+        until the start of your next turn.
+        (1/short rest; no action; declared on a hit.)
+
+        The Leader: When you cast a spell or use a feature affecting a creature,
+        one ally within 30 feet may use their Reaction to either move up to half
+        their Speed or make one weapon attack.
+        (1/short rest; no action; declared when activating the spell or feature.)
+
+        The Little Boy: You or one ally within 30 feet may reroll one failed
+        saving throw, declared after the roll but before consequences are applied.
+        (1/short rest; no action.)
+
+        The Little Girl: When a creature fails a saving throw against your spell
+        or subclass feature, it must succeed on an INT save or become Frightened
+        of you until the end of its next turn.
+        (1/short rest; no action; declared after a failed save against you.)
+
+        The Merchant: Halve the damage of your spell or subclass feature to
+        impose Disadvantage on a saving throw of your choice (DEX, CON, etc.)
+        until the start of your next turn.
+        (1/short rest; no action; declared when activating.)
+
+        The Midwife: One ally within 10 feet regains Hit Points equal to your
+        CHA modifier (minimum 1).
+        (1/short rest; Bonus Action.)
+
+        The Miller: On a hit, the target must succeed on a STR save (your Spell
+        Save DC) or be knocked Prone.
+        (1/short rest; no action; declared on a successful hit.)
+
+        The Mother: As a Reaction when you or an ally within 10 feet takes
+        damage, both of you gain Resistance to that instance of damage and to
+        the next source of damage until the end of your next turn.
+        (1/short rest; Reaction.)
+
+        The Priest: One creature within 30 feet gains Advantage on death saving
+        throws until the end of its next turn.
+        (1/short rest; Bonus Action.)
+
+        The Scoundrel: When using a cantrip or subclass feature targeting one
+        creature, also target a second creature within 5 feet of the original.
+        (1/short rest; no action; declared when activating.)
+
+        The Seamstress: Cast mending (at will) on an object within 30 feet; or
+        stabilize a dying creature within 30 feet without a check or healer's kit
+        (1/short rest).
+        (Bonus Action.)
+
+        The Stablehand: Your Speed increases by 10 feet until the end of your
+        next turn.
+        (1/short rest; Bonus Action.)
+
+        The Storyteller: Gain Advantage on your next INT or CHA ability check or
+        saving throw.
+        (1/short rest; Bonus Action.)
+
+        The Tavernkeeper: All hostile creatures within 10 feet make a CON save
+        or have Disadvantage on their next WIS or DEX saving throw before the
+        end of their next turn.
+        (1/short rest; Bonus Action.)
+
+        The Teacher: Your next INT-based ability check has Advantage, and for 1
+        hour you can read and write all languages.
+        (1/short rest; Bonus Action.)
+
+        The Weaver: Create a spectral thread to one creature within 30 feet. As
+        a Bonus Action before the end of your next turn, teleport to an
+        unoccupied space within 5 feet of that creature. You may bring one
+        willing creature or one carried object no larger than your size.
+        (1/short rest; no action to link; Bonus Action to teleport.)
+
+        The Young Lover: Gain Advantage on your next CHA ability check or saving
+        throw. Additionally, the next creature that makes a saving throw against
+        a Charm effect from you before the end of your next turn has Disadvantage.
+        (1/short rest; Bonus Action.)
+
+  # 2024 change: was "1st-level feature" → now 3rd-level. Wording updated to
+  # use 2024 condition and action-economy language.
+  - id: shared_burden
+    display_name: Shared Burden
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      uses: 1
+      recharge: short_or_long_rest
+      action_type: reaction
+      description: >
+        When you take damage from a creature you can see, you may use your
+        Reaction to reduce that damage by an amount equal to your warlock level +
+        your Charisma modifier (minimum 1). If this reduction brings the damage
+        to 0, you automatically succeed on any resulting Concentration check.
+
+  # 6th-level feature unchanged from 2014; language updated to 2024 style.
+  - id: voices_in_harmony
+    display_name: Voices in Harmony
+    feature_type: scripted_feature
+    unlock_level: 6
+    body:
+      description: >
+        When you use Echoes of the Fallen, you may choose two spirits instead of
+        one; both effects apply simultaneously.
+
+        Once per Short or Long Rest, while taking a rest you may commune with
+        your spirits. Choose one ability score other than Strength. Until your
+        next rest, you gain proficiency in saving throws that use that ability
+        score. If you already have proficiency, you instead gain Expertise.
+
+  # 10th-level feature. Three options; choice is permanent. "Pain of Loss" uses
+  # 2024 language for the 0-HP trigger (mirrors Relentless Endurance wording).
+  - id: the_turning_point
+    display_name: The Turning Point
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: >
+        Choose one of the following permanent enhancements. This choice cannot
+        be changed.
+
+        Stronger Together. When you cast a spell that targets only yourself, you
+        may also target one willing ally within 30 feet.
+
+        The Pain of Loss. When you are reduced to 0 Hit Points but not killed
+        outright, you may drop to 1 Hit Point instead. All hostile creatures
+        within 10 feet must succeed on a WIS save (your Spell Save DC) or become
+        Frightened of you until the end of their next turn. Once you use this
+        option, you must finish a Long Rest before using it again.
+
+        It Takes a Village. Once per Long Rest, when you finish a Short Rest, the
+        strength of your community lifts you and those around you. You and up to
+        four allies who also took that Short Rest each regain Hit Points as though
+        you expended one additional Hit Die (this does not consume a Hit Die).
+        You also regain one expended use of Echoes of the Fallen and may reset
+        the usage of one spirit that has a "once per long rest" limitation.
+
+  # 14th-level feature. Three 1/day ultimates; "Vengeance" updated to use 2024
+  # Blinded condition language; "Haunted" is a custom condition defined in body.
+  - id: as_one
+    display_name: As One
+    feature_type: scripted_feature
+    unlock_level: 14
+    body:
+      uses: 1
+      recharge: long_rest
+      description: >
+        Choose one of the following options. You may only use one per Long Rest.
+
+        Voice of the Fallen. For 1 minute: you may use Echoes of the Fallen
+        every turn without expending charges; you may channel two spirits per
+        turn; once per turn, you may repeat the effect of a spell or subclass
+        feature you used on your previous turn, targeting a different creature.
+
+        Vengeance of the Legion. As an Action, choose a point within 60 feet.
+        All creatures of your choice within 30 feet must make a CHA save (your
+        Spell Save DC). On a failure: the creature takes 6d10 Psychic damage,
+        gains the Blinded condition, and is Haunted for 1 minute. A Haunted
+        creature has Disadvantage on Concentration checks, cannot benefit from
+        Invisibility, and has Disadvantage on the first attack roll it makes each
+        of its turns. The Haunted effect ends if the creature succeeds on a CHA
+        save at the end of one of its turns (your Spell Save DC).
+
+        The Chorus' Crescendo. For 1 minute: when you or a creature within 30
+        feet casts a spell, uses a class feature, or makes a weapon attack, you
+        may apply one spirit effect from Echoes of the Fallen without expending a
+        charge. You may do this a number of times per round up to your CHA
+        modifier (minimum 1), divided as you choose among eligible triggers.
+        Additionally, all allies within 30 feet gain Temporary Hit Points equal
+        to your warlock level at the start of each of their turns.
