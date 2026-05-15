@@ -1,0 +1,45 @@
+schema_version: "0.1"
+content_type: subclass
+id: diviner
+display_name: School of Divination
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: wizard
+tags: [utility, control, foresight]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: damage_spell
+  special_trait: portent
+
+features:
+  - id: portent
+    display_name: Portent
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      dice_count: 2
+      description: "Roll two d20s after a long rest. Replace any attack roll, saving throw, or ability check (yours or a creature's you can see) with one of these rolls. Each portent die can be used once."
+
+  - id: expert_divination
+    display_name: Expert Divination
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: "When you cast a Divination spell of 2nd level or higher, regain one expended spell slot of lower level than the spell."
+
+  - id: the_third_eye
+    display_name: The Third Eye
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: "As a Bonus Action, gain one of: Darkvision 60 ft, Ethereal Sight (see the Ethereal Plane), Greater Comprehension (read any language), or See Invisibility. Lasts until short or long rest."
+
+  - id: greater_portent
+    display_name: Greater Portent
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      dice_count: 3
+      description: Portent now grants three d20 dice instead of two
+
+resource_pools: []

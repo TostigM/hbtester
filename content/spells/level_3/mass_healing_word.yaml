@@ -1,0 +1,24 @@
+schema_version: "0.1"
+content_type: spell
+id: mass_healing_word
+display_name: Mass Healing Word
+source: PHB_2024
+author: Wizards of the Coast
+level: 3
+school: abjuration
+casting_time: bonus_action
+range: 60_feet
+components:
+  verbal: true
+duration: instantaneous
+concentration: false
+class_lists: [cleric, bard]
+intent_tags: [healing]
+upcast_scaling:
+  - slot_level: 4
+    changes:
+      heal_dice: 2d4
+effects:
+  - type: healing
+    heal_formula: "1d4 + spellcasting_mod"
+    target_count: up_to_6

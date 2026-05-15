@@ -1,0 +1,88 @@
+schema_version: "0.1"
+content_type: subclass
+id: dance
+display_name: College of Dance
+parent_class: bard
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Bards of the College of Dance know that the words of a song are not its only
+  means of power. They harness the physical grace of the dance to weave spells,
+  lead allies, and confound enemies.
+subclass_feature_levels: [3, 6, 14, 18]
+features:
+  # "Dazzling Footwork: While you aren't wearing armor or wielding a shield,
+  # you gain the following benefits: Unarmored Defense — your base AC equals
+  # 10 plus your DEX and CHA modifiers; Agile Strikes — when you expend a use
+  # of your Bardic Inspiration as part of casting a Bard spell, or use Bardic
+  # Inspiration, you can make one Unarmed Strike as a Bonus Action." — PHB 2024
+  - id: dazzling_footwork
+    display_name: Dazzling Footwork
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: >
+        While not wearing armor or a shield: Unarmored Defense (AC = 10 + DEX
+        + CHA modifiers). When you expend a Bardic Inspiration die, you can
+        make one Unarmed Strike as a Bonus Action and add the Bardic Inspiration
+        roll to your AC against one incoming attack.
+
+  # "Tandem Footwork: When you roll Initiative, you can expend one use of your
+  # Bardic Inspiration (no action required) if you have at least one use left.
+  # When you do so, roll your Bardic Inspiration die, and choose a number of
+  # creatures you can see within 60 feet of you (not including yourself), up to
+  # your CHA modifier (minimum of 1). Each of those creatures gains a bonus to
+  # their Initiative equal to the number rolled." — PHB 2024
+  - id: tandem_footwork
+    display_name: Tandem Footwork
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      trigger: initiative_roll
+      resource: bardic_inspiration
+      description: >
+        On Initiative roll, expend a Bardic Inspiration die (no action required):
+        roll the die and give its result as a bonus to Initiative for up to CHA
+        modifier creatures you can see within 60 ft (minimum 1 creature).
+
+  # "Inspiring Movement: When you use Bardic Inspiration, the creature that
+  # received the die can also use its Reaction to move up to its Speed without
+  # triggering Opportunity Attacks." — PHB 2024
+  - id: inspiring_movement
+    display_name: Inspiring Movement
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: >
+        When you grant Bardic Inspiration, the recipient can immediately use
+        its Reaction to move up to its Speed without provoking Opportunity
+        Attacks.
+
+  # "Infectious Rhythm: When a creature uses a Bardic Inspiration die you gave
+  # it, that creature can use a Bonus Action to give Bardic Inspiration to
+  # another creature within 60 feet of it. That second creature must not already
+  # have Bardic Inspiration. A creature can grant Bardic Inspiration this way
+  # only once per turn." — PHB 2024
+  - id: infectious_rhythm
+    display_name: Infectious Rhythm
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: >
+        When a creature uses a Bardic Inspiration die you gave it, it can use
+        a Bonus Action to pass a Bardic Inspiration die to another creature
+        within 60 ft that doesn't already have one (once per turn).
+
+  # "Leading Evasion: When you use Evasion to take no damage from an area
+  # effect, you can choose up to two willing creatures within 5 feet of you.
+  # They also take no damage from that effect, instead of the usual half
+  # damage." — PHB 2024
+  - id: leading_evasion
+    display_name: Leading Evasion
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: >
+        When you use Evasion to take no damage, choose up to two willing
+        creatures within 5 ft. They also take no damage from the effect
+        (instead of the usual half damage on a successful save).

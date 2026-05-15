@@ -1,0 +1,75 @@
+schema_version: "0.1"
+content_type: subclass
+id: shadow
+display_name: Warrior of Shadow
+parent_class: monk
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Warriors of Shadow practice stealth and subterfuge, drawing on the power
+  of darkness to empower their strikes, move unseen, and terrorize foes.
+subclass_feature_levels: [3, 6, 11, 17]
+features:
+  # "Shadow Arts: You can spend 1 Focus Point to cast Darkness, Darkvision,
+  # Pass without Trace, or Silence (no concentration for Silence) without
+  # using a spell slot or components." — PHB 2024
+  - id: shadow_arts
+    display_name: Shadow Arts
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      cost: 1
+      resource: focus_points
+      description: >
+        Spend 1 Focus Point to cast Darkness, Darkvision, Pass without Trace,
+        or Silence without a spell slot.
+
+  # "Shadow Step: While in Dim Light or Darkness, you can teleport as a Bonus
+  # Action up to 60 feet to an unoccupied space also in Dim Light or Darkness.
+  # You have Advantage on the first attack you make before the end of the turn." — PHB 2024
+  - id: shadow_step
+    display_name: Shadow Step
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: bonus_action
+      description: >
+        Teleport up to 60 ft between dim light/darkness spaces. Gain Advantage
+        on first attack roll this turn.
+
+  # "Improved Shadow Step: You no longer need to be in Dim Light or Darkness to
+  # use Shadow Step. Also, you can spend 1 Focus Point to remove the requirement
+  # that the destination be in Dim Light or Darkness." — PHB 2024
+  - id: improved_shadow_step
+    display_name: Improved Shadow Step
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: >
+        Shadow Step no longer requires you to start in dim light or darkness.
+        Spend 1 Focus Point to also remove destination restriction.
+
+  # "Cloak of Shadows: As a Magic action, spend 3 Focus Points to become
+  # Invisible. This invisibility ends at the start of your next turn." — PHB 2024
+  - id: cloak_of_shadows
+    display_name: Cloak of Shadows
+    feature_type: custom_action
+    unlock_level: 11
+    body:
+      action_type: action
+      cost: 3
+      resource: focus_points
+      description: Become Invisible until the start of your next turn.
+
+  # "Opportunist: When a creature within 5 feet of you is hit by an attack roll
+  # made by someone other than you, you can use your Reaction to make one attack
+  # against that creature." — PHB 2024
+  - id: opportunist
+    display_name: Opportunist
+    feature_type: reaction
+    unlock_level: 17
+    body:
+      trigger: ally_hits_adjacent_creature
+      description: >
+        Reaction: make one attack against a creature within 5 ft that was
+        just hit by someone else's attack.

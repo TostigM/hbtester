@@ -1,0 +1,122 @@
+schema_version: "0.1"
+content_type: subclass
+id: glory
+display_name: Oath of Glory
+parent_class: paladin
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Paladins who take the Oath of Glory believe they and their companions are
+  destined to achieve glory through acts of heroism, becoming legendary figures
+  in the histories of the multiverse.
+subclass_feature_levels: [3, 7, 15, 20]
+features:
+  # "Inspiring Smite: Immediately after you cast Divine Smite, you can expend
+  # one use of your Channel Divinity and distribute Temporary Hit Points to
+  # creatures of your choice within 30 feet of you, which can include you. The
+  # total number of Temporary Hit Points equals 2d8 plus your CHA modifier,
+  # minimum of 1." — PHB 2024
+  - id: inspiring_smite
+    display_name: Inspiring Smite
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      resource: channel_divinity
+      trigger: after_divine_smite
+      description: >
+        After casting Divine Smite, expend Channel Divinity to distribute
+        Temporary HP equal to 2d8 + CHA modifier among creatures within 30 ft
+        (minimum 1 total).
+
+  # "Peerless Athlete: As a Bonus Action, you can expend one use of your Channel
+  # Divinity to augment yourself with divine athleticism for 10 minutes. For the
+  # duration, you have Advantage on STR (Athletics) and DEX (Acrobatics) checks,
+  # and the distance of your long and high jumps is doubled." — PHB 2024
+  - id: peerless_athlete
+    display_name: Peerless Athlete
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: bonus_action
+      resource: channel_divinity
+      duration: 10_minutes
+      description: >
+        Channel Divinity: For 10 minutes, gain Advantage on Athletics and
+        Acrobatics checks; double long jump and high jump distances; also double
+        carrying and push/drag/lift capacity.
+
+  # "Oath Spells: Guiding Bolt, Heroism, Enhance Ability, Magic Weapon, Haste,
+  # Protection from Energy, Compulsion, Freedom of Movement, Legend Lore,
+  # Youthful Rejuvenation." — PHB 2024
+  - id: glory_oath_spells
+    display_name: Oath Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - guiding_bolt
+        - heroism
+        - enhance_ability
+        - magic_weapon
+        - haste
+        - protection_from_energy
+        - compulsion
+        - freedom_of_movement
+        - legend_lore
+        - youthful_rejuvenation
+
+  # "Aura of Alacrity: Your Speed increases by 10 feet. In addition, whenever
+  # an allied creature enters your Aura of Protection for the first time on a
+  # turn or starts its turn there, that creature's Speed increases by 10 feet
+  # until the end of its turn." — PHB 2024
+  - id: aura_of_alacrity
+    display_name: Aura of Alacrity
+    feature_type: passive_stat_modifier
+    unlock_level: 7
+    body:
+      stat: speed
+      modifier: 10
+      aura_radius: 10
+      affects_allies: true
+      description: >
+        Your Speed increases by 10 ft. Allies who enter or start their turn in
+        your Aura of Protection (10 ft) also gain +10 ft Speed until end of
+        their turn.
+
+  # "Glorious Defense: When you or another creature you can see within 10 feet
+  # of you is hit by an attack roll, you can use your Reaction to add your CHA
+  # modifier to the target's AC against that attack, potentially causing it to
+  # miss. If the attack misses, you can make one weapon attack against the
+  # attacker as part of this Reaction." — PHB 2024
+  - id: glorious_defense
+    display_name: Glorious Defense
+    feature_type: reaction
+    unlock_level: 15
+    body:
+      trigger: creature_hit_by_attack_within_10ft
+      description: >
+        Reaction: add CHA modifier to the target's AC against the triggering
+        attack. If the attack then misses, make one weapon attack against the
+        attacker as part of this Reaction.
+
+  # "Living Legend: As a Bonus Action, you can empower yourself with the
+  # legends of your people for 1 minute. For the duration: you have Advantage
+  # on CHA checks; once on each of your turns, when you make an attack roll
+  # and miss, you can cause that attack to hit instead; and if you fail a
+  # saving throw, you can use your Reaction to reroll it, and you must use the
+  # new roll. Once you use this feature, you can't do so again until you finish
+  # a Long Rest." — PHB 2024
+  - id: living_legend
+    display_name: Living Legend
+    feature_type: custom_action
+    unlock_level: 20
+    body:
+      action_type: bonus_action
+      recharge: long_rest
+      duration: 1_minute
+      description: >
+        Become a divine champion for 1 minute. Gain Advantage on CHA checks;
+        once per turn treat a missed attack as a hit instead; once during the
+        duration, use Reaction to reroll a failed saving throw (keep new roll).
+        Once per Long Rest.

@@ -1,0 +1,192 @@
+schema_version: "0.1"
+content_type: class
+id: monk
+display_name: Monk
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d8
+primary_ability_options: [DEX, WIS]
+saving_throw_proficiencies: [STR, DEX]
+spellcasting_ability: null
+spellcasting_progression: null
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: []
+  weapons: [simple, shortsword]
+  tools: []
+  saving_throws: [STR, DEX]
+  skills_choose: 2
+  skills_available:
+    - acrobatics
+    - athletics
+    - history
+    - insight
+    - religion
+    - stealth
+features:
+  # "While you aren't wearing armor or wielding a Shield, your base Armor
+  # Class equals 10 + your Dexterity modifier + your Wisdom modifier." — PHB 2024
+  - id: unarmored_defense_monk
+    display_name: Unarmored Defense
+    feature_type: unarmored_defense
+    unlock_level: 1
+    body:
+      formula: "10 + DEX_mod + WIS_mod"
+      description: While not wearing armor or shield, AC = 10 + DEX + WIS modifier.
+
+  # "Your practice of martial arts gives you mastery of combat styles that use
+  # Unarmed Strikes and Monk weapons, which are Simple Melee weapons and Shortswords."
+  # Martial Arts die: d6 (L1-4), d8 (L5-10), d10 (L11-16), d12 (L17+). — PHB 2024
+  - id: martial_arts
+    display_name: Martial Arts
+    feature_type: scripted_feature
+    unlock_level: 1
+    body:
+      description: >
+        Use DEX for Monk weapon/unarmed attacks. Unarmed strikes deal
+        Martial Arts die: d6 (L1), d8 (L5), d10 (L11), d12 (L17).
+        After Attack action, make one Unarmed Strike as Bonus Action.
+
+  # "Your training allows you to harness the mystic energy of your body...
+  # You have a number of Focus Points equal to your Monk level." — PHB 2024
+  - id: monks_focus
+    display_name: Monk's Focus
+    feature_type: focus_points
+    unlock_level: 2
+    body:
+      pool_formula: "level"
+      restore: short_or_long_rest
+      options:
+        - id: flurry_of_blows
+          cost: 1
+          description: After Attack action, make 2 Unarmed Strikes as Bonus Action.
+        - id: patient_defense
+          cost: 1
+          description: Take Dodge action as Bonus Action.
+        - id: step_of_the_wind
+          cost: 1
+          description: Take Dash or Disengage as Bonus Action; jump distance doubled.
+
+  # "You can use your Reaction to deflect the strike... roll 1d10 + your DEX modifier
+  # + your Monk level." — PHB 2024
+  - id: deflect_attacks
+    display_name: Deflect Attacks
+    feature_type: reaction
+    unlock_level: 3
+    body:
+      trigger: hit_by_attack
+      description: >
+        Reaction: reduce damage of incoming weapon/unarmed attack by
+        1d10 + DEX_mod + Monk level. If reduced to 0, redirect as a ranged attack.
+
+  - id: monk_subclass
+    display_name: Monk Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Monk subclass (Warrior of...)
+
+  - id: slow_fall
+    display_name: Slow Fall
+    feature_type: reaction
+    unlock_level: 4
+    body:
+      trigger: falling
+      description: Reduce falling damage by 5 × Monk level.
+
+  - id: extra_attack_monk
+    display_name: Extra Attack
+    feature_type: extra_attack
+    unlock_level: 5
+    body:
+      count: 1
+
+  # "When you hit a creature with a Monk weapon or Unarmed Strike, you can spend
+  # 1 Focus Point to attempt a Stunning Strike. The target must make a CON save
+  # (DC = 8 + prof + WIS mod) or be Stunned until the start of your next turn." — PHB 2024
+  - id: stunning_strike
+    display_name: Stunning Strike
+    feature_type: scripted_feature
+    unlock_level: 5
+    body:
+      cost: 1
+      resource: focus_points
+      description: >
+        On hit: spend 1 Focus Point. Target makes CON save (DC 8+prof+WIS) or
+        is Stunned until start of your next turn.
+
+  - id: ki_empowered_strikes
+    display_name: Empowered Strikes
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: Your Unarmed Strikes count as Magical for overcoming resistance and immunity.
+
+  - id: evasion_monk
+    display_name: Evasion
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: >
+        When subject to DEX save for half damage: no damage on success,
+        half damage on failure.
+
+  - id: stillness_of_mind
+    display_name: Stillness of Mind
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: End the Charmed or Frightened condition on yourself as a Bonus Action.
+
+  - id: self_restoration
+    display_name: Self-Restoration
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: >
+        End one of the following on yourself at end of each turn (no action):
+        Charmed, Frightened, or Poisoned.
+
+  - id: deflect_energy
+    display_name: Deflect Energy
+    feature_type: damage_resistance
+    unlock_level: 13
+    body:
+      damage_type: all_energy
+      description: >
+        Extend Deflect Attacks to energy damage types (acid, cold, fire,
+        force, lightning, thunder).
+
+  - id: disciplined_survivor
+    display_name: Disciplined Survivor
+    feature_type: save_proficiency
+    unlock_level: 14
+    body:
+      saving_throw: all
+      description: Gain proficiency in all saving throws.
+
+  - id: perfect_focus
+    display_name: Perfect Focus
+    feature_type: passive_feature_grant
+    unlock_level: 15
+    body:
+      description: >
+        If you have fewer than 4 Focus Points at the start of your turn,
+        regain until you have 4.
+
+  - id: superior_defense
+    display_name: Superior Defense
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: >
+        Spend 3 Focus Points at start of turn to gain resistance to all damage
+        except Force until start of your next turn.
+
+  - id: body_and_mind
+    display_name: Body and Mind
+    feature_type: passive_stat_modifier
+    unlock_level: 20
+    body:
+      stat: ability_score
+      description: DEX and WIS each increase by 4 (max 25).

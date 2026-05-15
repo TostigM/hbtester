@@ -1,0 +1,68 @@
+schema_version: "0.1"
+content_type: subclass
+id: beast_master
+display_name: Beast Master
+parent_class: ranger
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  A Beast Master ranger nurtures a powerful bond with a primal beast, directing
+  it to fight alongside the ranger in the wild places of the world.
+subclass_feature_levels: [3, 7, 11, 15]
+features:
+  # "Primal Companion: You magically summon a Primal Beast, which draws strength
+  # from your bond with nature. The beast is friendly to you and your companions
+  # and obeys your commands. Choose its stat block — Beast of the Land, Beast of
+  # the Sea, or Beast of the Sky. The beast disappears if it is reduced to 0 HP,
+  # or after a number of days equal to your proficiency bonus. You can use this
+  # feature again to resummon the beast (no action required). The beast's HP
+  # maximum equals five times your Ranger level." — PHB 2024
+  - id: primal_companion
+    display_name: Primal Companion
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      description: >
+        Summon a Primal Beast (Beast of the Land, Sea, or Sky). It acts on your
+        turn and obeys your commands via Bonus Action. HP maximum equals five
+        times your Ranger level. Resummon for free if it dies or is dismissed.
+
+  # "Exceptional Training: On any of your turns when your Primal Beast doesn't
+  # attack, you can use a Bonus Action to command the beast to take the Dash,
+  # Disengage, Dodge, or Help action. The beast's attacks now count as magical
+  # for the purpose of overcoming resistance and immunity to nonmagical attacks
+  # and damage." — PHB 2024
+  - id: exceptional_training
+    display_name: Exceptional Training
+    feature_type: scripted_feature
+    unlock_level: 7
+    body:
+      description: >
+        Primal Beast attacks count as magical. On turns when the beast doesn't
+        attack, use a Bonus Action to command it to take the Dash, Disengage,
+        Dodge, or Help action.
+
+  # "Bestial Fury: Your Primal Beast can make two attacks when you command it
+  # to attack (using your Bonus Action)." — PHB 2024
+  - id: bestial_fury
+    display_name: Bestial Fury
+    feature_type: attack_count_modifier
+    unlock_level: 11
+    body:
+      target: primal_beast
+      extra_attacks: 1
+      description: >
+        When you command your Primal Beast to attack, it makes two attacks
+        instead of one.
+
+  # "Share Spells: When you cast a spell targeting yourself, you can also affect
+  # your Primal Beast with the spell if the beast is within 30 feet of you."
+  # — PHB 2024
+  - id: share_spells
+    display_name: Share Spells
+    feature_type: passive_feature_grant
+    unlock_level: 15
+    body:
+      description: >
+        When you cast a spell that targets only you, you can also have it affect
+        your Primal Beast if it is within 30 ft of you.

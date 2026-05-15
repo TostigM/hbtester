@@ -1,0 +1,118 @@
+schema_version: "0.1"
+content_type: class
+id: fighter
+display_name: Fighter
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d10
+primary_ability_options: [STR, DEX]
+saving_throw_proficiencies: [STR, CON]
+spellcasting_ability: null
+spellcasting_progression: null
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: [light, medium, heavy, shields]
+  weapons: [simple, martial]
+  tools: []
+  saving_throws: [STR, CON]
+  skills_choose: 2
+  skills_available:
+    - acrobatics
+    - animal_handling
+    - athletics
+    - history
+    - insight
+    - intimidation
+    - perception
+    - survival
+features:
+  - id: fighting_style_fighter
+    display_name: Fighting Style
+    feature_type: fighting_style
+    unlock_level: 1
+    body:
+      options: [archery, defense, dueling, great_weapon_fighting, protection, two_weapon_fighting]
+
+  - id: second_wind
+    display_name: Second Wind
+    feature_type: second_wind
+    unlock_level: 1
+    body:
+      uses_per_rest: short_or_long
+      initial_uses: 2
+      scaling:
+        - level: 4
+          uses: 3
+        - level: 10
+          uses: 4
+
+  - id: weapon_mastery_fighter
+    display_name: Weapon Mastery
+    feature_type: weapon_mastery_selection
+    unlock_level: 1
+    body:
+      initial_count: 3
+      scaling:
+        - level: 4
+          count: 4
+
+  - id: action_surge
+    display_name: Action Surge
+    feature_type: action_surge
+    unlock_level: 2
+    body:
+      uses_per_rest: short_or_long
+      initial_uses: 1
+      scaling:
+        - level: 17
+          uses: 2
+
+  - id: tactical_mind
+    display_name: Tactical Mind
+    feature_type: passive_feature_grant
+    unlock_level: 2
+    body:
+      description: Add d10 to a failed ability check (Strength or Intelligence)
+
+  - id: fighter_subclass
+    display_name: Fighter Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Fighter subclass
+
+  - id: extra_attack_1
+    display_name: Extra Attack
+    feature_type: extra_attack
+    unlock_level: 5
+    body:
+      count: 1
+
+  - id: tactical_shift
+    display_name: Tactical Shift
+    feature_type: passive_feature_grant
+    unlock_level: 5
+    body:
+      description: Move up to half speed without provoking opportunity attacks when using Second Wind
+
+  - id: extra_attack_2
+    display_name: Extra Attack (2)
+    feature_type: extra_attack
+    unlock_level: 11
+    body:
+      count: 2
+
+  - id: indomitable
+    display_name: Indomitable
+    feature_type: passive_feature_grant
+    unlock_level: 9
+    body:
+      uses_per_long_rest: 1
+      description: Reroll a failed saving throw
+
+  - id: extra_attack_3
+    display_name: Extra Attack (3)
+    feature_type: extra_attack
+    unlock_level: 20
+    body:
+      count: 3

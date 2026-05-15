@@ -1,0 +1,43 @@
+schema_version: "0.1"
+content_type: subclass
+id: berserker
+display_name: Berserker
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: barbarian
+tags: [damage, melee, aggression]
+complexity_rating: simple
+behavior_hints:
+  preferred_action: attack
+  special_trait: frenzy_bonus_attack
+
+features:
+  - id: frenzy
+    display_name: Frenzy
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "While Raging, make one melee weapon attack as a Bonus Action each turn. When Rage ends, gain one Exhaustion level."
+
+  - id: mindless_rage
+    display_name: Mindless Rage
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: "While Raging, you can't be Charmed or Frightened. If already Charmed or Frightened, the effect is suspended for the duration of the Rage."
+
+  - id: retaliation
+    display_name: Retaliation
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: "When you take damage from a creature within 5 feet, use your Reaction to make one melee weapon attack against that creature."
+
+  - id: intimidating_presence
+    display_name: Intimidating Presence
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: "Action: Frighten one creature within 30 feet for 1 minute (WIS save, DC = 8 + prof + CHA mod). Repeat save at end of each turn. Once used on a creature, cannot target the same creature again until a long rest."
+
+resource_pools: []

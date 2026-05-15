@@ -1,0 +1,44 @@
+schema_version: "0.1"
+content_type: subclass
+id: illusionist
+display_name: School of Illusion
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: wizard
+tags: [utility, deception, control]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: damage_spell
+  special_trait: malleable_illusions
+
+features:
+  - id: improved_minor_illusion
+    display_name: Improved Minor Illusion
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Learn the Minor Illusion cantrip (if you don't know it); you can create both a sound and an image with a single casting
+
+  - id: malleable_illusions
+    display_name: Malleable Illusions
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: When you cast an Illusion spell with a duration of 1 minute or longer, use a Bonus Action to change the nature of the illusion
+
+  - id: illusory_self
+    display_name: Illusory Self
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      uses_per_short_rest: 1
+      description: "Reaction: create an illusory duplicate to intercept an attack. The attack hits the duplicate and misses you."
+
+  - id: illusory_reality
+    display_name: Illusory Reality
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: "Once per casting of an Illusion spell, make one non-magical, non-damaging object in the illusion real for 1 minute."
+
+resource_pools: []

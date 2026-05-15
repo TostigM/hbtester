@@ -1,0 +1,90 @@
+schema_version: "0.1"
+content_type: subclass
+id: land
+display_name: Circle of the Land
+parent_class: druid
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  The Circle of the Land connects a druid to the living magic of a particular
+  terrain, channeling its power through spellcasting and natural attunement.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+  # "Land's Aid: As a Bonus Action, expend a use of Wild Shape to choose a
+  # creature you can see within 60 ft: it regains 1d6 HP per two Druid levels,
+  # or takes 1d6 necrotic per two Druid levels (CON save for half)." — PHB 2024
+  - id: lands_aid
+    display_name: Land's Aid
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: bonus_action
+      cost: 1
+      resource: wild_shape
+      description: >
+        Expend a Wild Shape use: chosen creature within 60 ft regains 1d6 HP per
+        two Druid levels, or takes 1d6 necrotic per two Druid levels (CON save
+        negates half).
+
+  # "Circle Spells: Your mystical connection to the land infuses you with the
+  # ability to cast certain spells. Choose a terrain type; its spells are
+  # always prepared." — PHB 2024
+  - id: circle_spells_land
+    display_name: Circle Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      description: >
+        Always-prepared spells based on chosen terrain (Arctic, Coast, Desert,
+        Forest, Grassland, Mountain, Swamp, or Underdark).
+
+  # "Natural Recovery: You can recover expended spell slots as a Magic action.
+  # Total slot levels recovered can't exceed half your Druid level (round up).
+  # Can't recover 6th-level or higher slots. Once per Long Rest." — PHB 2024
+  - id: natural_recovery
+    display_name: Natural Recovery
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      recharge: long_rest
+      description: >
+        Magic action: recover expended spell slots totaling up to half Druid level
+        (round up). Max slot level 5. Once per Long Rest.
+
+  # "Nature's Ward: You are immune to the Poisoned condition, and you have
+  # Resistance to a damage type based on your terrain." — PHB 2024
+  - id: natures_ward
+    display_name: Nature's Ward
+    feature_type: condition_immunity_grant
+    unlock_level: 6
+    body:
+      condition: poisoned
+      description: >
+        Immune to Poisoned condition; gain resistance to a terrain-based
+        damage type.
+
+  # "Nature's Sanctuary: When a Beast or Plant creature attacks you, it must
+  # make a WIS save (DC = your spell save DC) or redirect its attack to
+  # another target. The creature is immune to this effect for 24 hours after
+  # succeeding." — PHB 2024
+  - id: natures_sanctuary
+    display_name: Nature's Sanctuary
+    feature_type: scripted_feature
+    unlock_level: 10
+    body:
+      description: >
+        Beasts and Plants that attack you must pass a WIS save (your spell DC)
+        or choose a different target.
+
+  # "Natural Magician: Your connection to the land deepens; you can prepare
+  # additional spells from your circle list and gain one use of Wild Shape
+  # back when you use Land's Aid." — PHB 2024
+  - id: natural_magician
+    display_name: Natural Magician
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: >
+        Prepare additional circle spells; regain one Wild Shape use whenever
+        you use Land's Aid.

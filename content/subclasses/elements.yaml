@@ -1,0 +1,97 @@
+schema_version: "0.1"
+content_type: subclass
+id: elements
+display_name: Warrior of the Elements
+parent_class: monk
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Warriors of the Elements tap into the power of the Elemental Planes, bending
+  air, earth, fire, and water to their will. They are living conduits of primal
+  energy, shaping the battlefield with raw elemental force.
+subclass_feature_levels: [3, 6, 11, 17]
+features:
+  # "Elemental Attunement: At the start of your turn, you can spend 1 Focus
+  # Point (no action required) to imbue yourself with elemental energy. The
+  # imbuing lasts for 1 minute. While imbued, you gain the following benefits:
+  # your reach increases by 10 feet; once per turn when you deal damage with
+  # an Unarmed Strike or a Monk weapon, you deal extra damage of the chosen
+  # element equal to one roll of your Martial Arts die; and difficult terrain
+  # extends 15 feet from you for your enemies." — PHB 2024
+  - id: elemental_attunement
+    display_name: Elemental Attunement
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      cost: 1
+      resource: focus_points
+      duration: 1_minute
+      description: >
+        Start of your turn, spend 1 Focus Point: for 1 minute, increase reach
+        by 10 ft, deal extra 1 Martial Arts die elemental damage once per turn
+        on Unarmed Strike or Monk weapon hits, and create difficult terrain
+        within 15 ft for enemies.
+
+  # "Elemental Burst: As a Magic action, you can spend 2 Focus Points to cause
+  # elemental energy to burst in a 20-foot cone. Each creature in that area
+  # must make a DEX saving throw. On a failed save, the creature takes 2d6
+  # damage of the chosen element. On a successful save, it takes half as much
+  # damage." — PHB 2024
+  - id: elemental_burst
+    display_name: Elemental Burst
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: action
+      cost: 2
+      resource: focus_points
+      area: 20ft_cone
+      saving_throw: DEX
+      damage_dice: 2d6
+      description: >
+        Spend 2 Focus Points: elemental energy bursts in a 20-ft cone. Each
+        creature in the area makes a DEX save, taking 2d6 elemental damage on
+        a failure or half on a success.
+
+  # "Stride of the Elements: While your Elemental Attunement is active, you
+  # also have a Fly Speed and Swim Speed equal to your Speed." — PHB 2024
+  - id: stride_of_the_elements
+    display_name: Stride of the Elements
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: >
+        While Elemental Attunement is active, you gain a Fly Speed and Swim
+        Speed each equal to your Walk Speed.
+
+  # "Elemental Epitome: While your Elemental Attunement is active, you also
+  # gain the following benefits: you gain resistance to the damage type of
+  # your chosen element; when you deal damage with your Unarmed Strikes or
+  # Monk weapons, you can replace the damage type with the type of your chosen
+  # element; and once per turn, you can deal extra elemental damage equal to
+  # three rolls of your Martial Arts die when you use Elemental Burst or on
+  # an attack." — PHB 2024
+  - id: elemental_epitome
+    display_name: Elemental Epitome
+    feature_type: scripted_feature
+    unlock_level: 11
+    body:
+      description: >
+        While Elemental Attunement is active: gain resistance to the chosen
+        element's damage type; replace any Unarmed Strike or Monk weapon damage
+        type with the chosen element; once per turn deal extra elemental damage
+        equal to three Martial Arts die rolls.
+
+  # "Empowered Elements: While your Elemental Attunement is active, attacks
+  # that you score a Critical Hit on deal maximum damage for the elemental
+  # extra damage. Additionally, you may choose a new element each time you
+  # activate Elemental Attunement." — PHB 2024
+  - id: empowered_elements
+    display_name: Empowered Elements
+    feature_type: passive_feature_grant
+    unlock_level: 17
+    body:
+      description: >
+        While Elemental Attunement is active, Critical Hits deal maximum damage
+        for all elemental bonus damage. You may freely choose a new element each
+        time you activate Elemental Attunement.

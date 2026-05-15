@@ -1,0 +1,85 @@
+schema_version: "0.1"
+content_type: subclass
+id: moon
+display_name: Circle of the Moon
+parent_class: druid
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Druids of the Circle of the Moon are fierce guardians of the wilds. Their
+  order gathers under the full moon to share news and trade warnings, and
+  their members can be found in nearly every land.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+  # "Circle Forms: Starting at 3rd level, you can use your Wild Shape to
+  # transform into a Beast with a CR equal to or less than your Druid level
+  # divided by 3 (rounded down, minimum CR 1). You also ignore the Swim Speed
+  # limitation of normal Wild Shape." — PHB 2024
+  - id: circle_forms
+    display_name: Circle Forms
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      description: >
+        Wild Shape into Beasts with CR up to your Druid level divided by 3
+        (minimum CR 1). At higher levels, also gain access to Elemental forms
+        (CR 5 Air, Earth, Fire, or Water Elemental at level 9).
+
+  # "Circle of the Moon Spells: Moonbeam is always prepared for you." — PHB 2024
+  - id: moon_spells
+    display_name: Circle of the Moon Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - moonbeam
+
+  # "Moonlight Step: As a Bonus Action, you can teleport up to 60 feet to an
+  # unoccupied space you can see. You then have Advantage on the next attack
+  # roll you make before the end of this turn. You can use this feature a
+  # number of times equal to your WIS modifier (minimum of once), and you
+  # regain all expended uses when you finish a Long Rest." — PHB 2024
+  - id: moonlight_step
+    display_name: Moonlight Step
+    feature_type: custom_action
+    unlock_level: 6
+    body:
+      action_type: bonus_action
+      recharge: long_rest
+      recharge_uses: WIS_modifier
+      description: >
+        Teleport up to 60 ft to an unoccupied space you can see. Gain Advantage
+        on the next attack roll you make before the end of this turn. WIS
+        modifier uses per Long Rest (minimum 1).
+
+  # "Lunar Form: While using Wild Shape, you gain the following benefits: you
+  # add your proficiency bonus to your CON saving throws; and whenever you hit
+  # a creature with an attack while in beast form, you can deal an extra 1d10
+  # Radiant or Necrotic damage (your choice)." — PHB 2024
+  - id: lunar_form
+    display_name: Lunar Form
+    feature_type: scripted_feature
+    unlock_level: 10
+    body:
+      description: >
+        While in Wild Shape: add proficiency bonus to CON saving throws; deal
+        an extra 1d10 Radiant or Necrotic damage (your choice) on each attack
+        hit.
+
+  # "Full Moon: Once on each of your turns while in Wild Shape, when you hit a
+  # creature with an attack, you can force that creature to make a CON saving
+  # throw against your spell save DC. On a failed save, the creature is
+  # Incapacitated until the end of its next turn." — PHB 2024
+  - id: full_moon
+    display_name: Full Moon
+    feature_type: scripted_feature
+    unlock_level: 14
+    body:
+      once_per_turn: true
+      trigger: wild_shape_attack_hit
+      saving_throw: CON
+      description: >
+        Once per turn while in Wild Shape, after hitting with an attack: the
+        target makes a CON save against your spell DC or becomes Incapacitated
+        until the end of its next turn.

@@ -1,0 +1,53 @@
+schema_version: "0.1"
+content_type: subclass
+id: arcane_trickster
+display_name: Arcane Trickster
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: rogue
+tags: [spellcasting, utility, versatile]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: sneak_attack
+  special_trait: one_third_spellcasting
+
+features:
+  - id: arcane_trickster_spellcasting
+    display_name: Spellcasting
+    feature_type: spellcasting
+    unlock_level: 3
+    body:
+      ability: INT
+      progression: one_third
+      description: One-third spellcasting progression using Intelligence. Spells drawn primarily from the Wizard list (enchantment and illusion).
+
+  - id: mage_hand_legerdemain
+    display_name: Mage Hand Legerdemain
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "Enhanced Mage Hand: invisible, can stow/retrieve objects from worn containers, pick locks, disarm traps — all as a Bonus Action. Contested by Perception."
+
+  - id: magical_ambush
+    display_name: Magical Ambush
+    feature_type: passive_feature_grant
+    unlock_level: 9
+    body:
+      description: If hidden when you cast a spell, the target has disadvantage on any saving throw it makes against the spell
+
+  - id: versatile_trickster
+    display_name: Versatile Trickster
+    feature_type: passive_feature_grant
+    unlock_level: 13
+    body:
+      description: Gain advantage on attack rolls against a creature within 5 feet of your Mage Hand
+
+  - id: spell_thief
+    display_name: Spell Thief
+    feature_type: passive_feature_grant
+    unlock_level: 17
+    body:
+      uses_per_long_rest: 1
+      description: "Reaction after a creature casts a spell targeting you: attempt to steal the spell. The caster makes a saving throw (their spellcasting ability vs. your spell save DC). On failure, they lose the spell and you learn it temporarily."
+
+resource_pools: []

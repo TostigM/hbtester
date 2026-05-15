@@ -1,0 +1,70 @@
+schema_version: "0.1"
+content_type: subclass
+id: soulknife
+display_name: Soulknife
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: rogue
+tags: [damage, psionic, versatile]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: sneak_attack
+  special_trait: psychic_blades
+
+features:
+  - id: psionic_energy_dice
+    display_name: Psionic Energy Dice
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      resource: psionic_energy_dice
+      die: d6
+      count_formula: "twice_proficiency_bonus"
+      refresh: short_or_long
+      description: Pool of d6s fueling psionic abilities
+
+  - id: psychic_blades
+    display_name: Psychic Blades
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "Manifest spectral blades as a free object interaction. Attack as a weapon (DEX + prof) dealing 1d6 + DEX psychic damage. As a Bonus Action, manifest a second blade for 1d4 + DEX psychic damage."
+
+  - id: soul_blades
+    display_name: Soul Blades
+    feature_type: passive_feature_grant
+    unlock_level: 9
+    body:
+      description: "Homing Strikes: When Psychic Blade misses, expend one Psionic Die to add its roll to the attack roll. Psychic Teleportation: Bonus Action — expend one Psionic Die to teleport up to 10 times the result in feet."
+
+  - id: psychic_veil
+    display_name: Psychic Veil
+    feature_type: passive_feature_grant
+    unlock_level: 13
+    body:
+      uses_per_long_rest: 1
+      description: "Become invisible for 1 hour or until you attack, cast a spell, or force a creature to make a saving throw. Can expend a Psionic Die to end invisibility and give the creature you were hiding from the Frightened condition."
+
+  - id: rend_mind
+    display_name: Rend Mind
+    feature_type: passive_feature_grant
+    unlock_level: 17
+    body:
+      uses_per_long_rest: 1
+      description: "When Psychic Blades deal Sneak Attack damage, the target must succeed on a WIS save (DC = 8 + prof + DEX mod) or be Stunned until end of your next turn. Alternatively, expend three Psionic Dice to trigger this without using your Sneak Attack."
+
+resource_pools:
+  - id: psionic_energy_dice
+    display_name: Psionic Energy Dice
+    max_size: 4
+    refresh: short_or_long
+    die_size: d6
+    scaling:
+      - level: 5
+        max_size: 6
+      - level: 9
+        max_size: 8
+      - level: 13
+        max_size: 10
+      - level: 17
+        max_size: 12

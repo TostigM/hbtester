@@ -1,0 +1,112 @@
+schema_version: "0.1"
+content_type: subclass
+id: aberrant_mind
+display_name: Aberrant Mind
+parent_class: sorcerer
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  An alien influence has wrapped its tendrils around your mind, giving you
+  psionic power. You can touch other minds with your telepathic gifts and
+  eventually reshape your body to take on an alien aspect.
+subclass_feature_levels: [3, 6, 14, 18]
+features:
+  # "Telepathic Speech: As a Bonus Action, you can form a telepathic connection
+  # between your mind and the mind of another creature you can see within 30
+  # feet of you. The connection lasts for a number of minutes equal to your
+  # CHA modifier (minimum 1 minute) or until you are Incapacitated. For the
+  # duration, you and the creature can communicate telepathically and you have
+  # Advantage on CHA checks to influence it. You can use this feature a number
+  # of times equal to your WIS modifier (minimum of once) and regain all uses
+  # on a Long Rest." — PHB 2024
+  - id: telepathic_speech
+    display_name: Telepathic Speech
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: bonus_action
+      recharge: long_rest
+      recharge_uses: WIS_modifier
+      description: >
+        Form a telepathic link with a creature you can see within 30 ft for
+        CHA modifier minutes (minimum 1). You and the target can communicate
+        telepathically; you have Advantage on CHA checks to influence it.
+        WIS modifier uses per Long Rest (minimum 1).
+
+  # "Psionic Spells: Arms of Hadar, Dissonant Whispers, Calm Emotions, Detect
+  # Thoughts, Hunger of Hadar, Sending, Evard's Black Tentacles, Summon
+  # Aberration, Telepathy, Rary's Telepathic Bond." — PHB 2024
+  - id: psionic_spells
+    display_name: Psionic Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - arms_of_hadar
+        - dissonant_whispers
+        - calm_emotions
+        - detect_thoughts
+        - hunger_of_hadar
+        - sending
+        - evards_black_tentacles
+        - summon_aberration
+        - telepathy
+        - rarys_telepathic_bond
+
+  # "Warping Implosion: As a Magic action, you can teleport to an unoccupied
+  # space you can see within 30 feet of you. Immediately after you disappear,
+  # each creature within 30 feet of the space you left must succeed on a STR
+  # saving throw against your spell save DC or take 3d10 Force damage and be
+  # pulled up to 30 feet toward the space you left. On a successful save,
+  # the creature takes half as much damage and isn't pulled." — PHB 2024
+  - id: warping_implosion
+    display_name: Warping Implosion
+    feature_type: custom_action
+    unlock_level: 6
+    body:
+      action_type: action
+      description: >
+        Teleport up to 30 ft. Each creature within 30 ft of your origin makes
+        a STR save or takes 3d10 Force damage and is pulled up to 30 ft toward
+        the space you left (half damage and no pull on success).
+
+  # "Physical Aberration: When you cast a Sorcerer spell, you can use a Bonus
+  # Action to cause one of the following aberrant effects on a creature you can
+  # see within 60 feet of you: the creature takes 3d12 Psychic damage on a
+  # failed INT save, or the creature gains the Frightened condition until the
+  # end of your next turn on a failed WIS save." — PHB 2024
+  - id: physical_aberration
+    display_name: Physical Aberration
+    feature_type: scripted_feature
+    unlock_level: 14
+    body:
+      action_type: bonus_action
+      trigger: cast_sorcerer_spell
+      description: >
+        When you cast a Sorcerer spell, use a Bonus Action to target a creature
+        within 60 ft: it takes 3d12 Psychic damage on a failed INT save, or
+        gains the Frightened condition until end of your next turn on a failed
+        WIS save (your choice of effect).
+
+  # "Create Thrall: You can touch an Incapacitated creature and attempt to
+  # subjugate it. The creature must make a CHA saving throw against your spell
+  # save DC. On a failed save, it is Charmed by you until you use this feature
+  # again or until it is more than 1 mile away from you. If the creature fails
+  # the save, you can also issue it telepathic commands (no action required)
+  # that it tries to follow. Creatures you Charm with spells while this feature
+  # is active don't make saving throws at the end of their turns to break free
+  # of the Charmed condition. Once you use this feature, you can't do so again
+  # until you finish a Long Rest." — PHB 2024
+  - id: create_thrall_aberrant
+    display_name: Create Thrall
+    feature_type: custom_action
+    unlock_level: 18
+    body:
+      action_type: action
+      recharge: long_rest
+      description: >
+        Touch an Incapacitated creature: it makes a CHA save or is Charmed by
+        you until you use this feature again or it is more than 1 mile away.
+        You can issue it telepathic commands. Creatures you Charm with spells
+        don't repeat their saves to break free. Once per Long Rest.

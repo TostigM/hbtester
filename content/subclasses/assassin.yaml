@@ -1,0 +1,51 @@
+schema_version: "0.1"
+content_type: subclass
+id: assassin
+display_name: Assassin
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: rogue
+tags: [damage, stealth, burst]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: sneak_attack
+  special_trait: assassinate_bonus_crits
+
+features:
+  - id: assassinate
+    display_name: Assassinate
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "Advantage on attack rolls against creatures that haven't taken a turn yet. Hits against surprised creatures are automatic critical hits."
+
+  - id: infiltration_expertise
+    display_name: Infiltration Expertise
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Spend 7 days to create a false identity; advantage on Deception checks to pass as the identity
+
+  - id: envenom_weapons
+    display_name: Envenom Weapons
+    feature_type: passive_feature_grant
+    unlock_level: 9
+    body:
+      uses_per_long_rest: 1
+      description: "Bonus Action: apply a deadly poison to your weapon. Creatures hit must succeed on a CON save (DC = 8 + prof + DEX mod) or take 2d6 poison damage and become Poisoned for 1 minute."
+
+  - id: impostor
+    display_name: Impostor
+    feature_type: passive_feature_grant
+    unlock_level: 13
+    body:
+      description: Unerringly mimic another creature's speech, handwriting, and behavior after 3 hours of study
+
+  - id: death_strike
+    display_name: Death Strike
+    feature_type: passive_feature_grant
+    unlock_level: 17
+    body:
+      description: "When you hit a surprised creature, it must succeed on a CON save (DC = 8 + prof + DEX mod) or take double damage from the attack."
+
+resource_pools: []

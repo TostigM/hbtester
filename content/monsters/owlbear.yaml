@@ -1,0 +1,55 @@
+schema_version: "0.1"
+content_type: monster
+id: owlbear
+display_name: Owlbear
+source: MM_2024
+author: Wizards of the Coast
+creature_type: monstrosity
+size: large
+alignment: null
+ac: 13
+ac_source: natural armor
+hp:
+  average: 59
+  formula: 7d10+21
+speed:
+  walk: 40
+abilities:
+  STR: 20
+  DEX: 12
+  CON: 17
+  INT: 3
+  WIS: 12
+  CHA: 7
+skill_proficiencies:
+  - skill: perception
+    bonus: 3
+challenge_rating: 3
+proficiency_bonus: 2
+senses:
+  darkvision: 60
+  passive_perception: 13
+languages: []
+traits:
+  - id: keen_sight_smell
+    display_name: Keen Sight and Smell
+    feature_type: passive_feature_grant
+    unlock_level: 0
+    body:
+      description: >
+        The owlbear has Advantage on Perception checks that rely on
+        sight or smell.
+actions:
+  - name: Multiattack
+    description: The owlbear makes two attacks — one with its Beak and one with its Claws.
+  - name: Beak
+    attack_bonus: 7
+    damage: "1d10+5 piercing"
+  - name: Claws
+    attack_bonus: 7
+    damage: "2d8+5 slashing"
+behavior_hints:
+  profile: monster_melee
+  multiattack: 2
+  damage_die: 8
+  damage_die_count: 2

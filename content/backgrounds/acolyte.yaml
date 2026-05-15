@@ -1,0 +1,19 @@
+schema_version: "0.1"
+content_type: background
+id: acolyte
+display_name: Acolyte
+source: PHB_2024
+author: Wizards of the Coast
+ability_score_increases:
+  mode: plus_2_plus_1
+  eligible_abilities: [INT, WIS, CHA]
+skill_proficiencies: [insight, religion]
+tool_proficiency: calligraphers_supplies
+origin_feat: magic_initiate_cleric
+starting_equipment:
+  - book (prayer book)
+  - holy symbol
+  - parchment (10 sheets)
+  - alms box
+  - incense (5 sticks)
+  - 8 gp

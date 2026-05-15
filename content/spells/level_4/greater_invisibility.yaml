@@ -1,0 +1,22 @@
+schema_version: "0.1"
+content_type: spell
+id: greater_invisibility
+display_name: Greater Invisibility
+source: PHB_2024
+author: Wizards of the Coast
+level: 4
+school: illusion
+casting_time: action
+range: touch
+components:
+  verbal: true
+  somatic: true
+duration: concentration_1_minute
+concentration: true
+class_lists: [wizard, sorcerer]
+intent_tags: [buff, combat, concentration, stealth]
+effects:
+  - type: condition_grant
+    condition: invisible
+    target: self_or_touched
+    duration: concentration_up_to_1_minute

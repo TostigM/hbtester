@@ -1,0 +1,22 @@
+schema_version: "0.1"
+content_type: feat
+id: healer
+display_name: Healer
+source: PHB_2024
+author: Wizards of the Coast
+feat_category: origin
+benefits:
+  - id: healer_stabilize
+    display_name: Stabilize
+    feature_type: passive_feature_grant
+    body:
+      description: As a Utilize action, use Healer's Kit to stabilize a creature with 0 HP (no check needed)
+  - id: healer_kit_heal
+    display_name: Healer's Kit Heal
+    feature_type: custom_action
+    body:
+      action_type: action
+      uses_per_rest: short_or_long
+      heal_formula: "1d6 + 4 + character_level"
+      requires: healer_kit
+      description: Once per rest, use Healer's Kit to restore HP to a living creature (not self)

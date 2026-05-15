@@ -1,0 +1,81 @@
+schema_version: "0.1"
+content_type: subclass
+id: stars
+display_name: Circle of Stars
+parent_class: druid
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Druids of the Circle of Stars draw power from constellations and the
+  sky above, accessing stellar magic to guide, heal, and strike foes.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+  # "Star Map: You have a star map, a Druidic focus and spellbook. While holding
+  # it, you have Guidance and Guiding Bolt always prepared (don't count against
+  # prepared spells), and can cast Guiding Bolt without expending a spell slot
+  # a number of times equal to your Wisdom modifier per Long Rest." — PHB 2024
+  - id: star_map
+    display_name: Star Map
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - guidance
+        - guiding_bolt
+      description: >
+        Guiding Bolt can be cast without a slot a number of times equal to
+        your WIS modifier per Long Rest.
+
+  # "Starry Form: When you Wild Shape, you can adopt a Starry Form instead of
+  # a beast. Choose Archer (Guiding Bolt as bonus action), Chalice (healing
+  # with spells), or Dragon (Concentration bonus and radiant damage)." — PHB 2024
+  - id: starry_form
+    display_name: Starry Form
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      description: >
+        When you use Wild Shape, you can assume a Starry Form (glowing
+        constellation). Choose Archer (bonus action Guiding Bolt 1d8+WIS),
+        Chalice (healing spells restore 1d8+WIS to self), or Dragon (no
+        Concentration drop on d20 roll of 9 or less; radiant damage bonus).
+
+  # "Cosmic Omen: Roll a d6 when you finish a Long Rest. On an odd result,
+  # you have Weal — once per turn, add 1d6 to an ally's d20 roll you can see.
+  # On an even result, Woe — once per turn, subtract 1d6 from a foe's d20 roll."
+  # — PHB 2024
+  - id: cosmic_omen
+    display_name: Cosmic Omen
+    feature_type: passive_roll_modifier
+    unlock_level: 6
+    body:
+      modifier_type: bonus_or_penalty_die
+      recharge: long_rest
+      description: >
+        After a Long Rest, roll d6. Odd = Weal (add 1d6 to one ally's d20
+        once per turn). Even = Woe (subtract 1d6 from one enemy's d20 once
+        per turn).
+
+  # "Twinkling Constellations: While in Starry Form, the benefits of your
+  # constellation upgrade: Archer's beam counts as 2d8+WIS, Chalice heals
+  # self and another, Dragon grants fly speed 20 ft." — PHB 2024
+  - id: twinkling_constellations
+    display_name: Twinkling Constellations
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: >
+        Starry Form upgrades: Archer deals 2d8+WIS radiant, Chalice heals
+        a second creature, Dragon grants 20-ft flying speed.
+
+  # "Full of Stars: While in Starry Form, you have resistance to Bludgeoning,
+  # Piercing, and Slashing damage." — PHB 2024
+  - id: full_of_stars
+    display_name: Full of Stars
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: >
+        While in Starry Form, you have resistance to Bludgeoning, Piercing,
+        and Slashing damage.

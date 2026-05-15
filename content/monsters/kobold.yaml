@@ -1,0 +1,47 @@
+schema_version: "0.1"
+content_type: monster
+id: kobold
+display_name: Kobold
+source: MM_2024
+author: Wizards of the Coast
+creature_type: humanoid
+size: small
+alignment: lawful_evil
+ac: 12
+ac_source: natural armor
+hp:
+  average: 5
+  formula: 2d6-2
+speed:
+  walk: 30
+abilities:
+  STR: 7
+  DEX: 15
+  CON: 9
+  INT: 8
+  WIS: 7
+  CHA: 8
+challenge_rating: "1/8"
+proficiency_bonus: 2
+senses:
+  darkvision: 60
+languages: [draconic, common]
+traits:
+  - id: pack_tactics
+    display_name: Pack Tactics
+    feature_type: passive_feature_grant
+    unlock_level: 0
+    body:
+      description: >
+        The kobold has Advantage on attack rolls against a creature if at
+        least one of the kobold's allies is adjacent to the creature and
+        not incapacitated.
+actions:
+  - name: Dagger
+    attack_bonus: 4
+    damage: "1d4+2 piercing"
+behavior_hints:
+  profile: monster_melee
+  multiattack: 1
+  damage_die: 4
+  damage_die_count: 1

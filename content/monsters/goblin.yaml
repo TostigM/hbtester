@@ -1,0 +1,50 @@
+schema_version: "0.1"
+content_type: monster
+id: goblin
+display_name: Goblin
+source: MM_2024
+author: Wizards of the Coast
+creature_type: humanoid
+size: small
+alignment: neutral_evil
+ac: 15
+ac_source: leather armor, shield
+hp:
+  average: 7
+  formula: 2d6
+speed:
+  walk: 30
+abilities:
+  STR: 8
+  DEX: 14
+  CON: 10
+  INT: 10
+  WIS: 8
+  CHA: 8
+challenge_rating: "1/4"
+proficiency_bonus: 2
+senses:
+  darkvision: 60
+languages: [goblin, common]
+traits:
+  - id: nimble_escape
+    display_name: Nimble Escape
+    feature_type: passive_feature_grant
+    unlock_level: 0
+    body:
+      description: >
+        The goblin can take the Disengage or Hide action as a Bonus Action
+        on each of its turns.
+actions:
+  - name: Scimitar
+    attack_bonus: 4
+    damage: "1d6+2 slashing"
+  - name: Shortbow
+    attack_bonus: 4
+    damage: "1d6+2 piercing"
+    range: 80
+behavior_hints:
+  profile: monster_melee
+  multiattack: 1
+  damage_die: 6
+  damage_die_count: 1

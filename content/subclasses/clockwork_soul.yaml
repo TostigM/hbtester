@@ -1,0 +1,115 @@
+schema_version: "0.1"
+content_type: subclass
+id: clockwork_soul
+display_name: Clockwork Soul
+parent_class: sorcerer
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  The cosmic force of order has suffused you with magic. That power arises from
+  Mechanus or a realm like it, with its endless clocks and perfect equilibrium.
+  You, or someone from your lineage, might have become bound to this plane of
+  ultimate law.
+subclass_feature_levels: [3, 6, 14, 18]
+features:
+  # "Restore Balance: When a creature you can see within 60 feet of you is
+  # about to roll a d20 with Advantage or Disadvantage, you can use your
+  # Reaction to prevent the roll from being affected by Advantage and
+  # Disadvantage. You can use this feature a number of times equal to your
+  # proficiency bonus, and you regain all expended uses when you finish a
+  # Long Rest." — PHB 2024
+  - id: restore_balance
+    display_name: Restore Balance
+    feature_type: reaction
+    unlock_level: 3
+    body:
+      trigger: creature_rolls_with_advantage_or_disadvantage
+      recharge: long_rest
+      recharge_uses: proficiency_bonus
+      description: >
+        Reaction: when a creature within 60 ft is about to roll with Advantage
+        or Disadvantage, negate that Advantage or Disadvantage. Proficiency
+        bonus uses per Long Rest.
+
+  # "Clockwork Spells: Alarm, Protection from Evil and Good, Aid, Lesser
+  # Restoration, Dispel Magic, Protection from Energy, Freedom of Movement,
+  # Summon Construct, Greater Restoration, Wall of Force." — PHB 2024
+  - id: clockwork_spells
+    display_name: Clockwork Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - alarm
+        - protection_from_evil_and_good
+        - aid
+        - lesser_restoration
+        - dispel_magic
+        - protection_from_energy
+        - freedom_of_movement
+        - summon_construct
+        - greater_restoration
+        - wall_of_force
+
+  # "Bastion of Law: As a Magic action, you can expend 1 to 5 Sorcery Points
+  # to create a magical ward around yourself or another creature you can see
+  # within 30 feet of you. The ward lasts until you finish a Long Rest or until
+  # you use this feature again. The ward is represented by a number of d8s equal
+  # to the number of Sorcery Points spent to create it. When the warded creature
+  # takes damage, it can expend a number of those dice, roll them, and reduce the
+  # damage taken by the total rolled on those dice." — PHB 2024
+  - id: bastion_of_law
+    display_name: Bastion of Law
+    feature_type: custom_action
+    unlock_level: 6
+    body:
+      action_type: action
+      cost: 1_to_5
+      resource: sorcery_points
+      description: >
+        Spend 1–5 Sorcery Points: create a magical ward on yourself or a
+        creature within 30 ft. The ward has a pool of d8s equal to points spent.
+        When the protected creature takes damage, expend and roll any number of
+        those dice to reduce the damage. Ward lasts until Long Rest or next use.
+
+  # "Trance of Order: As a Bonus Action, you enter a heightened state of
+  # clockwork consciousness for 1 minute. Until the trance ends, attack rolls
+  # against you can't benefit from Advantage, and whenever you make an attack
+  # roll, ability check, or saving throw and roll a 9 or lower on the d20, you
+  # can treat the roll as a 10. Once you use this feature, you can't use it
+  # again until you finish a Long Rest." — PHB 2024
+  - id: trance_of_order
+    display_name: Trance of Order
+    feature_type: custom_action
+    unlock_level: 14
+    body:
+      action_type: bonus_action
+      recharge: long_rest
+      duration: 1_minute
+      description: >
+        Enter a trance for 1 minute. Attacks against you can't benefit from
+        Advantage. On any d20 roll you make, treat results of 9 or lower as
+        10. Once per Long Rest.
+
+  # "Clockwork Cavalcade: As a Magic action, you summon spirits of order to
+  # create a 30-foot cube of clockwork energy centered on a point within 60
+  # feet of you. The cube lasts for 1 minute or until you dismiss it. For the
+  # duration: creatures you choose in the cube regain 4d8 + 8 HP; magical
+  # effects within the cube that are 6th level or lower end; nonmagical objects
+  # that are broken or damaged in the cube are repaired. Once you use this
+  # feature, you can't use it again until you finish a Long Rest." — PHB 2024
+  - id: clockwork_cavalcade
+    display_name: Clockwork Cavalcade
+    feature_type: custom_action
+    unlock_level: 18
+    body:
+      action_type: action
+      recharge: long_rest
+      area: 30ft_cube
+      duration: 1_minute
+      description: >
+        Summon a 30-ft cube of clockwork energy within 60 ft for 1 minute.
+        Creatures you choose in the area regain 4d8 + 8 HP; magical effects of
+        6th level or lower in the area end; broken objects in the area are
+        repaired. Once per Long Rest.

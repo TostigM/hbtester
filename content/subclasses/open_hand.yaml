@@ -1,0 +1,64 @@
+schema_version: "0.1"
+content_type: subclass
+id: open_hand
+display_name: Warrior of the Open Hand
+parent_class: monk
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Warriors of the Open Hand master unarmed combat, using their strikes to
+  unbalance, topple, and push enemies with devastating precision.
+subclass_feature_levels: [3, 6, 11, 17]
+features:
+  # "Open Hand Technique: Whenever you hit with your Flurry of Blows, you can
+  # impose one of the following: forced movement 15 ft, knocked Prone (DEX save
+  # DC negates), or Stunned until end of its next turn (CON save negates)."
+  # — PHB 2024
+  - id: open_hand_technique
+    display_name: Open Hand Technique
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: >
+        When you hit with Flurry of Blows, choose one: push the target 15 ft,
+        knock it Prone (DEX save negates), or prevent it from taking reactions
+        until the start of your next turn.
+
+  # "Wholeness of Body: As a Bonus Action, regain Focus Points equal to your
+  # Proficiency Bonus. Once per Long Rest." — PHB 2024
+  - id: wholeness_of_body
+    display_name: Wholeness of Body
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      recharge: long_rest
+      description: >
+        Bonus Action: Regain Focus Points equal to your Proficiency Bonus.
+        Once per Long Rest.
+
+  # "Fleet Step: When you take the Dash action, your Step of the Wind costs
+  # 0 Focus Points for the rest of the turn." — PHB 2024
+  - id: fleet_step
+    display_name: Fleet Step
+    feature_type: passive_feature_grant
+    unlock_level: 11
+    body:
+      description: >
+        When you Dash, Step of the Wind costs 0 Focus Points for the rest
+        of that turn.
+
+  # "Quivering Palm: When you hit with an Unarmed Strike, spend 4 Focus Points
+  # to set up vibrations in the target. At any later time, use a Bonus Action
+  # to end them, forcing a CON save or dropping to 0 HP. Constructs and Undead
+  # are immune." — PHB 2024
+  - id: quivering_palm
+    display_name: Quivering Palm
+    feature_type: scripted_feature
+    unlock_level: 17
+    body:
+      cost: 4
+      resource: focus_points
+      description: >
+        When you hit with an Unarmed Strike, spend 4 Focus Points. Later use
+        a Bonus Action: target makes a CON save (your Ki DC) or drops to 0 HP.
+        Constructs and Undead are immune.

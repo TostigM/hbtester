@@ -1,0 +1,43 @@
+schema_version: "0.1"
+content_type: subclass
+id: abjurer
+display_name: School of Abjuration
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: wizard
+tags: [defensive, protective, ward]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: damage_spell
+  special_trait: arcane_ward
+
+features:
+  - id: arcane_ward
+    display_name: Arcane Ward
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "When you cast an Abjuration spell using a spell slot, create a ward with HP = twice your Wizard level + your INT modifier. The ward absorbs damage before your HP. Casting another Abjuration spell restores 2× spell level HP to the ward."
+
+  - id: projected_ward
+    display_name: Projected Ward
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: Use Reaction to have your Arcane Ward absorb damage dealt to a creature within 30 feet
+
+  - id: improved_abjuration
+    display_name: Improved Abjuration
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: Add proficiency bonus to Abjuration spell saving throws you impose
+
+  - id: spell_resistance
+    display_name: Spell Resistance
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: Advantage on saving throws against spells; resistance to spell damage
+
+resource_pools: []

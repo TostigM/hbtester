@@ -1,0 +1,58 @@
+schema_version: "0.1"
+content_type: subclass
+id: evoker
+display_name: Evoker
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: wizard
+tags: [damage, aoe, blaster]
+complexity_rating: low
+behavior_hints:
+  preferred_action: high_damage_spell
+  aoe_targeting: maximize_enemies_exclude_allies
+
+features:
+  - id: evocation_savant
+    display_name: Evocation Savant
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Copy Evocation spells into spellbook at half the normal cost
+
+  - id: sculpt_spells
+    display_name: Sculpt Spells
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      description: When casting an Evocation spell, choose up to 1 + spell_level creatures to automatically succeed on the save and take no damage
+
+  - id: potent_cantrip
+    display_name: Potent Cantrip
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: Creatures that succeed the save against your damaging cantrip take half damage
+
+  - id: empowered_evocation
+    display_name: Empowered Evocation
+    feature_type: passive_stat_modifier
+    unlock_level: 10
+    body:
+      stat: spell_damage
+      modifier_type: bonus
+      amount_formula: INT_mod
+      applies_to: wizard_evocation_spells
+
+  - id: overchannel
+    display_name: Overchannel
+    feature_type: scripted_feature
+    unlock_level: 14
+    body:
+      description: Deal maximum damage with 5th-level or lower spells at cost of necrotic self-damage on subsequent uses
+
+  - id: signature_evocations
+    display_name: Signature Evocations
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: Prepare two Evocation spells that don't count against your limit; cast each once per short rest for free

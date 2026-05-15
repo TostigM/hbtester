@@ -1,0 +1,85 @@
+schema_version: "0.1"
+content_type: subclass
+id: fiend
+display_name: The Fiend
+parent_class: warlock
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  You have made a bargain with a fiend from the lower planes, gaining
+  dark magic and infernal resilience in exchange for service to your patron.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+  # "Patron Spells: Burning Hands, Command, Blindness/Deafness, Scorching Ray,
+  # Fireball, Stinking Cloud, Fire Shield, Wall of Fire, Flame Strike,
+  # Hallow." — PHB 2024
+  - id: fiend_patron_spells
+    display_name: Patron Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - burning_hands
+        - command
+        - blindness_deafness
+        - scorching_ray
+        - fireball
+        - stinking_cloud
+        - fire_shield
+        - wall_of_fire
+        - flame_strike
+        - hallow
+
+  # "Dark One's Blessing: When you reduce a hostile creature to 0 HP, gain
+  # temporary HP equal to your CHA modifier + your Warlock level (minimum 1)."
+  # — PHB 2024
+  - id: dark_ones_blessing
+    display_name: Dark One's Blessing
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: >
+        When you reduce a hostile creature to 0 HP, gain temporary HP equal
+        to CHA modifier + Warlock level (minimum 1).
+
+  # "Dark One's Own Luck: When you make an ability check or saving throw, spend
+  # 1 use of this feature to add 1d10 to the roll. Once per Short or Long Rest."
+  # — PHB 2024
+  - id: dark_ones_own_luck
+    display_name: Dark One's Own Luck
+    feature_type: passive_roll_modifier
+    unlock_level: 6
+    body:
+      modifier_type: bonus_die
+      recharge: short_or_long_rest
+      description: >
+        Once per Short/Long Rest, when you make an ability check or saving
+        throw, add 1d10 to the result.
+
+  # "Fiendish Resilience: After a Short or Long Rest, choose a damage type.
+  # You gain resistance to that type until you choose a different one."
+  # — PHB 2024
+  - id: fiendish_resilience
+    display_name: Fiendish Resilience
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      recharge: short_or_long_rest
+      description: >
+        After each Short/Long Rest, choose a damage type. Gain resistance
+        to that type until you use this feature again.
+
+  # "Hurl Through Hell: Once per Long Rest, when you hit a creature with an
+  # attack, teleport it through the lower planes. At the start of your next
+  # turn it returns and takes 10d10 Psychic damage (no save)." — PHB 2024
+  - id: hurl_through_hell
+    display_name: Hurl Through Hell
+    feature_type: scripted_feature
+    unlock_level: 14
+    body:
+      recharge: long_rest
+      description: >
+        Once per Long Rest, when you hit with an attack: teleport the target
+        to the lower planes. On your next turn it returns, taking 10d10 Psychic
+        damage.

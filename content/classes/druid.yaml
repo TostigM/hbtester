@@ -1,0 +1,131 @@
+schema_version: "0.1"
+content_type: class
+id: druid
+display_name: Druid
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d8
+primary_ability_options: [WIS]
+saving_throw_proficiencies: [INT, WIS]
+spellcasting_ability: WIS
+spellcasting_progression: full
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: [light, medium, shields]
+  weapons: [simple]
+  tools: [herbalism_kit]
+  saving_throws: [INT, WIS]
+  skills_choose: 2
+  skills_available:
+    - arcana
+    - animal_handling
+    - insight
+    - medicine
+    - nature
+    - perception
+    - religion
+    - survival
+features:
+  - id: druidic
+    display_name: Druidic
+    feature_type: passive_feature_grant
+    unlock_level: 1
+    body:
+      description: >
+        You know the secret Druidic language and can leave hidden messages
+        in nature that only other Druids can read.
+
+  - id: druid_spellcasting
+    display_name: Spellcasting
+    feature_type: spellcasting
+    unlock_level: 1
+    body:
+      ability: WIS
+      progression: full
+      prepared: true
+      prep_formula: "level + WIS_mod"
+      ritual_casting: true
+
+  - id: primal_order
+    display_name: Primal Order
+    feature_type: passive_feature_grant
+    unlock_level: 1
+    body:
+      description: >
+        Choose Magician (gain a Druid cantrip + Arcana proficiency) or
+        Warden (gain Martial Weapons proficiency + medium armor).
+
+  # "Wild Shape: As a Bonus Action, assume a Beast form you have learned.
+  # You can transform a number of times equal to your WIS modifier per Short
+  # or Long Rest." — PHB 2024
+  - id: wild_shape
+    display_name: Wild Shape
+    feature_type: wild_shape
+    unlock_level: 2
+    body:
+      uses_formula: "WIS_mod"
+      restore: short_or_long_rest
+      cr_limit_scaling:
+        - level: 2
+          cr: "1/4"
+        - level: 4
+          cr: "1/2"
+        - level: 8
+          cr: 1
+
+  - id: wild_companion
+    display_name: Wild Companion
+    feature_type: passive_feature_grant
+    unlock_level: 2
+    body:
+      description: >
+        Expend a use of Wild Shape to cast Find Familiar without a spell slot.
+
+  - id: druid_subclass
+    display_name: Druid Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Druid subclass (Druid Circle)
+
+  - id: wild_resurgence
+    display_name: Wild Resurgence
+    feature_type: passive_feature_grant
+    unlock_level: 5
+    body:
+      description: >
+        Once per Long Rest, expend a spell slot to regain a Wild Shape use;
+        or expend a Wild Shape use to regain a 1st-level spell slot.
+
+  - id: elemental_fury
+    display_name: Elemental Fury
+    feature_type: scripted_feature
+    unlock_level: 7
+    body:
+      description: >
+        Choose Potent Spellcasting (add WIS mod to Druid cantrip damage) or
+        Primal Strike (Wild Shape attacks count as magical and deal extra 1d6
+        elemental damage).
+
+  - id: improved_elemental_fury
+    display_name: Improved Elemental Fury
+    feature_type: passive_feature_grant
+    unlock_level: 15
+    body:
+      description: Elemental Fury choice improves; extra die becomes 2d6.
+
+  - id: beast_spells
+    display_name: Beast Spells
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: Cast Druid spells while in Wild Shape form.
+
+  - id: archdruid
+    display_name: Archdruid
+    feature_type: passive_feature_grant
+    unlock_level: 20
+    body:
+      description: >
+        Unlimited Wild Shape uses. Wild Shape forms gain +3 to attack rolls,
+        save DCs, and check bonuses.

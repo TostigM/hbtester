@@ -1,0 +1,14 @@
+schema_version: "0.1"
+content_type: feat
+id: tough
+display_name: Tough
+source: PHB_2024
+author: Wizards of the Coast
+feat_category: origin
+benefits:
+  - id: tough_hp_bonus
+    display_name: HP Increase
+    feature_type: hp_bonus_per_level
+    body:
+      amount: 2
+      description: "HP max increases by 2x character level when taken; +2 per level thereafter"

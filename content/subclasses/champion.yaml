@@ -1,0 +1,50 @@
+schema_version: "0.1"
+content_type: subclass
+id: champion
+display_name: Champion
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: fighter
+tags: [damage, simple, reliable]
+complexity_rating: simple
+behavior_hints:
+  preferred_action: attack
+  special_trait: improved_critical
+
+features:
+  - id: improved_critical
+    display_name: Improved Critical
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: "Weapon attacks score a critical hit on a roll of 19 or 20."
+
+  - id: remarkable_athlete
+    display_name: Remarkable Athlete
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: "Add half your proficiency bonus to Strength, Dexterity, and Constitution checks that don't already use your proficiency bonus. Minimum running jump distance increases by your Strength modifier."
+
+  - id: additional_fighting_style
+    display_name: Additional Fighting Style
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: "Choose a second Fighting Style option."
+
+  - id: superior_critical
+    display_name: Superior Critical
+    feature_type: passive_feature_grant
+    unlock_level: 15
+    body:
+      description: "Weapon attacks score a critical hit on a roll of 18, 19, or 20."
+
+  - id: survivor
+    display_name: Survivor
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: "Regain hit points equal to 5 + your Constitution modifier at the start of your turn if you have no more than half your hit points remaining."
+
+resource_pools: []

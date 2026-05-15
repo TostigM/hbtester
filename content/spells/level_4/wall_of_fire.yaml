@@ -1,0 +1,30 @@
+schema_version: "0.1"
+content_type: spell
+id: wall_of_fire
+display_name: Wall of Fire
+source: PHB_2024
+author: Wizards of the Coast
+level: 4
+school: evocation
+casting_time: action
+range: 120_feet
+components:
+  verbal: true
+  somatic: true
+  material: true
+  material_description: piece of phosphorus
+duration: concentration_1_minute
+concentration: true
+class_lists: [wizard, sorcerer, druid]
+intent_tags: [damage, aoe, control, concentration, combat]
+upcast_scaling:
+  - slot_level: 5
+    changes:
+      damage: 5d8
+effects:
+  - type: damage
+    damage_type: fire
+    damage_formula: "4d8"
+    trigger: enter_or_start_turn_in_wall
+    save: DEX
+    save_on_success: no_damage

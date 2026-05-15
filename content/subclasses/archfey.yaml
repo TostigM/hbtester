@@ -1,0 +1,108 @@
+schema_version: "0.1"
+content_type: subclass
+id: archfey
+display_name: The Archfey
+parent_class: warlock
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Your pact is with a lord or lady of the fey — a being of formidable power who
+  holds sway over enchantments and illusions. Such beings desire mortals who can
+  act as their agents in the mortal world, and who are compelling enough to do so.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+  # "Patron Spells: Faerie Fire, Sleep, Calm Emotions, Phantasmal Force, Blink,
+  # Plant Growth, Dominate Beast, Greater Invisibility, Dominate Person,
+  # Seeming." — PHB 2024
+  - id: archfey_patron_spells
+    display_name: Patron Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - faerie_fire
+        - sleep
+        - calm_emotions
+        - phantasmal_force
+        - blink
+        - plant_growth
+        - dominate_beast
+        - greater_invisibility
+        - dominate_person
+        - seeming
+
+  # "Steps of the Fey: You can cast Misty Step without expending a spell slot.
+  # You can do so a number of times equal to your CHA modifier (minimum of once),
+  # and you regain all expended uses when you finish a Short or Long Rest. In
+  # addition, whenever you cast Misty Step, you can choose one of the following
+  # additional effects: Refreshing Step — immediately after you teleport, one
+  # creature you can see within 10 feet of you gains 1d10 Temporary HP; or
+  # Taunting Step — creatures within 5 feet of the space you left must succeed
+  # on a WIS saving throw against your spell save DC or have Disadvantage on
+  # attack rolls against creatures other than you until the start of your next
+  # turn." — PHB 2024
+  - id: steps_of_the_fey
+    display_name: Steps of the Fey
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      spell: misty_step
+      recharge: short_rest
+      recharge_uses: CHA_modifier
+      description: >
+        Cast Misty Step without a spell slot CHA modifier times per Short or
+        Long Rest (minimum 1). When you cast Misty Step, optionally choose an
+        additional effect: a creature within 10 ft gains 1d10 Temp HP
+        (Refreshing Step), or creatures within 5 ft of the space you left make
+        a WIS save or have Disadvantage on attacks against others until start
+        of your next turn (Taunting Step).
+
+  # "Misty Escape: When you take damage, you can use your Reaction to turn
+  # Invisible and teleport up to 60 feet to an unoccupied space you can see.
+  # You remain Invisible until the start of your next turn or until you attack,
+  # make a damage roll, or cast a spell. Once you use this feature, you can't
+  # use it again until you finish a Short or Long Rest." — PHB 2024
+  - id: misty_escape
+    display_name: Misty Escape
+    feature_type: reaction
+    unlock_level: 6
+    body:
+      trigger: take_damage
+      recharge: short_rest
+      description: >
+        Reaction: when you take damage, teleport up to 60 ft and become
+        Invisible until the start of your next turn or until you attack, deal
+        damage, or cast a spell. Once per Short or Long Rest.
+
+  # "Beguiling Defenses: Your patron teaches you how to guard your mind and
+  # befuddle those who would influence you. You have Immunity to the Charmed
+  # condition. In addition, if another creature tries to Charm you, you can use
+  # your Reaction to attempt to turn the enchantment back. The creature must
+  # succeed on a CHA saving throw against your spell save DC or be Charmed by
+  # you for 1 minute or until the creature takes any damage." — PHB 2024
+  - id: beguiling_defenses
+    display_name: Beguiling Defenses
+    feature_type: condition_immunity_grant
+    unlock_level: 10
+    body:
+      condition: charmed
+      description: >
+        Immune to the Charmed condition. When a creature tries to Charm you,
+        Reaction: that creature makes a CHA save or becomes Charmed by you for
+        1 minute or until it takes damage.
+
+  # "Bewitching Magic: Your patron bestows on you the ability to weave fey
+  # magic into your enchantments and illusions. Immediately after you cast an
+  # Enchantment or Illusion spell using a spell slot, you can cast Misty Step
+  # as a Bonus Action without expending a spell slot." — PHB 2024
+  - id: bewitching_magic
+    display_name: Bewitching Magic
+    feature_type: scripted_feature
+    unlock_level: 14
+    body:
+      trigger: cast_enchantment_or_illusion_spell_with_slot
+      description: >
+        Immediately after casting an Enchantment or Illusion spell using a
+        spell slot, cast Misty Step as a Bonus Action without expending a
+        spell slot.

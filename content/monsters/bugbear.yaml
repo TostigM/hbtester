@@ -1,0 +1,63 @@
+schema_version: "0.1"
+content_type: monster
+id: bugbear
+display_name: Bugbear
+source: MM_2024
+author: Wizards of the Coast
+creature_type: humanoid
+size: medium
+alignment: chaotic_evil
+ac: 16
+ac_source: hide armor, shield
+hp:
+  average: 27
+  formula: 5d8+5
+speed:
+  walk: 30
+abilities:
+  STR: 15
+  DEX: 14
+  CON: 13
+  INT: 8
+  WIS: 11
+  CHA: 9
+skill_proficiencies:
+  - skill: stealth
+    bonus: 6
+  - skill: survival
+    bonus: 2
+challenge_rating: 1
+proficiency_bonus: 2
+senses:
+  darkvision: 60
+languages: [goblin, common]
+traits:
+  - id: surprise_attack
+    display_name: Surprise Attack
+    feature_type: passive_feature_grant
+    unlock_level: 0
+    body:
+      description: >
+        If the bugbear surprises a creature and hits it with an attack
+        on the first round, the target takes an extra 2d6 damage.
+  - id: brute
+    display_name: Brute
+    feature_type: passive_feature_grant
+    unlock_level: 0
+    body:
+      description: >
+        A melee weapon deals one extra die of its damage when the bugbear
+        hits with it (included in the attack).
+actions:
+  - name: Morningstar
+    attack_bonus: 4
+    damage: "2d8+2 piercing"
+  - name: Javelin
+    attack_bonus: 4
+    damage: "2d6+2 piercing"
+    range: 30
+behavior_hints:
+  profile: monster_melee
+  multiattack: 1
+  damage_die: 8
+  damage_die_count: 2

@@ -1,0 +1,156 @@
+schema_version: "0.1"
+content_type: class
+id: barbarian
+display_name: Barbarian
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d12
+primary_ability_options: [STR]
+saving_throw_proficiencies: [STR, CON]
+spellcasting_ability: null
+spellcasting_progression: null
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: [light, medium, shields]
+  weapons: [simple, martial]
+  tools: []
+  saving_throws: [STR, CON]
+  skills_choose: 2
+  skills_available:
+    - animal_handling
+    - athletics
+    - intimidation
+    - nature
+    - perception
+    - survival
+features:
+  - id: rage
+    display_name: Rage
+    feature_type: rage
+    unlock_level: 1
+    body:
+      uses_per_long_rest: 2
+      scaling:
+        - level: 3
+          uses: 3
+        - level: 6
+          uses: 4
+        - level: 12
+          uses: 5
+        - level: 17
+          uses: 6
+      bonus_damage: 2
+      damage_scaling:
+        - level: 9
+          bonus_damage: 3
+        - level: 16
+          bonus_damage: 4
+
+  - id: unarmored_defense_barbarian
+    display_name: Unarmored Defense
+    feature_type: unarmored_defense
+    unlock_level: 1
+    body:
+      formula: "10 + DEX_mod + CON_mod"
+      description: While not wearing armor, AC = 10 + DEX + CON modifier
+
+  - id: weapon_mastery_barbarian
+    display_name: Weapon Mastery
+    feature_type: weapon_mastery_selection
+    unlock_level: 1
+    body:
+      initial_count: 2
+      scaling:
+        - level: 4
+          count: 3
+
+  - id: reckless_attack
+    display_name: Reckless Attack
+    feature_type: passive_feature_grant
+    unlock_level: 2
+    body:
+      description: Gain advantage on STR attack rolls this turn; attacks against you have advantage until next turn
+
+  - id: danger_sense
+    display_name: Danger Sense
+    feature_type: passive_feature_grant
+    unlock_level: 2
+    body:
+      description: Advantage on DEX saving throws against visible effects
+
+  - id: barbarian_subclass
+    display_name: Barbarian Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Barbarian subclass (Primal Path)
+
+  - id: primal_knowledge
+    display_name: Primal Knowledge
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Gain proficiency in one additional skill from the Barbarian list
+
+  - id: extra_attack_barbarian
+    display_name: Extra Attack
+    feature_type: extra_attack
+    unlock_level: 5
+    body:
+      count: 1
+
+  - id: fast_movement
+    display_name: Fast Movement
+    feature_type: passive_feature_grant
+    unlock_level: 5
+    body:
+      description: Speed increases by 10 feet while not wearing heavy armor
+
+  - id: feral_instinct
+    display_name: Feral Instinct
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: Advantage on Initiative rolls; can enter Rage on the surprise round
+
+  - id: instinctive_pounce
+    display_name: Instinctive Pounce
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: Move up to half speed as part of entering Rage
+
+  - id: brutal_strike
+    display_name: Brutal Strike
+    feature_type: passive_feature_grant
+    unlock_level: 9
+    body:
+      description: Forgo advantage from Reckless Attack to deal 1d10 extra damage on one hit; improves at level 13 and 17
+
+  - id: relentless_rage
+    display_name: Relentless Rage
+    feature_type: passive_feature_grant
+    unlock_level: 11
+    body:
+      description: When reduced to 0 HP while raging, make a DC 10 CON save (DC +5 per use) to drop to 1 HP instead
+
+  - id: persistent_rage
+    display_name: Persistent Rage
+    feature_type: passive_feature_grant
+    unlock_level: 15
+    body:
+      description: Rage no longer ends early; can now enter Rage as a Bonus Action
+
+  - id: indomitable_might
+    display_name: Indomitable Might
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: Minimum result for STR checks equals STR score
+
+  - id: primal_champion
+    display_name: Primal Champion
+    feature_type: passive_feature_grant
+    unlock_level: 20
+    body:
+      description: STR and CON each increase by 4 (max 25)

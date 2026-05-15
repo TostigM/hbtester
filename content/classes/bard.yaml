@@ -1,0 +1,113 @@
+schema_version: "0.1"
+content_type: class
+id: bard
+display_name: Bard
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d8
+primary_ability_options: [CHA]
+saving_throw_proficiencies: [DEX, CHA]
+spellcasting_ability: CHA
+spellcasting_progression: full
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: [light]
+  weapons: [simple, hand_crossbow, longsword, rapier, shortsword]
+  tools: [three_musical_instruments]
+  saving_throws: [DEX, CHA]
+  skills_choose: 3
+  skills_available:
+    - acrobatics
+    - animal_handling
+    - arcana
+    - athletics
+    - deception
+    - history
+    - insight
+    - intimidation
+    - investigation
+    - medicine
+    - nature
+    - perception
+    - performance
+    - persuasion
+    - religion
+    - sleight_of_hand
+    - stealth
+    - survival
+features:
+  - id: bardic_inspiration
+    display_name: Bardic Inspiration
+    feature_type: bardic_inspiration
+    unlock_level: 1
+    body:
+      die: d6
+      uses_per_long_rest: CHA_mod
+      scaling:
+        - level: 5
+          die: d8
+          refresh: short_or_long
+        - level: 10
+          die: d10
+        - level: 15
+          die: d12
+
+  - id: bard_spellcasting
+    display_name: Spellcasting
+    feature_type: spellcasting
+    unlock_level: 1
+    body:
+      ability: CHA
+      description: Full spellcasting progression using Charisma
+
+  - id: expertise_bard
+    display_name: Expertise
+    feature_type: expertise
+    unlock_level: 2
+    body:
+      initial_count: 2
+      scaling:
+        - level: 10
+          count: 4
+
+  - id: jack_of_all_trades
+    display_name: Jack of All Trades
+    feature_type: passive_feature_grant
+    unlock_level: 2
+    body:
+      description: Add half proficiency bonus to ability checks not using proficiency
+
+  - id: bard_subclass
+    display_name: Bard Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Bard subclass (Bard College)
+
+  - id: countercharm
+    display_name: Countercharm
+    feature_type: passive_feature_grant
+    unlock_level: 6
+    body:
+      description: Use action to start performance granting advantage on saves vs. frightened/charmed for nearby allies
+
+  - id: font_of_inspiration
+    display_name: Font of Inspiration
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: Regain all uses of Bardic Inspiration on a short or long rest
+
+  - id: superior_inspiration
+    display_name: Superior Inspiration
+    feature_type: passive_feature_grant
+    unlock_level: 9
+    body:
+      description: If you have no uses of Bardic Inspiration at initiative, regain one use
+
+  - id: words_of_creation
+    display_name: Words of Creation
+    feature_type: passive_feature_grant
+    unlock_level: 20
+    body:
+      description: Know and can always cast Power Word Heal and Power Word Kill without expending spell slots

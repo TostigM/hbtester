@@ -1,0 +1,24 @@
+schema_version: "0.1"
+content_type: spell
+id: revivify
+display_name: Revivify
+source: PHB_2024
+author: Wizards of the Coast
+level: 3
+school: necromancy
+casting_time: action
+range: touch
+components:
+  verbal: true
+  somatic: true
+  material: true
+  material_description: diamonds worth 300 gp
+  material_consumed: true
+duration: instantaneous
+concentration: false
+class_lists: [cleric, paladin]
+intent_tags: [healing, utility]
+effects:
+  - type: revive
+    hp_restored: 1
+    condition: died_within_last_minute

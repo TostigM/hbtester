@@ -1,0 +1,1813 @@
+{
+  "baseline_version": "0.9",
+  "framework_version": "0.0.1",
+  "rules_version": "PHB_2024",
+  "tier": "A",
+  "generated_on": "2026-05-06",
+  "level": 5,
+  "runs_per_subclass": 200,
+  "base_seed": 0,
+  "subclass_count": 45,
+  "subclasses": [
+    {
+      "subclass_id": "battle_master",
+      "class_id": "fighter",
+      "avg_win_rate": 0.86625,
+      "avg_rounds": 5.735,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.005
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 6.68
+        },
+        "orc_pair": {
+          "win_rate": 1.0,
+          "avg_rounds": 4.58
+        },
+        "lone_ogre": {
+          "win_rate": 0.96,
+          "avg_rounds": 5.15
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.18,
+          "avg_rounds": 6.33
+        },
+        "lone_banshee": {
+          "win_rate": 0.995,
+          "avg_rounds": 10.965
+        },
+        "lone_mage": {
+          "win_rate": 0.795,
+          "avg_rounds": 4.225
+        },
+        "dragon_wyrmling": {
+          "win_rate": 1.0,
+          "avg_rounds": 4.945
+        }
+      }
+    },
+    {
+      "subclass_id": "champion",
+      "class_id": "fighter",
+      "avg_win_rate": 0.87,
+      "avg_rounds": 5.5625,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 2.955
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 6.6
+        },
+        "orc_pair": {
+          "win_rate": 1.0,
+          "avg_rounds": 4.545
+        },
+        "lone_ogre": {
+          "win_rate": 0.965,
+          "avg_rounds": 5.0
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.2,
+          "avg_rounds": 6.095
+        },
+        "lone_banshee": {
+          "win_rate": 0.995,
+          "avg_rounds": 10.615
+        },
+        "lone_mage": {
+          "win_rate": 0.805,
+          "avg_rounds": 4.035
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.995,
+          "avg_rounds": 4.655
+        }
+      }
+    },
+    {
+      "subclass_id": "eldritch_knight",
+      "class_id": "fighter",
+      "avg_win_rate": 0.86625,
+      "avg_rounds": 5.735,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.005
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 6.68
+        },
+        "orc_pair": {
+          "win_rate": 1.0,
+          "avg_rounds": 4.58
+        },
+        "lone_ogre": {
+          "win_rate": 0.96,
+          "avg_rounds": 5.15
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.18,
+          "avg_rounds": 6.33
+        },
+        "lone_banshee": {
+          "win_rate": 0.995,
+          "avg_rounds": 10.965
+        },
+        "lone_mage": {
+          "win_rate": 0.795,
+          "avg_rounds": 4.225
+        },
+        "dragon_wyrmling": {
+          "win_rate": 1.0,
+          "avg_rounds": 4.945
+        }
+      }
+    },
+    {
+      "subclass_id": "life_domain",
+      "class_id": "cleric",
+      "avg_win_rate": 0.715625,
+      "avg_rounds": 6.1875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.92
+        },
+        "skeleton_pack": {
+          "win_rate": 0.96,
+          "avg_rounds": 8.745
+        },
+        "orc_pair": {
+          "win_rate": 0.74,
+          "avg_rounds": 5.79
+        },
+        "lone_ogre": {
+          "win_rate": 0.805,
+          "avg_rounds": 5.89
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.5
+        },
+        "lone_banshee": {
+          "win_rate": 0.765,
+          "avg_rounds": 11.145
+        },
+        "lone_mage": {
+          "win_rate": 0.61,
+          "avg_rounds": 5.09
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.845,
+          "avg_rounds": 6.42
+        }
+      }
+    },
+    {
+      "subclass_id": "light_domain",
+      "class_id": "cleric",
+      "avg_win_rate": 0.715625,
+      "avg_rounds": 6.1875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.92
+        },
+        "skeleton_pack": {
+          "win_rate": 0.96,
+          "avg_rounds": 8.745
+        },
+        "orc_pair": {
+          "win_rate": 0.74,
+          "avg_rounds": 5.79
+        },
+        "lone_ogre": {
+          "win_rate": 0.805,
+          "avg_rounds": 5.89
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.5
+        },
+        "lone_banshee": {
+          "win_rate": 0.765,
+          "avg_rounds": 11.145
+        },
+        "lone_mage": {
+          "win_rate": 0.61,
+          "avg_rounds": 5.09
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.845,
+          "avg_rounds": 6.42
+        }
+      }
+    },
+    {
+      "subclass_id": "war_domain",
+      "class_id": "cleric",
+      "avg_win_rate": 0.715625,
+      "avg_rounds": 6.1875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.92
+        },
+        "skeleton_pack": {
+          "win_rate": 0.96,
+          "avg_rounds": 8.745
+        },
+        "orc_pair": {
+          "win_rate": 0.74,
+          "avg_rounds": 5.79
+        },
+        "lone_ogre": {
+          "win_rate": 0.805,
+          "avg_rounds": 5.89
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.5
+        },
+        "lone_banshee": {
+          "win_rate": 0.765,
+          "avg_rounds": 11.145
+        },
+        "lone_mage": {
+          "win_rate": 0.61,
+          "avg_rounds": 5.09
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.845,
+          "avg_rounds": 6.42
+        }
+      }
+    },
+    {
+      "subclass_id": "trickery_domain",
+      "class_id": "cleric",
+      "avg_win_rate": 0.715625,
+      "avg_rounds": 6.1875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.92
+        },
+        "skeleton_pack": {
+          "win_rate": 0.96,
+          "avg_rounds": 8.745
+        },
+        "orc_pair": {
+          "win_rate": 0.74,
+          "avg_rounds": 5.79
+        },
+        "lone_ogre": {
+          "win_rate": 0.805,
+          "avg_rounds": 5.89
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.5
+        },
+        "lone_banshee": {
+          "win_rate": 0.765,
+          "avg_rounds": 11.145
+        },
+        "lone_mage": {
+          "win_rate": 0.61,
+          "avg_rounds": 5.09
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.845,
+          "avg_rounds": 6.42
+        }
+      }
+    },
+    {
+      "subclass_id": "evoker",
+      "class_id": "wizard",
+      "avg_win_rate": 0.61375,
+      "avg_rounds": 5.688125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.655
+        },
+        "skeleton_pack": {
+          "win_rate": 0.875,
+          "avg_rounds": 8.425
+        },
+        "orc_pair": {
+          "win_rate": 0.66,
+          "avg_rounds": 5.09
+        },
+        "lone_ogre": {
+          "win_rate": 0.595,
+          "avg_rounds": 5.37
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.04
+        },
+        "lone_banshee": {
+          "win_rate": 0.61,
+          "avg_rounds": 10.315
+        },
+        "lone_mage": {
+          "win_rate": 0.445,
+          "avg_rounds": 4.69
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.725,
+          "avg_rounds": 5.92
+        }
+      }
+    },
+    {
+      "subclass_id": "abjurer",
+      "class_id": "wizard",
+      "avg_win_rate": 0.61375,
+      "avg_rounds": 5.688125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.655
+        },
+        "skeleton_pack": {
+          "win_rate": 0.875,
+          "avg_rounds": 8.425
+        },
+        "orc_pair": {
+          "win_rate": 0.66,
+          "avg_rounds": 5.09
+        },
+        "lone_ogre": {
+          "win_rate": 0.595,
+          "avg_rounds": 5.37
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.04
+        },
+        "lone_banshee": {
+          "win_rate": 0.61,
+          "avg_rounds": 10.315
+        },
+        "lone_mage": {
+          "win_rate": 0.445,
+          "avg_rounds": 4.69
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.725,
+          "avg_rounds": 5.92
+        }
+      }
+    },
+    {
+      "subclass_id": "diviner",
+      "class_id": "wizard",
+      "avg_win_rate": 0.61375,
+      "avg_rounds": 5.688125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.655
+        },
+        "skeleton_pack": {
+          "win_rate": 0.875,
+          "avg_rounds": 8.425
+        },
+        "orc_pair": {
+          "win_rate": 0.66,
+          "avg_rounds": 5.09
+        },
+        "lone_ogre": {
+          "win_rate": 0.595,
+          "avg_rounds": 5.37
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.04
+        },
+        "lone_banshee": {
+          "win_rate": 0.61,
+          "avg_rounds": 10.315
+        },
+        "lone_mage": {
+          "win_rate": 0.445,
+          "avg_rounds": 4.69
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.725,
+          "avg_rounds": 5.92
+        }
+      }
+    },
+    {
+      "subclass_id": "illusionist",
+      "class_id": "wizard",
+      "avg_win_rate": 0.61375,
+      "avg_rounds": 5.688125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.655
+        },
+        "skeleton_pack": {
+          "win_rate": 0.875,
+          "avg_rounds": 8.425
+        },
+        "orc_pair": {
+          "win_rate": 0.66,
+          "avg_rounds": 5.09
+        },
+        "lone_ogre": {
+          "win_rate": 0.595,
+          "avg_rounds": 5.37
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.04
+        },
+        "lone_banshee": {
+          "win_rate": 0.61,
+          "avg_rounds": 10.315
+        },
+        "lone_mage": {
+          "win_rate": 0.445,
+          "avg_rounds": 4.69
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.725,
+          "avg_rounds": 5.92
+        }
+      }
+    },
+    {
+      "subclass_id": "thief",
+      "class_id": "rogue",
+      "avg_win_rate": 0.669375,
+      "avg_rounds": 5.713125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.615
+        },
+        "skeleton_pack": {
+          "win_rate": 0.965,
+          "avg_rounds": 7.51
+        },
+        "orc_pair": {
+          "win_rate": 0.75,
+          "avg_rounds": 4.895
+        },
+        "lone_ogre": {
+          "win_rate": 0.675,
+          "avg_rounds": 5.775
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.835
+        },
+        "lone_banshee": {
+          "win_rate": 0.755,
+          "avg_rounds": 10.385
+        },
+        "lone_mage": {
+          "win_rate": 0.385,
+          "avg_rounds": 4.95
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.825,
+          "avg_rounds": 5.74
+        }
+      }
+    },
+    {
+      "subclass_id": "assassin",
+      "class_id": "rogue",
+      "avg_win_rate": 0.669375,
+      "avg_rounds": 5.713125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.615
+        },
+        "skeleton_pack": {
+          "win_rate": 0.965,
+          "avg_rounds": 7.51
+        },
+        "orc_pair": {
+          "win_rate": 0.75,
+          "avg_rounds": 4.895
+        },
+        "lone_ogre": {
+          "win_rate": 0.675,
+          "avg_rounds": 5.775
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.835
+        },
+        "lone_banshee": {
+          "win_rate": 0.755,
+          "avg_rounds": 10.385
+        },
+        "lone_mage": {
+          "win_rate": 0.385,
+          "avg_rounds": 4.95
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.825,
+          "avg_rounds": 5.74
+        }
+      }
+    },
+    {
+      "subclass_id": "arcane_trickster",
+      "class_id": "rogue",
+      "avg_win_rate": 0.669375,
+      "avg_rounds": 5.713125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.615
+        },
+        "skeleton_pack": {
+          "win_rate": 0.965,
+          "avg_rounds": 7.51
+        },
+        "orc_pair": {
+          "win_rate": 0.75,
+          "avg_rounds": 4.895
+        },
+        "lone_ogre": {
+          "win_rate": 0.675,
+          "avg_rounds": 5.775
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.835
+        },
+        "lone_banshee": {
+          "win_rate": 0.755,
+          "avg_rounds": 10.385
+        },
+        "lone_mage": {
+          "win_rate": 0.385,
+          "avg_rounds": 4.95
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.825,
+          "avg_rounds": 5.74
+        }
+      }
+    },
+    {
+      "subclass_id": "soulknife",
+      "class_id": "rogue",
+      "avg_win_rate": 0.669375,
+      "avg_rounds": 5.713125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.615
+        },
+        "skeleton_pack": {
+          "win_rate": 0.965,
+          "avg_rounds": 7.51
+        },
+        "orc_pair": {
+          "win_rate": 0.75,
+          "avg_rounds": 4.895
+        },
+        "lone_ogre": {
+          "win_rate": 0.675,
+          "avg_rounds": 5.775
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.835
+        },
+        "lone_banshee": {
+          "win_rate": 0.755,
+          "avg_rounds": 10.385
+        },
+        "lone_mage": {
+          "win_rate": 0.385,
+          "avg_rounds": 4.95
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.825,
+          "avg_rounds": 5.74
+        }
+      }
+    },
+    {
+      "subclass_id": "berserker",
+      "class_id": "barbarian",
+      "avg_win_rate": 0.808125,
+      "avg_rounds": 6.458125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.715
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 7.74
+        },
+        "orc_pair": {
+          "win_rate": 0.98,
+          "avg_rounds": 5.43
+        },
+        "lone_ogre": {
+          "win_rate": 0.89,
+          "avg_rounds": 6.265
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.04,
+          "avg_rounds": 5.18
+        },
+        "lone_banshee": {
+          "win_rate": 0.96,
+          "avg_rounds": 12.145
+        },
+        "lone_mage": {
+          "win_rate": 0.6,
+          "avg_rounds": 5.155
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.995,
+          "avg_rounds": 6.035
+        }
+      }
+    },
+    {
+      "subclass_id": "world_tree",
+      "class_id": "barbarian",
+      "avg_win_rate": 0.808125,
+      "avg_rounds": 6.458125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.715
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 7.74
+        },
+        "orc_pair": {
+          "win_rate": 0.98,
+          "avg_rounds": 5.43
+        },
+        "lone_ogre": {
+          "win_rate": 0.89,
+          "avg_rounds": 6.265
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.04,
+          "avg_rounds": 5.18
+        },
+        "lone_banshee": {
+          "win_rate": 0.96,
+          "avg_rounds": 12.145
+        },
+        "lone_mage": {
+          "win_rate": 0.6,
+          "avg_rounds": 5.155
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.995,
+          "avg_rounds": 6.035
+        }
+      }
+    },
+    {
+      "subclass_id": "zealot",
+      "class_id": "barbarian",
+      "avg_win_rate": 0.853125,
+      "avg_rounds": 5.6275,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.36
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 6.76
+        },
+        "orc_pair": {
+          "win_rate": 0.985,
+          "avg_rounds": 4.885
+        },
+        "lone_ogre": {
+          "win_rate": 0.975,
+          "avg_rounds": 5.285
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.1,
+          "avg_rounds": 5.145
+        },
+        "lone_banshee": {
+          "win_rate": 0.995,
+          "avg_rounds": 9.88
+        },
+        "lone_mage": {
+          "win_rate": 0.775,
+          "avg_rounds": 4.4
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.995,
+          "avg_rounds": 5.305
+        }
+      }
+    },
+    {
+      "subclass_id": "lore",
+      "class_id": "bard",
+      "avg_win_rate": 0.654375,
+      "avg_rounds": 5.883125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 0.995,
+          "avg_rounds": 3.645
+        },
+        "skeleton_pack": {
+          "win_rate": 0.91,
+          "avg_rounds": 8.49
+        },
+        "orc_pair": {
+          "win_rate": 0.69,
+          "avg_rounds": 5.04
+        },
+        "lone_ogre": {
+          "win_rate": 0.71,
+          "avg_rounds": 5.585
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.63
+        },
+        "lone_banshee": {
+          "win_rate": 0.615,
+          "avg_rounds": 10.615
+        },
+        "lone_mage": {
+          "win_rate": 0.51,
+          "avg_rounds": 4.815
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.805,
+          "avg_rounds": 6.245
+        }
+      }
+    },
+    {
+      "subclass_id": "dance",
+      "class_id": "bard",
+      "avg_win_rate": 0.654375,
+      "avg_rounds": 5.883125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 0.995,
+          "avg_rounds": 3.645
+        },
+        "skeleton_pack": {
+          "win_rate": 0.91,
+          "avg_rounds": 8.49
+        },
+        "orc_pair": {
+          "win_rate": 0.69,
+          "avg_rounds": 5.04
+        },
+        "lone_ogre": {
+          "win_rate": 0.71,
+          "avg_rounds": 5.585
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.63
+        },
+        "lone_banshee": {
+          "win_rate": 0.615,
+          "avg_rounds": 10.615
+        },
+        "lone_mage": {
+          "win_rate": 0.51,
+          "avg_rounds": 4.815
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.805,
+          "avg_rounds": 6.245
+        }
+      }
+    },
+    {
+      "subclass_id": "glamour",
+      "class_id": "bard",
+      "avg_win_rate": 0.654375,
+      "avg_rounds": 5.883125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 0.995,
+          "avg_rounds": 3.645
+        },
+        "skeleton_pack": {
+          "win_rate": 0.91,
+          "avg_rounds": 8.49
+        },
+        "orc_pair": {
+          "win_rate": 0.69,
+          "avg_rounds": 5.04
+        },
+        "lone_ogre": {
+          "win_rate": 0.71,
+          "avg_rounds": 5.585
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.63
+        },
+        "lone_banshee": {
+          "win_rate": 0.615,
+          "avg_rounds": 10.615
+        },
+        "lone_mage": {
+          "win_rate": 0.51,
+          "avg_rounds": 4.815
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.805,
+          "avg_rounds": 6.245
+        }
+      }
+    },
+    {
+      "subclass_id": "devotion",
+      "class_id": "paladin",
+      "avg_win_rate": 0.81875,
+      "avg_rounds": 6.441875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.765
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 7.815
+        },
+        "orc_pair": {
+          "win_rate": 0.95,
+          "avg_rounds": 5.66
+        },
+        "lone_ogre": {
+          "win_rate": 0.905,
+          "avg_rounds": 6.185
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.06,
+          "avg_rounds": 4.72
+        },
+        "lone_banshee": {
+          "win_rate": 0.97,
+          "avg_rounds": 12.04
+        },
+        "lone_mage": {
+          "win_rate": 0.695,
+          "avg_rounds": 5.335
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.97,
+          "avg_rounds": 6.015
+        }
+      }
+    },
+    {
+      "subclass_id": "ancients",
+      "class_id": "paladin",
+      "avg_win_rate": 0.81875,
+      "avg_rounds": 6.441875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.765
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 7.815
+        },
+        "orc_pair": {
+          "win_rate": 0.95,
+          "avg_rounds": 5.66
+        },
+        "lone_ogre": {
+          "win_rate": 0.905,
+          "avg_rounds": 6.185
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.06,
+          "avg_rounds": 4.72
+        },
+        "lone_banshee": {
+          "win_rate": 0.97,
+          "avg_rounds": 12.04
+        },
+        "lone_mage": {
+          "win_rate": 0.695,
+          "avg_rounds": 5.335
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.97,
+          "avg_rounds": 6.015
+        }
+      }
+    },
+    {
+      "subclass_id": "glory",
+      "class_id": "paladin",
+      "avg_win_rate": 0.81875,
+      "avg_rounds": 6.441875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.765
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 7.815
+        },
+        "orc_pair": {
+          "win_rate": 0.95,
+          "avg_rounds": 5.66
+        },
+        "lone_ogre": {
+          "win_rate": 0.905,
+          "avg_rounds": 6.185
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.06,
+          "avg_rounds": 4.72
+        },
+        "lone_banshee": {
+          "win_rate": 0.97,
+          "avg_rounds": 12.04
+        },
+        "lone_mage": {
+          "win_rate": 0.695,
+          "avg_rounds": 5.335
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.97,
+          "avg_rounds": 6.015
+        }
+      }
+    },
+    {
+      "subclass_id": "vengeance",
+      "class_id": "paladin",
+      "avg_win_rate": 0.81875,
+      "avg_rounds": 6.441875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.765
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 7.815
+        },
+        "orc_pair": {
+          "win_rate": 0.95,
+          "avg_rounds": 5.66
+        },
+        "lone_ogre": {
+          "win_rate": 0.905,
+          "avg_rounds": 6.185
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.06,
+          "avg_rounds": 4.72
+        },
+        "lone_banshee": {
+          "win_rate": 0.97,
+          "avg_rounds": 12.04
+        },
+        "lone_mage": {
+          "win_rate": 0.695,
+          "avg_rounds": 5.335
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.97,
+          "avg_rounds": 6.015
+        }
+      }
+    },
+    {
+      "subclass_id": "gloom_stalker",
+      "class_id": "ranger",
+      "avg_win_rate": 0.67875,
+      "avg_rounds": 6.098125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.7
+        },
+        "skeleton_pack": {
+          "win_rate": 0.99,
+          "avg_rounds": 7.745
+        },
+        "orc_pair": {
+          "win_rate": 0.835,
+          "avg_rounds": 5.29
+        },
+        "lone_ogre": {
+          "win_rate": 0.625,
+          "avg_rounds": 5.99
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.005,
+          "avg_rounds": 3.415
+        },
+        "lone_banshee": {
+          "win_rate": 0.705,
+          "avg_rounds": 11.715
+        },
+        "lone_mage": {
+          "win_rate": 0.38,
+          "avg_rounds": 4.975
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.89,
+          "avg_rounds": 5.955
+        }
+      }
+    },
+    {
+      "subclass_id": "beast_master",
+      "class_id": "ranger",
+      "avg_win_rate": 0.67875,
+      "avg_rounds": 6.098125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.7
+        },
+        "skeleton_pack": {
+          "win_rate": 0.99,
+          "avg_rounds": 7.745
+        },
+        "orc_pair": {
+          "win_rate": 0.835,
+          "avg_rounds": 5.29
+        },
+        "lone_ogre": {
+          "win_rate": 0.625,
+          "avg_rounds": 5.99
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.005,
+          "avg_rounds": 3.415
+        },
+        "lone_banshee": {
+          "win_rate": 0.705,
+          "avg_rounds": 11.715
+        },
+        "lone_mage": {
+          "win_rate": 0.38,
+          "avg_rounds": 4.975
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.89,
+          "avg_rounds": 5.955
+        }
+      }
+    },
+    {
+      "subclass_id": "fey_wanderer",
+      "class_id": "ranger",
+      "avg_win_rate": 0.67875,
+      "avg_rounds": 6.098125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.7
+        },
+        "skeleton_pack": {
+          "win_rate": 0.99,
+          "avg_rounds": 7.745
+        },
+        "orc_pair": {
+          "win_rate": 0.835,
+          "avg_rounds": 5.29
+        },
+        "lone_ogre": {
+          "win_rate": 0.625,
+          "avg_rounds": 5.99
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.005,
+          "avg_rounds": 3.415
+        },
+        "lone_banshee": {
+          "win_rate": 0.705,
+          "avg_rounds": 11.715
+        },
+        "lone_mage": {
+          "win_rate": 0.38,
+          "avg_rounds": 4.975
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.89,
+          "avg_rounds": 5.955
+        }
+      }
+    },
+    {
+      "subclass_id": "hunter",
+      "class_id": "ranger",
+      "avg_win_rate": 0.7525000000000001,
+      "avg_rounds": 5.189375,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.305
+        },
+        "skeleton_pack": {
+          "win_rate": 1.0,
+          "avg_rounds": 6.49
+        },
+        "orc_pair": {
+          "win_rate": 0.885,
+          "avg_rounds": 4.665
+        },
+        "lone_ogre": {
+          "win_rate": 0.795,
+          "avg_rounds": 4.96
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.01,
+          "avg_rounds": 3.36
+        },
+        "lone_banshee": {
+          "win_rate": 0.875,
+          "avg_rounds": 9.4
+        },
+        "lone_mage": {
+          "win_rate": 0.55,
+          "avg_rounds": 4.29
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.905,
+          "avg_rounds": 5.045
+        }
+      }
+    },
+    {
+      "subclass_id": "shadow",
+      "class_id": "monk",
+      "avg_win_rate": 0.734375,
+      "avg_rounds": 6.253125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.67
+        },
+        "skeleton_pack": {
+          "win_rate": 0.995,
+          "avg_rounds": 7.71
+        },
+        "orc_pair": {
+          "win_rate": 0.925,
+          "avg_rounds": 5.44
+        },
+        "lone_ogre": {
+          "win_rate": 0.695,
+          "avg_rounds": 6.11
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.01,
+          "avg_rounds": 4.035
+        },
+        "lone_banshee": {
+          "win_rate": 0.845,
+          "avg_rounds": 11.97
+        },
+        "lone_mage": {
+          "win_rate": 0.455,
+          "avg_rounds": 5.145
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.95,
+          "avg_rounds": 5.945
+        }
+      }
+    },
+    {
+      "subclass_id": "mercy",
+      "class_id": "monk",
+      "avg_win_rate": 0.734375,
+      "avg_rounds": 6.253125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.67
+        },
+        "skeleton_pack": {
+          "win_rate": 0.995,
+          "avg_rounds": 7.71
+        },
+        "orc_pair": {
+          "win_rate": 0.925,
+          "avg_rounds": 5.44
+        },
+        "lone_ogre": {
+          "win_rate": 0.695,
+          "avg_rounds": 6.11
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.01,
+          "avg_rounds": 4.035
+        },
+        "lone_banshee": {
+          "win_rate": 0.845,
+          "avg_rounds": 11.97
+        },
+        "lone_mage": {
+          "win_rate": 0.455,
+          "avg_rounds": 5.145
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.95,
+          "avg_rounds": 5.945
+        }
+      }
+    },
+    {
+      "subclass_id": "elements",
+      "class_id": "monk",
+      "avg_win_rate": 0.734375,
+      "avg_rounds": 6.253125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.67
+        },
+        "skeleton_pack": {
+          "win_rate": 0.995,
+          "avg_rounds": 7.71
+        },
+        "orc_pair": {
+          "win_rate": 0.925,
+          "avg_rounds": 5.44
+        },
+        "lone_ogre": {
+          "win_rate": 0.695,
+          "avg_rounds": 6.11
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.01,
+          "avg_rounds": 4.035
+        },
+        "lone_banshee": {
+          "win_rate": 0.845,
+          "avg_rounds": 11.97
+        },
+        "lone_mage": {
+          "win_rate": 0.455,
+          "avg_rounds": 5.145
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.95,
+          "avg_rounds": 5.945
+        }
+      }
+    },
+    {
+      "subclass_id": "open_hand",
+      "class_id": "monk",
+      "avg_win_rate": 0.734375,
+      "avg_rounds": 6.253125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.67
+        },
+        "skeleton_pack": {
+          "win_rate": 0.995,
+          "avg_rounds": 7.71
+        },
+        "orc_pair": {
+          "win_rate": 0.925,
+          "avg_rounds": 5.44
+        },
+        "lone_ogre": {
+          "win_rate": 0.695,
+          "avg_rounds": 6.11
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.01,
+          "avg_rounds": 4.035
+        },
+        "lone_banshee": {
+          "win_rate": 0.845,
+          "avg_rounds": 11.97
+        },
+        "lone_mage": {
+          "win_rate": 0.455,
+          "avg_rounds": 5.145
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.95,
+          "avg_rounds": 5.945
+        }
+      }
+    },
+    {
+      "subclass_id": "land",
+      "class_id": "druid",
+      "avg_win_rate": 0.74,
+      "avg_rounds": 6.248125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.6
+        },
+        "skeleton_pack": {
+          "win_rate": 0.965,
+          "avg_rounds": 8.995
+        },
+        "orc_pair": {
+          "win_rate": 0.82,
+          "avg_rounds": 5.7
+        },
+        "lone_ogre": {
+          "win_rate": 0.82,
+          "avg_rounds": 5.965
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.605
+        },
+        "lone_banshee": {
+          "win_rate": 0.805,
+          "avg_rounds": 11.355
+        },
+        "lone_mage": {
+          "win_rate": 0.65,
+          "avg_rounds": 5.26
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.86,
+          "avg_rounds": 6.505
+        }
+      }
+    },
+    {
+      "subclass_id": "moon",
+      "class_id": "druid",
+      "avg_win_rate": 0.74,
+      "avg_rounds": 6.248125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.6
+        },
+        "skeleton_pack": {
+          "win_rate": 0.965,
+          "avg_rounds": 8.995
+        },
+        "orc_pair": {
+          "win_rate": 0.82,
+          "avg_rounds": 5.7
+        },
+        "lone_ogre": {
+          "win_rate": 0.82,
+          "avg_rounds": 5.965
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.605
+        },
+        "lone_banshee": {
+          "win_rate": 0.805,
+          "avg_rounds": 11.355
+        },
+        "lone_mage": {
+          "win_rate": 0.65,
+          "avg_rounds": 5.26
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.86,
+          "avg_rounds": 6.505
+        }
+      }
+    },
+    {
+      "subclass_id": "sea",
+      "class_id": "druid",
+      "avg_win_rate": 0.74,
+      "avg_rounds": 6.248125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.6
+        },
+        "skeleton_pack": {
+          "win_rate": 0.965,
+          "avg_rounds": 8.995
+        },
+        "orc_pair": {
+          "win_rate": 0.82,
+          "avg_rounds": 5.7
+        },
+        "lone_ogre": {
+          "win_rate": 0.82,
+          "avg_rounds": 5.965
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.605
+        },
+        "lone_banshee": {
+          "win_rate": 0.805,
+          "avg_rounds": 11.355
+        },
+        "lone_mage": {
+          "win_rate": 0.65,
+          "avg_rounds": 5.26
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.86,
+          "avg_rounds": 6.505
+        }
+      }
+    },
+    {
+      "subclass_id": "stars",
+      "class_id": "druid",
+      "avg_win_rate": 0.74,
+      "avg_rounds": 6.248125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.6
+        },
+        "skeleton_pack": {
+          "win_rate": 0.965,
+          "avg_rounds": 8.995
+        },
+        "orc_pair": {
+          "win_rate": 0.82,
+          "avg_rounds": 5.7
+        },
+        "lone_ogre": {
+          "win_rate": 0.82,
+          "avg_rounds": 5.965
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.605
+        },
+        "lone_banshee": {
+          "win_rate": 0.805,
+          "avg_rounds": 11.355
+        },
+        "lone_mage": {
+          "win_rate": 0.65,
+          "avg_rounds": 5.26
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.86,
+          "avg_rounds": 6.505
+        }
+      }
+    },
+    {
+      "subclass_id": "wild_magic",
+      "class_id": "sorcerer",
+      "avg_win_rate": 0.664375,
+      "avg_rounds": 5.936875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.655
+        },
+        "skeleton_pack": {
+          "win_rate": 0.925,
+          "avg_rounds": 8.59
+        },
+        "orc_pair": {
+          "win_rate": 0.715,
+          "avg_rounds": 5.3
+        },
+        "lone_ogre": {
+          "win_rate": 0.71,
+          "avg_rounds": 5.665
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.34
+        },
+        "lone_banshee": {
+          "win_rate": 0.67,
+          "avg_rounds": 10.895
+        },
+        "lone_mage": {
+          "win_rate": 0.515,
+          "avg_rounds": 4.895
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.78,
+          "avg_rounds": 6.155
+        }
+      }
+    },
+    {
+      "subclass_id": "aberrant_mind",
+      "class_id": "sorcerer",
+      "avg_win_rate": 0.664375,
+      "avg_rounds": 5.936875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.655
+        },
+        "skeleton_pack": {
+          "win_rate": 0.925,
+          "avg_rounds": 8.59
+        },
+        "orc_pair": {
+          "win_rate": 0.715,
+          "avg_rounds": 5.3
+        },
+        "lone_ogre": {
+          "win_rate": 0.71,
+          "avg_rounds": 5.665
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.34
+        },
+        "lone_banshee": {
+          "win_rate": 0.67,
+          "avg_rounds": 10.895
+        },
+        "lone_mage": {
+          "win_rate": 0.515,
+          "avg_rounds": 4.895
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.78,
+          "avg_rounds": 6.155
+        }
+      }
+    },
+    {
+      "subclass_id": "clockwork_soul",
+      "class_id": "sorcerer",
+      "avg_win_rate": 0.664375,
+      "avg_rounds": 5.936875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.655
+        },
+        "skeleton_pack": {
+          "win_rate": 0.925,
+          "avg_rounds": 8.59
+        },
+        "orc_pair": {
+          "win_rate": 0.715,
+          "avg_rounds": 5.3
+        },
+        "lone_ogre": {
+          "win_rate": 0.71,
+          "avg_rounds": 5.665
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.34
+        },
+        "lone_banshee": {
+          "win_rate": 0.67,
+          "avg_rounds": 10.895
+        },
+        "lone_mage": {
+          "win_rate": 0.515,
+          "avg_rounds": 4.895
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.78,
+          "avg_rounds": 6.155
+        }
+      }
+    },
+    {
+      "subclass_id": "draconic",
+      "class_id": "sorcerer",
+      "avg_win_rate": 0.664375,
+      "avg_rounds": 5.936875,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 1.0,
+          "avg_rounds": 3.655
+        },
+        "skeleton_pack": {
+          "win_rate": 0.925,
+          "avg_rounds": 8.59
+        },
+        "orc_pair": {
+          "win_rate": 0.715,
+          "avg_rounds": 5.3
+        },
+        "lone_ogre": {
+          "win_rate": 0.71,
+          "avg_rounds": 5.665
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.34
+        },
+        "lone_banshee": {
+          "win_rate": 0.67,
+          "avg_rounds": 10.895
+        },
+        "lone_mage": {
+          "win_rate": 0.515,
+          "avg_rounds": 4.895
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.78,
+          "avg_rounds": 6.155
+        }
+      }
+    },
+    {
+      "subclass_id": "great_old_one",
+      "class_id": "warlock",
+      "avg_win_rate": 0.655625,
+      "avg_rounds": 6.50125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 0.995,
+          "avg_rounds": 4.185
+        },
+        "skeleton_pack": {
+          "win_rate": 0.88,
+          "avg_rounds": 9.58
+        },
+        "orc_pair": {
+          "win_rate": 0.665,
+          "avg_rounds": 6.1
+        },
+        "lone_ogre": {
+          "win_rate": 0.725,
+          "avg_rounds": 5.94
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.715
+        },
+        "lone_banshee": {
+          "win_rate": 0.595,
+          "avg_rounds": 12.055
+        },
+        "lone_mage": {
+          "win_rate": 0.55,
+          "avg_rounds": 4.77
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.835,
+          "avg_rounds": 6.665
+        }
+      }
+    },
+    {
+      "subclass_id": "archfey",
+      "class_id": "warlock",
+      "avg_win_rate": 0.655625,
+      "avg_rounds": 6.50125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 0.995,
+          "avg_rounds": 4.185
+        },
+        "skeleton_pack": {
+          "win_rate": 0.88,
+          "avg_rounds": 9.58
+        },
+        "orc_pair": {
+          "win_rate": 0.665,
+          "avg_rounds": 6.1
+        },
+        "lone_ogre": {
+          "win_rate": 0.725,
+          "avg_rounds": 5.94
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.715
+        },
+        "lone_banshee": {
+          "win_rate": 0.595,
+          "avg_rounds": 12.055
+        },
+        "lone_mage": {
+          "win_rate": 0.55,
+          "avg_rounds": 4.77
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.835,
+          "avg_rounds": 6.665
+        }
+      }
+    },
+    {
+      "subclass_id": "celestial",
+      "class_id": "warlock",
+      "avg_win_rate": 0.655625,
+      "avg_rounds": 6.50125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 0.995,
+          "avg_rounds": 4.185
+        },
+        "skeleton_pack": {
+          "win_rate": 0.88,
+          "avg_rounds": 9.58
+        },
+        "orc_pair": {
+          "win_rate": 0.665,
+          "avg_rounds": 6.1
+        },
+        "lone_ogre": {
+          "win_rate": 0.725,
+          "avg_rounds": 5.94
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.715
+        },
+        "lone_banshee": {
+          "win_rate": 0.595,
+          "avg_rounds": 12.055
+        },
+        "lone_mage": {
+          "win_rate": 0.55,
+          "avg_rounds": 4.77
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.835,
+          "avg_rounds": 6.665
+        }
+      }
+    },
+    {
+      "subclass_id": "fiend",
+      "class_id": "warlock",
+      "avg_win_rate": 0.655625,
+      "avg_rounds": 6.50125,
+      "encounters": {
+        "goblin_band": {
+          "win_rate": 0.995,
+          "avg_rounds": 4.185
+        },
+        "skeleton_pack": {
+          "win_rate": 0.88,
+          "avg_rounds": 9.58
+        },
+        "orc_pair": {
+          "win_rate": 0.665,
+          "avg_rounds": 6.1
+        },
+        "lone_ogre": {
+          "win_rate": 0.725,
+          "avg_rounds": 5.94
+        },
+        "hell_hound_pair": {
+          "win_rate": 0.0,
+          "avg_rounds": 2.715
+        },
+        "lone_banshee": {
+          "win_rate": 0.595,
+          "avg_rounds": 12.055
+        },
+        "lone_mage": {
+          "win_rate": 0.55,
+          "avg_rounds": 4.77
+        },
+        "dragon_wyrmling": {
+          "win_rate": 0.835,
+          "avg_rounds": 6.665
+        }
+      }
+    }
+  ]
+}

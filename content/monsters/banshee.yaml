@@ -1,0 +1,47 @@
+schema_version: "0.1"
+content_type: monster
+id: banshee
+display_name: Banshee
+source: MM_2024
+author: Wizards of the Coast
+creature_type: undead
+size: medium
+ac: 12
+ac_source: natural armor
+hp:
+  average: 58
+  formula: 13d8
+speed:
+  walk: 40
+abilities:
+  STR: 1
+  DEX: 14
+  CON: 10
+  INT: 12
+  WIS: 11
+  CHA: 17
+challenge_rating: 4
+proficiency_bonus: 2
+senses:
+  darkvision: 60
+damage_immunities: [cold, lightning, necrotic, thunder, poison]
+damage_resistances: [acid, fire, bludgeoning, piercing, slashing]
+condition_immunities:
+  - charmed
+  - exhaustion
+  - frightened
+  - grappled
+  - paralyzed
+  - petrified
+  - poisoned
+  - prone
+  - restrained
+actions:
+  - name: Corrupting Touch
+    description: "Melee spell attack +4, 3d6 necrotic"
+behavior_hints:
+  profile: monster_melee
+  multiattack: 1
+  damage_die: 6
+  damage_die_count: 3
+  attack_bonus: 4

@@ -1,0 +1,42 @@
+schema_version: "0.1"
+content_type: monster
+id: manticore
+display_name: Manticore
+source: MM_2024
+author: Wizards of the Coast
+creature_type: monstrosity
+size: large
+ac: 14
+ac_source: natural armor
+hp:
+  average: 68
+  formula: 8d10+24
+speed:
+  walk: 30
+  fly: 50
+abilities:
+  STR: 17
+  DEX: 16
+  CON: 17
+  INT: 7
+  WIS: 12
+  CHA: 8
+challenge_rating: 3
+proficiency_bonus: 2
+senses:
+  darkvision: 60
+actions:
+  - name: Multiattack
+    description: "Bite + 2 claws, or 3 tail spikes"
+  - name: Bite
+    attack_bonus: 5
+    damage: "1d8+3 piercing"
+  - name: Tail Spike
+    attack_bonus: 5
+    damage: "1d8+3 piercing"
+    range: 100
+behavior_hints:
+  profile: monster_melee
+  multiattack: 3
+  damage_die: 8
+  damage_die_count: 1

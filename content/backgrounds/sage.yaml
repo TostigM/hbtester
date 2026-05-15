@@ -1,0 +1,18 @@
+schema_version: "0.1"
+content_type: background
+id: sage
+display_name: Sage
+source: PHB_2024
+author: Wizards of the Coast
+ability_score_increases:
+  mode: plus_2_plus_1
+  eligible_abilities: [INT, WIS, CHA]
+skill_proficiencies: [arcana, history]
+tool_proficiency: calligraphers_supplies
+origin_feat: magic_initiate_wizard
+starting_equipment:
+  - book (tome of lore)
+  - ink pen
+  - parchment (10 sheets)
+  - calligrapher's supplies
+  - 8 gp

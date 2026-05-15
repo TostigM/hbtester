@@ -1,0 +1,62 @@
+schema_version: "0.1"
+content_type: subclass
+id: draconic
+display_name: Draconic Sorcery
+parent_class: sorcerer
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  Your innate magic traces to a dragon ancestor. This lineage grants you
+  natural armor, elemental affinity, and the fearsome presence of dragonkind.
+subclass_feature_levels: [3, 6, 14, 18]
+features:
+  # "Draconic Resilience: Your hit point maximum increases by 1 per Sorcerer
+  # level. When you aren't wearing armor, your base AC is 13 + your DEX modifier."
+  # — PHB 2024
+  - id: draconic_resilience
+    display_name: Draconic Resilience
+    feature_type: unarmored_defense
+    unlock_level: 3
+    body:
+      formula: "13 + DEX_mod"
+      description: >
+        HP max +1 per Sorcerer level. While unarmored, AC = 13 + DEX modifier.
+
+  # "Elemental Affinity: When you cast a spell that deals your dragon ancestor's
+  # damage type, add your CHA modifier to one damage roll. Spend 1 Sorcery Point
+  # to gain resistance to that damage type for 1 hour." — PHB 2024
+  - id: elemental_affinity
+    display_name: Elemental Affinity
+    feature_type: passive_roll_modifier
+    unlock_level: 6
+    body:
+      modifier_type: bonus_damage
+      description: >
+        When casting a spell that deals your draconic damage type, add CHA
+        modifier to one damage roll. Spend 1 Sorcery Point for 1-hour resistance.
+
+  # "Dragon Wings: As a Bonus Action, sprout dragon wings. You gain a fly speed
+  # equal to your current speed. The wings vanish when you dismiss them (no action),
+  # don when you will it." — PHB 2024
+  - id: dragon_wings
+    display_name: Dragon Wings
+    feature_type: passive_feature_grant
+    unlock_level: 14
+    body:
+      description: >
+        Bonus Action: sprout dragon wings, gaining fly speed equal to your
+        walking speed. Dismiss as free action.
+
+  # "Draconic Presence: Spend 5 Sorcery Points; as an Action, create a 60-ft
+  # aura of awe or fear for 1 minute. Enemies in the aura make a WIS save or
+  # are Charmed (awe) or Frightened (fear) for the duration." — PHB 2024
+  - id: draconic_presence
+    display_name: Draconic Presence
+    feature_type: scripted_feature
+    unlock_level: 18
+    body:
+      cost: 5
+      resource: sorcery_points
+      description: >
+        Action, 5 Sorcery Points: 60-ft aura for 1 minute. Enemies make WIS
+        save or are Charmed (awe) or Frightened (fear) for the duration.

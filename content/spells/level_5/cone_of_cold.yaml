@@ -1,0 +1,32 @@
+schema_version: "0.1"
+content_type: spell
+id: cone_of_cold
+display_name: Cone of Cold
+source: PHB_2024
+author: Wizards of the Coast
+level: 5
+school: evocation
+casting_time: action
+range: self
+components:
+  verbal: true
+  somatic: true
+  material: true
+  material_description: a small crystal or glass cone
+duration: instantaneous
+concentration: false
+class_lists: [wizard, sorcerer]
+intent_tags: [damage, aoe, combat]
+area_of_effect:
+  shape: cone
+  size_feet: 60
+upcast_scaling:
+  - slot_level: 6
+    changes:
+      damage: 9d8
+effects:
+  - type: damage
+    damage_type: cold
+    damage_formula: "8d8"
+    save: CON
+    save_on_success: half_damage

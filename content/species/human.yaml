@@ -1,0 +1,26 @@
+schema_version: "0.1"
+content_type: species
+id: human
+display_name: Human
+source: PHB_2024
+author: Wizards of the Coast
+creature_type: humanoid
+size: medium
+speed:
+  walk: 30
+traits:
+  - id: human_versatility
+    display_name: Versatility (Human)
+    feature_type: passive_feature_grant
+    body:
+      description: "+1 to three different ability scores of your choice"
+      asi_count: 3
+      asi_amount: 1
+
+  - id: human_origin_feat
+    display_name: Origin Feat
+    feature_type: origin_feat_grant
+    body:
+      description: Gain one Origin feat of your choice
+      count: 1
+total_trait_score: 3.0

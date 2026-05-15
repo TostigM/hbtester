@@ -1,0 +1,50 @@
+schema_version: "0.1"
+content_type: subclass
+id: trickery_domain
+display_name: Trickery Domain
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: cleric
+tags: [utility, stealth, deception]
+complexity_rating: moderate
+behavior_hints:
+  preferred_action: support
+  special_trait: invoke_duplicity
+
+features:
+  - id: blessing_of_the_trickster
+    display_name: Blessing of the Trickster
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Touch an ally to give them advantage on Stealth checks for 1 hour
+
+  - id: channel_divinity_invoke_duplicity
+    display_name: "Channel Divinity: Invoke Duplicity"
+    feature_type: channel_divinity
+    unlock_level: 3
+    body:
+      description: "Create a perfect illusion of yourself for 1 minute. Move it up to 30 feet as a Bonus Action. You can cast spells from its space and have advantage on attacks when you or the duplicate are adjacent to the target."
+
+  - id: channel_divinity_cloak_of_shadows
+    display_name: "Channel Divinity: Cloak of Shadows"
+    feature_type: channel_divinity
+    unlock_level: 6
+    body:
+      description: Become invisible until end of your next turn or until you attack or cast a spell
+
+  - id: divine_strike_trickery
+    display_name: Divine Strike
+    feature_type: passive_feature_grant
+    unlock_level: 8
+    body:
+      description: Once per turn, deal an extra 1d8 poison damage on a weapon hit (2d8 at level 14)
+
+  - id: improved_duplicity
+    display_name: Improved Duplicity
+    feature_type: passive_feature_grant
+    unlock_level: 17
+    body:
+      description: Create up to four duplicates with Invoke Duplicity; move all of them with a Bonus Action
+
+resource_pools: []

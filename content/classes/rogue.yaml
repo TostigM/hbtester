@@ -1,0 +1,128 @@
+schema_version: "0.1"
+content_type: class
+id: rogue
+display_name: Rogue
+source: PHB_2024
+author: Wizards of the Coast
+hit_die: d8
+primary_ability_options: [DEX]
+saving_throw_proficiencies: [DEX, INT]
+spellcasting_ability: null
+spellcasting_progression: null
+subclass_choice_level: 3
+starting_proficiencies:
+  armor: [light]
+  weapons: [simple, hand_crossbow, longsword, rapier, shortsword]
+  tools: [thieves_tools]
+  saving_throws: [DEX, INT]
+  skills_choose: 4
+  skills_available:
+    - acrobatics
+    - athletics
+    - deception
+    - insight
+    - intimidation
+    - investigation
+    - perception
+    - persuasion
+    - sleight_of_hand
+    - stealth
+features:
+  - id: expertise_rogue
+    display_name: Expertise
+    feature_type: expertise
+    unlock_level: 1
+    body:
+      initial_count: 2
+      scaling:
+        - level: 6
+          count: 4
+
+  - id: sneak_attack
+    display_name: Sneak Attack
+    feature_type: sneak_attack
+    unlock_level: 1
+    body:
+      description: Extra damage with finesse or ranged weapon when you have advantage or ally adjacent to target
+      scaling_formula: "ceil(level / 2) d6"
+
+  - id: thieves_cant
+    display_name: "Thieves' Cant"
+    feature_type: passive_feature_grant
+    unlock_level: 1
+    body:
+      description: Secret language understood by rogues and thieves
+
+  - id: weapon_mastery_rogue
+    display_name: Weapon Mastery
+    feature_type: weapon_mastery_selection
+    unlock_level: 1
+    body:
+      initial_count: 2
+      scaling:
+        - level: 4
+          count: 3
+
+  - id: cunning_action
+    display_name: Cunning Action
+    feature_type: passive_feature_grant
+    unlock_level: 2
+    body:
+      description: Bonus action to Dash, Disengage, or Hide
+
+  - id: steady_aim
+    display_name: Steady Aim
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Bonus action to gain advantage on your next attack roll this turn (must not move)
+
+  - id: rogue_subclass
+    display_name: Rogue Subclass
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      description: Choose a Rogue subclass
+
+  - id: uncanny_dodge
+    display_name: Uncanny Dodge
+    feature_type: reaction
+    unlock_level: 5
+    body:
+      description: Use reaction to halve the damage from one attack that hits you
+
+  - id: evasion
+    display_name: Evasion
+    feature_type: passive_feature_grant
+    unlock_level: 7
+    body:
+      description: DEX save for half becomes no damage; failed save becomes half damage
+
+  - id: reliable_talent
+    display_name: Reliable Talent
+    feature_type: passive_feature_grant
+    unlock_level: 11
+    body:
+      description: Treat d20 as 10 for any ability check using proficiency
+
+  - id: slippery_mind
+    display_name: Slippery Mind
+    feature_type: save_proficiency
+    unlock_level: 15
+    body:
+      ability: CHA
+
+  - id: elusive
+    display_name: Elusive
+    feature_type: passive_feature_grant
+    unlock_level: 18
+    body:
+      description: Attackers never have advantage on attack rolls against you
+
+  - id: stroke_of_luck
+    display_name: Stroke of Luck
+    feature_type: passive_feature_grant
+    unlock_level: 20
+    body:
+      uses_per_short_rest: 1
+      description: Turn a miss into a hit, or a failed ability check into a success

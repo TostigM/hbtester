@@ -1,0 +1,44 @@
+schema_version: "0.1"
+content_type: subclass
+id: war_domain
+display_name: War Domain
+source: PHB_2024
+author: Wizards of the Coast
+parent_class: cleric
+tags: [damage, martial, melee]
+complexity_rating: simple
+behavior_hints:
+  preferred_action: weapon_attack
+  special_trait: war_priest_bonus_attack
+
+features:
+  - id: war_priest
+    display_name: War Priest
+    feature_type: passive_feature_grant
+    unlock_level: 3
+    body:
+      uses_per_long_rest: WIS_mod
+      description: When you take the Attack action, make one extra weapon attack as a Bonus Action
+
+  - id: channel_divinity_guided_strike
+    display_name: "Channel Divinity: Guided Strike"
+    feature_type: channel_divinity
+    unlock_level: 3
+    body:
+      description: "Expend Channel Divinity to gain +10 bonus to an attack roll (after seeing the roll, before the DM declares hit or miss)"
+
+  - id: channel_divinity_war_gods_blessing
+    display_name: "Channel Divinity: War God's Blessing"
+    feature_type: channel_divinity
+    unlock_level: 6
+    body:
+      description: Use Reaction to grant an ally +10 to an attack roll
+
+  - id: avatar_of_battle
+    display_name: Avatar of Battle
+    feature_type: passive_feature_grant
+    unlock_level: 17
+    body:
+      description: Resistance to bludgeoning, piercing, and slashing damage from nonmagical weapons
+
+resource_pools: []

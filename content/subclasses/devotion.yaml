@@ -1,0 +1,85 @@
+schema_version: "0.1"
+content_type: subclass
+id: devotion
+display_name: Oath of Devotion
+parent_class: paladin
+source: PHB_2024
+author: Wizards of the Coast
+flavor: >
+  The Oath of Devotion binds a paladin to the highest ideals of justice,
+  virtue, and order. The devotion paladin is the archetype of the knight in
+  shining armor — steadfast, pure of heart, and relentless against evil.
+subclass_feature_levels: [3, 7, 15, 20]
+features:
+  # "Sacred Weapon: When you make the Attack action, you can expend one use of
+  # your Channel Divinity to imbue one weapon you're holding with positive energy.
+  # For 10 minutes, you add your CHA modifier to attack rolls made with that weapon."
+  - id: sacred_weapon
+    display_name: Sacred Weapon
+    feature_type: custom_action
+    unlock_level: 3
+    body:
+      action_type: bonus_action
+      description: >
+        Channel Divinity: Imbue a held weapon with positive energy for 10 minutes.
+        Add CHA modifier to attack rolls; weapon emits bright light 20 ft.
+
+  # Oath spells always prepared: Protection from Evil and Good, Shield of Faith,
+  # Aid, Zone of Truth, Beacon of Hope, Dispel Magic, Freedom of Movement,
+  # Guardian of Faith, Commune, Flame Strike.
+  - id: devotion_oath_spells
+    display_name: Oath Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - protection_from_evil_and_good
+        - shield_of_faith
+        - aid
+        - zone_of_truth
+        - beacon_of_hope
+        - dispel_magic
+        - freedom_of_movement
+        - guardian_of_faith
+        - commune
+        - flame_strike
+
+  # "Aura of Devotion: You and friendly creatures within 10 feet of you can't
+  # be Charmed while you are conscious." — PHB 2024
+  - id: aura_of_devotion
+    display_name: Aura of Devotion
+    feature_type: condition_immunity_grant
+    unlock_level: 7
+    body:
+      condition: charmed
+      aura_radius: 10
+      description: You and allies within 10 ft can't be Charmed while you're conscious.
+
+  # "Smite of Protection: Your magical smites now shield their targets. Whenever
+  # you cast a Paladin's Smite spell, you and your allies in your Aura of Protection
+  # gain resistance to all damage until the start of your next turn." — PHB 2024
+  - id: smite_of_protection
+    display_name: Smite of Protection
+    feature_type: scripted_feature
+    unlock_level: 15
+    body:
+      description: >
+        When you cast Paladin's Smite, you and nearby allies gain resistance to
+        all damage until the start of your next turn.
+
+  # "Holy Nimbus: As a Bonus Action, you can emanate an aura of sunlight for
+  # 10 minutes. Enemies that start their turn in the bright light take 10 radiant
+  # damage. You also have Advantage on saving throws against spells cast by
+  # Fiends or Undead." — PHB 2024
+  - id: holy_nimbus
+    display_name: Holy Nimbus
+    feature_type: custom_action
+    unlock_level: 20
+    body:
+      action_type: bonus_action
+      recharge: long_rest
+      description: >
+        Emanate bright light 30 ft for 10 minutes. Enemies that start their turn
+        in the light take 10 radiant damage. Advantage on saves vs spells from
+        fiends and undead.
