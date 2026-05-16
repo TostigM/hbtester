@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 from balance_framework.engine.combat.actions import WeaponAttackAction, HealAction
 from balance_framework.engine.combat.resources import has_resource, spend
 from balance_framework.engine.grid import nearest_enemy
+from balance_framework.ai.choice_scorer import select_best_pool_option
 
 
 def martial_selector(
@@ -149,5 +150,12 @@ def martial_selector(
                 damage_bonus=dmg_bonus,
                 advantage=vow_advantage,
             ))
+
+    # Bonus action pool option (if not already spent on Second Wind / CD buff / Frenzy)
+    if combatant.bonus_actions_remaining > 0 and combatant.active_pool_features:
+        pool_action = select_best_pool_option(combatant, scenario, "bonus_action")
+        if pool_action is not None:
+            combatant.bonus_actions_remaining -= 1
+            actions.append(pool_action)
 
     return actions or None

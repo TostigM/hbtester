@@ -87,6 +87,13 @@ class CombatantState:
     vow_of_enmity: bool = False          # Vengeance Paladin: spend CD → advantage on attacks
     cd_offensive_active: bool = False    # Tracks whether CD offensive buff is running
 
+    # choice_feature pool definitions extracted from active features
+    # Each entry: {"feature_id": str, "pool": list[dict]}
+    active_pool_features: list[dict] = field(default_factory=list)
+
+    # Character level (used by pool effect amount resolution)
+    character_level: int = 1
+
     # Monster special attacks
     breath_weapon_config: dict | None = None   # None if no breath weapon
     melee_attack_bonus: int | None = None      # overrides STR-based calc if set
@@ -127,6 +134,14 @@ class CombatantState:
         if combat_stats["has_war_priest"]:
             resources["war_priest"] = max(1, ability_mods.get("WIS", 0))
 
+        # Extract choice_feature pool definitions for the AI scorer
+        pool_features = []
+        for f in c.active_features:
+            if f.feature_type == "choice_feature":
+                pool = f.body.get("pool", [])
+                if pool:
+                    pool_features.append({"feature_id": f.id, "pool": pool})
+
         return cls(
             id=combatant_id,
             display_name=display_name,
@@ -153,6 +168,8 @@ class CombatantState:
             war_priest_attack=combat_stats["has_war_priest"],
             sacred_weapon=combat_stats["sacred_weapon"],
             vow_of_enmity=combat_stats["vow_of_enmity"],
+            active_pool_features=pool_features,
+            character_level=c.build.level,
         )
 
     @classmethod

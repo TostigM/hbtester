@@ -74,6 +74,18 @@ class HealAction:
 
 
 @dataclass
+class PoolEffectAction:
+    """Apply one effect option from a choice_feature pool (e.g. a Community Spirit)."""
+
+    action_type: str = "pool_effect"
+    actor_id: str = ""
+    target_id: str = ""
+    feature_id: str = ""   # the choice_feature id (resource key: choice_feature_{id})
+    option_id: str = ""    # the specific pool option chosen
+    effect: dict = field(default_factory=dict)
+
+
+@dataclass
 class BreathWeaponAction:
     """Breath weapon: hits all living enemies with a DEX/CON save for half."""
 
@@ -85,7 +97,7 @@ class BreathWeaponAction:
     save_dc: int = 13
 
 
-Action = WeaponAttackAction | DodgeAction | HelpAction | DeathSaveAction | HealAction | BreathWeaponAction
+Action = WeaponAttackAction | DodgeAction | HelpAction | DeathSaveAction | HealAction | BreathWeaponAction | PoolEffectAction
 
 
 # ---------------------------------------------------------------------------
@@ -111,6 +123,8 @@ def resolve_action(action: Action, scenario: "ScenarioState") -> list[str]:
             return _resolve_heal(action, scenario)  # type: ignore[arg-type]
         case "breath_weapon":
             return _resolve_breath_weapon(action, scenario)  # type: ignore[arg-type]
+        case "pool_effect":
+            return _resolve_pool_effect(action, scenario)  # type: ignore[arg-type]
         case _:
             raise ValueError(f"Unknown action type: {action.action_type!r}")
 
@@ -249,6 +263,97 @@ def _resolve_heal(action: HealAction, scenario: "ScenarioState") -> list[str]:
         f"{caster.display_name} heals {target.display_name} for {gained} HP "
         f"({target.hp_current}/{target.hp_max})"
     ]
+
+
+def _pool_resolve_amount(spec: object, actor: "Any") -> int:
+    """Resolve a pool effect amount spec to an integer using combatant state."""
+    if isinstance(spec, int):
+        return spec
+    s = str(spec)
+    if s == "warlock_level" or s == "character_level":
+        return getattr(actor, "character_level", 1)
+    if s == "proficiency_bonus":
+        return actor.proficiency_bonus
+    if s.endswith("_mod"):
+        stat = s[:-4].upper()
+        return max(0, actor.ability_modifiers.get(stat, 0))
+    try:
+        return int(s)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _pool_resolve_dice(spec: object, actor: "Any", scenario: "ScenarioState") -> int:
+    """Resolve a dice string like '1d4' or a plain amount spec to a rolled integer."""
+    if isinstance(spec, int):
+        return spec
+    s = str(spec)
+    if "d" in s:
+        parts = s.split("d", 1)
+        try:
+            count = int(parts[0]) if parts[0] else 1
+            sides = int(parts[1])
+            return scenario.dice.roll_sum(sides, count)
+        except (ValueError, IndexError):
+            return 0
+    return _pool_resolve_amount(spec, actor)
+
+
+def _resolve_pool_effect(action: "PoolEffectAction", scenario: "ScenarioState") -> list[str]:
+    from balance_framework.engine.combat.resources import spend, InsufficientResourceError
+
+    actor = scenario.get_combatant(action.actor_id)
+    resource_key = f"choice_feature_{action.feature_id}"
+
+    try:
+        spend(actor, resource_key, 1)
+    except (KeyError, InsufficientResourceError):
+        return [f"{actor.display_name} has no {action.feature_id!r} charges remaining"]
+
+    effect = action.effect
+    effect_type = effect.get("type")
+    label = f"[{action.option_id}]"
+
+    match effect_type:
+        case "temp_hp":
+            amount = _pool_resolve_amount(effect.get("amount", 0), actor)
+            actor.temp_hp = max(actor.temp_hp, amount)
+            return [f"{actor.display_name} {label} gains {amount} temp HP"]
+
+        case "heal":
+            target = scenario.get_combatant(action.target_id)
+            rolled = _pool_resolve_dice(effect.get("amount", 0), actor, scenario)
+            bonus = _pool_resolve_amount(effect.get("bonus", 0), actor)
+            total = max(1, rolled + bonus)
+            from balance_framework.engine.combat.damage import apply_healing
+            gained = apply_healing(target, total)
+            cid = action.actor_id
+            scenario.healing_done[cid] = scenario.healing_done.get(cid, 0) + gained
+            return [f"{actor.display_name} {label} heals {target.display_name} for {gained} HP"]
+
+        case "condition_remove":
+            target = scenario.get_combatant(action.target_id)
+            conditions = effect.get("conditions", [])
+            removed = [c for c in conditions if c in target.conditions]
+            for c in removed:
+                del target.conditions[c]
+            return [f"{actor.display_name} {label} removes {removed} from {target.display_name}"]
+
+        case "condition_apply":
+            target = scenario.get_combatant(action.target_id)
+            condition = effect.get("condition", "frightened")
+            save_ability = effect.get("save_ability", "WIS")
+            dc = _pool_resolve_amount(effect.get("dc", actor.spell_save_dc or 10), actor)
+            from balance_framework.engine.combat.saves import resolve_save
+            from balance_framework.engine.combat.conditions import apply_condition
+            save_result = resolve_save(target, save_ability, dc, scenario.dice)
+            if not save_result.success:
+                apply_condition(target, condition)
+                return [f"{actor.display_name} {label} applies {condition!r} to {target.display_name}"]
+            return [f"{target.display_name} resisted {condition!r} {label}"]
+
+        case _:
+            return [f"{actor.display_name} {label} (effect type {effect_type!r} not simulated)"]
 
 
 def _resolve_breath_weapon(action: BreathWeaponAction, scenario: "ScenarioState") -> list[str]:

@@ -89,6 +89,21 @@ FEATURE_TYPES: Final[frozenset[str]] = frozenset({
     "wild_shape",
     # Escape hatch for novel mechanics requiring custom engine logic
     "scripted_feature",
+    # Generic "pick one effect from a list" feature (Battle Master maneuvers, spirits, etc.)
+    "choice_feature",
+})
+
+POOL_EFFECT_TYPES: Final[frozenset[str]] = frozenset({
+    "temp_hp",           # grant temporary hit points
+    "heal",              # restore hit points to self or ally
+    "damage_bonus",      # add flat damage to next hit
+    "condition_apply",   # force an enemy save or gain a condition
+    "condition_remove",  # end a condition on self or ally
+    "reroll",            # reroll a die with optional penalty
+    "advantage_grant",   # grant advantage on a roll
+    "disadvantage_impose",  # impose disadvantage on an enemy roll
+    "speed_change",      # modify movement speed
+    "utility",           # non-combat effect; not simulated
 })
 
 HIT_DIES: Final[frozenset[str]] = frozenset({"d6", "d8", "d10", "d12"})

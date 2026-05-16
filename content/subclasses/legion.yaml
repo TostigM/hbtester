@@ -38,154 +38,360 @@ features:
   # to level 3 in PHB 2024). Uses = proficiency bonus, restored on Long Rest.
   - id: echoes_of_the_fallen
     display_name: Echoes of the Fallen
-    feature_type: scripted_feature
+    feature_type: choice_feature
     unlock_level: 3
     body:
       uses: proficiency_bonus
       recharge: long_rest
       description: >
         As part of any Action, Bonus Action, Reaction, or triggered event, you
-        may channel one spirit from your lost community. You may only channel
-        one spirit per use unless another feature allows more. You have a number
-        of uses equal to your Proficiency Bonus, all restored on a Long Rest.
+        may channel one spirit from your lost community. You have a number of
+        uses equal to your Proficiency Bonus, all restored on a Long Rest.
+      pool:
 
-        Community Spirits — choose one per use:
+        - id: the_apprentice
+          display_name: The Apprentice
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: reroll
+            roll_type: spell_attack
+            penalty: -1
+          description: On a missed spell attack, reroll with −1 penalty.
 
-        The Apprentice: On a missed spell attack, reroll with −1 penalty.
-        (1/short rest; no action; triggers on missed spell attack.)
+        - id: the_beggar
+          display_name: The Beggar
+          action_type: no_action
+          recharge: long_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: While below half HP, your next spell costs no spell slot.
 
-        The Beggar: While below half your Hit Point maximum, your next spell
-        costs no spell slot.
-        (1/long rest; no action; passive when casting below half HP.)
+        - id: the_bellringer
+          display_name: The Bellringer
+          action_type: no_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: deafened
+            save_ability: WIS
+            dc: spell_save_dc
+          description: >
+            When you cast a spell, enemies within 60 feet make a WIS save or
+            are Deafened until the end of their next turn.
 
-        The Bellringer: When you cast a spell, enemies within 60 feet make a WIS
-        save or are Deafened until the end of their next turn.
-        (1/short rest; no action; triggers when you cast a spell.)
+        - id: the_blacksmith
+          display_name: The Blacksmith
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: damage_bonus
+            amount: 2
+            damage_type: force
+          description: One hit gains +2 force damage.
 
-        The Blacksmith: One hit gains +2 force damage; on a Critical Hit,
-        shatter a nonmagical weapon or armor piece on the target.
-        (1/short rest; no action; triggers on a hit.)
+        - id: the_carpenter
+          display_name: The Carpenter
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: Create a 5×5 ft floating platform within 30 feet lasting 1 minute.
 
-        The Carpenter: Create a 5×5 ft floating, immobile platform within 30
-        feet lasting 1 minute (AC = 10 + PB; HP = 10 × warlock level; holds up
-        to 500 lb).
-        (1/short rest; Bonus Action.)
+        - id: the_chirurgeon
+          display_name: The Chirurgeon
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: heal
+            amount: "1d4"
+            bonus: cha_mod
+            target: ally
+          description: >
+            One creature within 30 feet regains 1d4 + CHA modifier HP but has
+            Disadvantage on its next attack roll or saving throw.
 
-        The Chirurgeon: One creature within 30 feet regains 1d4 + your CHA
-        modifier Hit Points but has Disadvantage on its next attack roll or
-        saving throw before the end of its next turn.
-        (1/short rest; Bonus Action.)
+        - id: the_crone
+          display_name: The Crone
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: reroll
+            roll_type: enemy_save
+          description: Force a creature to reroll one successful saving throw against your spell.
 
-        The Crone: Force a creature to reroll one successful saving throw against
-        your spell or subclass feature.
-        (1/short rest; no action; declared after a successful save.)
+        - id: the_farmer
+          display_name: The Farmer
+          action_type: reaction
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: reroll
+            roll_type: skill_check
+          description: Reroll one Athletics or Acrobatics check (Reaction).
 
-        The Farmer: Reroll one Athletics or Acrobatics check using your Reaction,
-        declared after rolling but before knowing the result.
-        (1/short rest; Reaction.)
+        - id: the_father
+          display_name: The Father
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: temp_hp
+            amount: warlock_level
+          description: Gain Temporary Hit Points equal to your warlock level.
 
-        The Father: Gain Temporary Hit Points equal to your warlock level.
-        (1/short rest; Bonus Action.)
+        - id: the_forester
+          display_name: The Forester
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: advantage_grant
+            roll_type: skill_check
+            skills: [stealth, perception]
+          description: Gain Advantage on your next Stealth or Perception check.
 
-        The Forester: Gain Advantage on your next Stealth or Perception check,
-        which must be made before the end of your next turn.
-        (1/short rest; Bonus Action.)
+        - id: the_gambler
+          display_name: The Gambler
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: Roll d6. On 4–6, the triggering effect is empowered. On 1, it fizzles.
 
-        The Gambler: Roll a d6. On 4–6, the triggering effect is empowered
-        (+1d6 damage, +1 to its DC, or +50% duration). On a 1, the effect
-        fizzles and any spell slot is spent.
-        (1/short rest; no action; declared as you activate the effect.)
+        - id: the_gravedigger
+          display_name: The Gravedigger
+          action_type: no_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: frightened
+            save_ability: WIS
+            dc: spell_save_dc
+          description: >
+            When you reduce a creature to 0 HP, one creature within 10 feet makes
+            a WIS save or becomes Frightened until the end of its next turn.
 
-        The Gravedigger: When you reduce a creature to 0 Hit Points, force one
-        creature within 10 feet to make a WIS save or become Frightened of you
-        until the end of its next turn.
-        (1/short rest; no action; triggers when you drop a creature to 0 HP.)
+        - id: the_guard
+          display_name: The Guard
+          action_type: reaction
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: disadvantage_impose
+            roll_type: attack
+          description: >
+            When you or an ally within 5 feet is hit, impose Disadvantage on
+            that attack roll (declared after hit, before damage).
 
-        The Guard: When you or an ally within 5 feet is hit by an attack, impose
-        Disadvantage on that attack roll, declared after the hit is confirmed but
-        before damage is rolled.
-        (1/short rest; Reaction.)
+        - id: the_herbalist
+          display_name: The Herbalist
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_remove
+            conditions: [poisoned, charmed, frightened, blinded]
+          description: End one condition (Poisoned, Charmed, Frightened, or Blinded).
 
-        The Herbalist: End one condition (Poisoned, Charmed, Frightened, or
-        Blinded) affecting you or one ally within 30 feet.
-        (1/short rest; Bonus Action.)
+        - id: the_hunter
+          display_name: The Hunter
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: speed_change
+            amount: -10
+            target: enemy
+          description: On a hit, reduce the target's Speed by 10 feet until your next turn.
 
-        The Hunter: On a successful hit, reduce the target's Speed by 10 feet
-        until the start of your next turn.
-        (1/short rest; no action; declared on a hit.)
+        - id: the_leader
+          display_name: The Leader
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: >
+            When you cast a spell or use a feature, one ally within 30 feet may
+            Reaction-move or make one weapon attack.
 
-        The Leader: When you cast a spell or use a feature affecting a creature,
-        one ally within 30 feet may use their Reaction to either move up to half
-        their Speed or make one weapon attack.
-        (1/short rest; no action; declared when activating the spell or feature.)
+        - id: the_little_boy
+          display_name: The Little Boy
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: reroll
+            roll_type: saving_throw
+            target: ally
+          description: You or one ally within 30 feet may reroll one failed saving throw.
 
-        The Little Boy: You or one ally within 30 feet may reroll one failed
-        saving throw, declared after the roll but before consequences are applied.
-        (1/short rest; no action.)
+        - id: the_little_girl
+          display_name: The Little Girl
+          action_type: no_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: frightened
+            save_ability: INT
+            dc: spell_save_dc
+          description: >
+            When a creature fails a save against your spell, it makes an INT save
+            or becomes Frightened until the end of its next turn.
 
-        The Little Girl: When a creature fails a saving throw against your spell
-        or subclass feature, it must succeed on an INT save or become Frightened
-        of you until the end of its next turn.
-        (1/short rest; no action; declared after a failed save against you.)
+        - id: the_merchant
+          display_name: The Merchant
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: >
+            Halve your spell damage to impose Disadvantage on one of the target's
+            saving throws until the start of your next turn.
 
-        The Merchant: Halve the damage of your spell or subclass feature to
-        impose Disadvantage on a saving throw of your choice (DEX, CON, etc.)
-        until the start of your next turn.
-        (1/short rest; no action; declared when activating.)
+        - id: the_midwife
+          display_name: The Midwife
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: heal
+            amount: 0
+            bonus: cha_mod
+            target: ally
+          description: One ally within 10 feet regains HP equal to your CHA modifier (min 1).
 
-        The Midwife: One ally within 10 feet regains Hit Points equal to your
-        CHA modifier (minimum 1).
-        (1/short rest; Bonus Action.)
+        - id: the_miller
+          display_name: The Miller
+          action_type: no_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: prone
+            save_ability: STR
+            dc: spell_save_dc
+          description: On a hit, target makes a STR save or is knocked Prone.
 
-        The Miller: On a hit, the target must succeed on a STR save (your Spell
-        Save DC) or be knocked Prone.
-        (1/short rest; no action; declared on a successful hit.)
+        - id: the_mother
+          display_name: The Mother
+          action_type: reaction
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: >
+            Reaction when you or an ally within 10 feet takes damage: both gain
+            Resistance to that instance and the next source until end of your next turn.
 
-        The Mother: As a Reaction when you or an ally within 10 feet takes
-        damage, both of you gain Resistance to that instance of damage and to
-        the next source of damage until the end of your next turn.
-        (1/short rest; Reaction.)
+        - id: the_priest
+          display_name: The Priest
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: advantage_grant
+            roll_type: death_save
+          description: One creature within 30 feet gains Advantage on death saving throws.
 
-        The Priest: One creature within 30 feet gains Advantage on death saving
-        throws until the end of its next turn.
-        (1/short rest; Bonus Action.)
+        - id: the_scoundrel
+          display_name: The Scoundrel
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: When using a cantrip targeting one creature, also target a second.
 
-        The Scoundrel: When using a cantrip or subclass feature targeting one
-        creature, also target a second creature within 5 feet of the original.
-        (1/short rest; no action; declared when activating.)
+        - id: the_seamstress
+          display_name: The Seamstress
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: Cast mending or stabilize a dying creature within 30 feet.
 
-        The Seamstress: Cast mending (at will) on an object within 30 feet; or
-        stabilize a dying creature within 30 feet without a check or healer's kit
-        (1/short rest).
-        (Bonus Action.)
+        - id: the_stablehand
+          display_name: The Stablehand
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: speed_change
+            amount: 10
+            target: self
+          description: Your Speed increases by 10 feet until the end of your next turn.
 
-        The Stablehand: Your Speed increases by 10 feet until the end of your
-        next turn.
-        (1/short rest; Bonus Action.)
+        - id: the_storyteller
+          display_name: The Storyteller
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: advantage_grant
+            roll_type: ability_check
+            abilities: [INT, CHA]
+          description: Gain Advantage on your next INT or CHA ability check or saving throw.
 
-        The Storyteller: Gain Advantage on your next INT or CHA ability check or
-        saving throw.
-        (1/short rest; Bonus Action.)
+        - id: the_tavernkeeper
+          display_name: The Tavernkeeper
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: frightened
+            save_ability: CON
+            dc: spell_save_dc
+          description: >
+            All hostile creatures within 10 feet make a CON save or have
+            Disadvantage on their next WIS or DEX saving throw.
 
-        The Tavernkeeper: All hostile creatures within 10 feet make a CON save
-        or have Disadvantage on their next WIS or DEX saving throw before the
-        end of their next turn.
-        (1/short rest; Bonus Action.)
+        - id: the_teacher
+          display_name: The Teacher
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: Your next INT check has Advantage; for 1 hour you can read and write all languages.
 
-        The Teacher: Your next INT-based ability check has Advantage, and for 1
-        hour you can read and write all languages.
-        (1/short rest; Bonus Action.)
+        - id: the_weaver
+          display_name: The Weaver
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: >
+            Create a spectral thread to a creature within 30 feet; Bonus Action
+            to teleport within 5 feet of it.
 
-        The Weaver: Create a spectral thread to one creature within 30 feet. As
-        a Bonus Action before the end of your next turn, teleport to an
-        unoccupied space within 5 feet of that creature. You may bring one
-        willing creature or one carried object no larger than your size.
-        (1/short rest; no action to link; Bonus Action to teleport.)
-
-        The Young Lover: Gain Advantage on your next CHA ability check or saving
-        throw. Additionally, the next creature that makes a saving throw against
-        a Charm effect from you before the end of your next turn has Disadvantage.
-        (1/short rest; Bonus Action.)
+        - id: the_young_lover
+          display_name: The Young Lover
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: advantage_grant
+            roll_type: ability_check
+            abilities: [CHA]
+          description: >
+            Gain Advantage on your next CHA check or saving throw; next creature
+            saving against your Charm has Disadvantage.
 
   # 2024 change: was "1st-level feature" → now 3rd-level. Wording updated to
   # use 2024 condition and action-economy language.
