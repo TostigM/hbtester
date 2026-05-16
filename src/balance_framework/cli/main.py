@@ -9,6 +9,7 @@ import click
 from balance_framework.cli.validate_commands import validate
 from balance_framework.cli.test_commands import test
 from balance_framework.cli.baseline_commands import generate_baseline
+from balance_framework.cli.analyze_commands import analyze
 
 
 @click.group()
@@ -20,6 +21,7 @@ def main() -> None:
 main.add_command(validate)
 main.add_command(test)
 main.add_command(generate_baseline)
+main.add_command(analyze)
 
 
 @main.command(name="build-character")

@@ -275,6 +275,51 @@
     .hb-enc-name { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.3rem; }
     .hb-enc-wr   { font-size: 1.2rem; font-weight: 700; }
     .hb-enc-rnd  { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+    /* Analyze button */
+    .hb-analyze-btn {
+      padding: 0.5rem 1.2rem; background: transparent;
+      border: 1px solid var(--border); border-radius: 6px; color: var(--muted);
+      cursor: pointer; font-size: 0.85rem; transition: border-color 0.15s, color 0.15s;
+    }
+    .hb-analyze-btn:hover:not(:disabled) { border-color: var(--gold-dim); color: var(--text); }
+    .hb-analyze-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    /* Coverage report */
+    #hb-analysis { margin-top: 0.75rem; }
+    .hb-analysis-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.5rem 0.75rem; background: var(--surface2);
+      border-radius: 6px 6px 0 0; border-bottom: 1px solid var(--border);
+    }
+    .hb-analysis-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .hb-cov-badge {
+      font-size: 0.8rem; font-weight: 700; padding: 0.15rem 0.55rem;
+      border-radius: 99px; background: var(--surface2);
+    }
+    .hb-feature-list { background: var(--surface2); border-radius: 0 0 6px 6px; padding: 0.25rem 0; }
+    .hb-feature-row {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      padding: 0.35rem 0.75rem; border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+    .hb-feature-row:first-child { border-top: none; }
+    .hb-cov-pill {
+      flex-shrink: 0; font-size: 0.68rem; font-weight: 700; padding: 0.1rem 0.45rem;
+      border-radius: 99px; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.05rem;
+    }
+    .cov-full    { background: #1a3a1a; color: #6fcf6f; }
+    .cov-partial { background: #3a2e10; color: #d4a826; }
+    .cov-none    { background: #3a1515; color: #e07070; }
+    .hb-feature-info { flex: 1; }
+    .hb-feature-name { color: var(--text); font-weight: 600; }
+    .hb-feature-reason { color: var(--muted); font-size: 0.74rem; margin-top: 0.1rem; }
+    .hb-pool-bar {
+      height: 4px; background: var(--border); border-radius: 2px; margin-top: 0.35rem; overflow: hidden;
+    }
+    .hb-pool-fill { height: 100%; border-radius: 2px; background: #d4a826; }
+    .hb-schema-error {
+      padding: 0.6rem 0.75rem; background: #3c1515; border-radius: 6px;
+      color: #f08080; font-size: 0.8rem; margin-bottom: 0.4rem;
+    }
   </style>
 </head>
 <body>
@@ -360,8 +405,10 @@
         <div class="hb-controls">
           <label>Runs <input type="number" id="hb-runs"  value="50" min="10" max="100" class="hb-num"></label>
           <label>Level <input type="number" id="hb-level" value="5"  min="1"  max="10"  class="hb-num"></label>
+          <button id="hb-analyze-btn" class="hb-analyze-btn">Analyze</button>
           <button id="hb-run-btn" class="hb-run-btn">Run Simulation</button>
         </div>
+        <div id="hb-analysis" hidden></div>
         <div id="hb-status"  class="hb-status" hidden></div>
         <div id="hb-results" hidden></div>
       </div>
@@ -719,6 +766,97 @@ function _hbShowResults(d) {
   document.getElementById('hb-results').hidden = false;
 }
 
+function _covClass(cov) {
+  return cov === 'full' ? 'cov-full' : cov === 'partial' ? 'cov-partial' : 'cov-none';
+}
+function _covLabel(cov) {
+  return cov === 'full' ? 'Full' : cov === 'partial' ? 'Partial' : 'None';
+}
+function _covColor(pct) {
+  return pct >= 70 ? '#6fcf6f' : pct >= 40 ? '#d4a826' : '#e07070';
+}
+
+function _renderAnalysis(r) {
+  const el = document.getElementById('hb-analysis');
+
+  if (r.parse_error) {
+    el.innerHTML = `<div class="hb-schema-error">Parse error: ${r.parse_error}</div>`;
+    el.hidden = false;
+    return;
+  }
+
+  const pct   = r.summary.coverage_pct ?? 0;
+  const valid = r.valid;
+  const schemaHtml = r.schema_errors.length
+    ? r.schema_errors.map(e => `<div class="hb-schema-error">${e}</div>`).join('')
+    : '';
+
+  const featRows = (r.features || []).map(f => {
+    const pill = `<span class="hb-cov-pill ${_covClass(f.coverage)}">${_covLabel(f.coverage)}</span>`;
+    const lvl  = f.unlock_level ? `<span style="color:var(--muted);font-size:0.72rem"> L${f.unlock_level}</span>` : '';
+    let extra = '';
+    if (f.coverage !== 'full' && f.reason) {
+      extra += `<div class="hb-feature-reason">${f.reason}</div>`;
+    }
+    if (f.pool_options && f.pool_options.total > 0) {
+      const ppo = f.pool_options;
+      const pct2 = Math.round(ppo.simulatable / ppo.total * 100);
+      extra += `<div class="hb-pool-bar"><div class="hb-pool-fill" style="width:${pct2}%"></div></div>`;
+      extra += `<div class="hb-feature-reason">${ppo.simulatable}/${ppo.total} pool options simulatable</div>`;
+    }
+    return `<div class="hb-feature-row">
+      ${pill}
+      <div class="hb-feature-info">
+        <span class="hb-feature-name">${f.display_name}${lvl}</span>
+        ${extra}
+      </div>
+    </div>`;
+  }).join('');
+
+  const validBadge = valid
+    ? `<span style="color:#6fcf6f;font-size:0.78rem">✓ Valid schema</span>`
+    : `<span style="color:#e07070;font-size:0.78rem">✗ Schema errors</span>`;
+
+  el.innerHTML = `
+    ${schemaHtml}
+    <div class="hb-analysis-hdr">
+      <span class="hb-analysis-title">Simulation Coverage</span>
+      <span style="display:flex;gap:0.75rem;align-items:center">
+        ${validBadge}
+        <span class="hb-cov-badge" style="color:${_covColor(pct)}">${pct}%</span>
+      </span>
+    </div>
+    <div class="hb-feature-list">${featRows || '<div class="hb-feature-row" style="color:var(--muted)">No features found.</div>'}</div>`;
+  el.hidden = false;
+}
+
+async function analyzeHomebrew() {
+  const btn     = document.getElementById('hb-analyze-btn');
+  const yamlTxt = document.getElementById('hb-yaml').value.trim();
+  if (!yamlTxt) { _hbStatus('error', 'Paste a subclass YAML first.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Analyzing…';
+  document.getElementById('hb-analysis').hidden = true;
+
+  try {
+    const resp = await fetch(`${API_BASE}/api/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ yaml_content: yamlTxt }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { _hbStatus('error', data.error || `Server error ${resp.status}`); return; }
+    document.getElementById('hb-status').hidden = true;
+    _renderAnalysis(data);
+  } catch (e) {
+    _hbStatus('error', `Network error: ${e.message}`);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Analyze';
+  }
+}
+
 async function runHomebrew() {
   const btn   = document.getElementById('hb-run-btn');
   const yamlTxt = document.getElementById('hb-yaml').value.trim();
@@ -749,6 +887,7 @@ async function runHomebrew() {
 }
 
 document.getElementById('hb-run-btn').addEventListener('click', runHomebrew);
+document.getElementById('hb-analyze-btn').addEventListener('click', analyzeHomebrew);
 
 // ── Go ─────────────────────────────────────────────────────────────────────
 init();

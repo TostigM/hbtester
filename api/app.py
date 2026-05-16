@@ -114,6 +114,22 @@ def subclass_data(subclass_id: str):
     return jsonify(json.loads(path.read_text(encoding="utf-8")))
 
 
+@app.route("/api/analyze", methods=["POST"])
+def analyze():
+    """Parse and analyze a homebrew subclass YAML for format validity and simulation coverage."""
+    ip = request.headers.get("X-Forwarded-For", request.remote_addr or "").split(",")[0].strip()
+    if not _rate_ok(ip):
+        return jsonify({"error": "Rate limit exceeded — max 5 requests per minute."}), 429
+
+    body = request.get_json(silent=True)
+    if not body or "yaml_content" not in body:
+        return jsonify({"error": "JSON body with 'yaml_content' field required."}), 400
+
+    from balance_framework.reporting.analyzer import analyze_subclass_yaml
+    report = analyze_subclass_yaml(body["yaml_content"])
+    return jsonify(report)
+
+
 @app.route("/api/simulate", methods=["POST"])
 def simulate():
     # Rate limit by IP (Render/Railway set X-Forwarded-For)
