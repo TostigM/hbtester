@@ -792,22 +792,33 @@ function _renderAnalysis(r) {
     : '';
 
   const featRows = (r.features || []).map(f => {
-    const pill = `<span class="hb-cov-pill ${_covClass(f.coverage)}">${_covLabel(f.coverage)}</span>`;
-    const lvl  = f.unlock_level ? `<span style="color:var(--muted);font-size:0.72rem"> L${f.unlock_level}</span>` : '';
-    let extra = '';
-    if (f.coverage !== 'full' && f.reason) {
-      extra += `<div class="hb-feature-reason">${f.reason}</div>`;
+    const lvl = f.unlock_level ? `<span style="color:var(--muted);font-size:0.72rem"> L${f.unlock_level}</span>` : '';
+    let icon, nameStyle, extra = '';
+
+    if (f.coverage === 'full') {
+      icon      = `<span style="color:#6fcf6f;font-size:1rem;flex-shrink:0">✓</span>`;
+      nameStyle = 'color:var(--text)';
+    } else if (f.coverage === 'partial') {
+      icon      = `<span class="hb-cov-pill cov-partial" style="flex-shrink:0">Partial</span>`;
+      nameStyle = 'color:var(--text)';
+      if (f.reason) extra += `<div class="hb-feature-reason">${f.reason}</div>`;
+    } else {
+      icon      = `<span class="hb-cov-pill cov-none" style="flex-shrink:0">Not simulated</span>`;
+      nameStyle = 'color:var(--muted)';
+      if (f.reason) extra += `<div class="hb-feature-reason">${f.reason}</div>`;
     }
+
     if (f.pool_options && f.pool_options.total > 0) {
-      const ppo = f.pool_options;
+      const ppo  = f.pool_options;
       const pct2 = Math.round(ppo.simulatable / ppo.total * 100);
       extra += `<div class="hb-pool-bar"><div class="hb-pool-fill" style="width:${pct2}%"></div></div>`;
       extra += `<div class="hb-feature-reason">${ppo.simulatable}/${ppo.total} pool options simulatable</div>`;
     }
+
     return `<div class="hb-feature-row">
-      ${pill}
+      ${icon}
       <div class="hb-feature-info">
-        <span class="hb-feature-name">${f.display_name}${lvl}</span>
+        <span class="hb-feature-name" style="${nameStyle}">${f.display_name}${lvl}</span>
         ${extra}
       </div>
     </div>`;

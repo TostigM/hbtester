@@ -26,7 +26,7 @@ def analyze(yaml_file: str, as_json: bool) -> None:
         click.echo(_json.dumps(report, indent=2))
         raise SystemExit(0 if report["valid"] else 1)
 
-    # ── Human-readable output ──────────────────────────────────────────────
+    # -- Human-readable output ----------------------------------------------
 
     # Parse / schema errors first
     if report["parse_error"]:
@@ -45,31 +45,42 @@ def analyze(yaml_file: str, as_json: bool) -> None:
     cls    = report["parent_class"] or "?"
     valid_label = click.style("VALID", fg="green", bold=True) if report["valid"] else click.style("INVALID", fg="red", bold=True)
     click.echo(f"\n  {valid_label}  {name}  [{cls}]")
-    click.echo(f"  {'─' * 50}")
+    click.echo(f"  {'-' * 50}")
 
     # Features
-    cov_colors = {"full": "green", "partial": "yellow", "none": "red"}
-    cov_labels = {"full": "FULL   ", "partial": "PARTIAL", "none": "NONE   "}
-
     for f in report["features"]:
         lvl_tag = f"  L{f['unlock_level']}" if f["unlock_level"] else "     "
         cov = f["coverage"]
-        label = click.style(cov_labels[cov], fg=cov_colors[cov])
-        click.echo(f"  {label}{lvl_tag}  {f['display_name']}")
 
-        if cov != "full" and f.get("reason"):
-            click.echo(f"            → {f['reason']}")
+        if cov == "full":
+            icon = click.style("[ok]", fg="green", bold=True)
+            name = f"  {icon}{lvl_tag}  {f['display_name']}"
+            click.echo(name)
+        elif cov == "partial":
+            icon = click.style("[~]", fg="yellow", bold=True)
+            name = f"  {icon}{lvl_tag}  {f['display_name']}"
+            click.echo(name)
+            if f.get("reason"):
+                click.echo(f"             -> {click.style(f['reason'], fg='yellow')}")
+        else:
+            icon = click.style("[x]", fg="red", bold=True)
+            name = f"  {icon}{lvl_tag}  {click.style(f['display_name'], fg='red')}"
+            click.echo(name)
+            if f.get("reason"):
+                click.echo(f"             -> {click.style(f['reason'], fg='red')}")
 
         if "pool_options" in f:
             po = f["pool_options"]
             if po["total"] > 0:
+                pct2 = round(po["simulatable"] / po["total"] * 100)
+                bar = ("#" * (pct2 // 10)).ljust(10, ".")
                 click.echo(
-                    f"            pool: {po['simulatable']}/{po['total']} simulatable"
+                    f"             pool  {bar}  {po['simulatable']}/{po['total']} simulatable"
                 )
 
     # Summary
     s = report["summary"]
-    click.echo(f"\n  {'─' * 50}")
+    click.echo(f"\n  {'-' * 50}")
     pct = s.get("coverage_pct", 0)
     pct_color = "green" if pct >= 70 else ("yellow" if pct >= 40 else "red")
     click.echo(

@@ -20,7 +20,7 @@ from balance_framework.schema.exceptions import ValidationError
 _FULL: dict[str, str] = {
     "extra_attack":         "Increases attacks per Attack action.",
     "sneak_attack":         "Adds sneak attack dice to the first hit each turn.",
-    "second_wind":          "Tracked as a resource; used as a bonus-action heal when HP ≤ 30%.",
+    "second_wind":          "Tracked as a resource; used as a bonus-action heal when HP <= 30%.",
     "action_surge":         "Tracked as a resource; grants an extra Attack action when enemies remain.",
     "combat_superiority":   "Superiority dice tracked and spent to add 1d8 to attacks.",
     "channel_divinity":     "Tracked as a resource pool; CD subclass effects partially dispatch.",
@@ -55,7 +55,7 @@ _PARTIAL: dict[str, str] = {
 }
 
 _NONE: dict[str, str] = {
-    "scripted_feature":        "Only description text — no machine-readable mechanics. Convert to choice_feature with a structured pool.",
+    "scripted_feature":        "Only description text - no machine-readable mechanics. Convert to choice_feature with a structured pool.",
     "triggered_on_kill":       "Trigger hooks are not implemented in the combat engine.",
     "triggered_on_miss":       "Trigger hooks are not implemented in the combat engine.",
     "triggered_on_spell_cast": "Trigger hooks are not implemented in the combat engine.",
@@ -113,7 +113,7 @@ def _classify_feature(feature: dict[str, Any]) -> dict[str, Any]:
         sim   = pool_info["simulatable"]
         if total == 0:
             coverage = "none"
-            reason = "choice_feature with an empty pool — add pool options with simulatable: true."
+            reason = "choice_feature with an empty pool - add pool options with simulatable: true."
         elif sim == 0:
             coverage = "none"
             reason = f"All {total} pool options have simulatable: false. Mark options with supported effect types as simulatable: true."
@@ -122,7 +122,7 @@ def _classify_feature(feature: dict[str, Any]) -> dict[str, Any]:
             reason = f"All {total} pool options are simulatable."
         else:
             coverage = "partial"
-            reason = f"{sim}/{total} pool options are simulatable. Not simulated: {', '.join(pool_info['not_simulatable'][:5])}{'…' if len(pool_info['not_simulatable']) > 5 else ''}."
+            reason = f"{sim}/{total} pool options are simulatable. Not simulated: {', '.join(pool_info['not_simulatable'][:5])}{'...' if len(pool_info['not_simulatable']) > 5 else ''}."
     elif ftype in _PARTIAL:
         coverage = "partial"
         reason = _PARTIAL[ftype]
@@ -131,7 +131,7 @@ def _classify_feature(feature: dict[str, Any]) -> dict[str, Any]:
         reason = _NONE[ftype]
     else:
         coverage = "none"
-        reason = f"Unknown feature_type {ftype!r} — not recognized by the engine."
+        reason = f"Unknown feature_type {ftype!r} - not recognized by the engine."
 
     result: dict[str, Any] = {
         "feature_id":   fid,
