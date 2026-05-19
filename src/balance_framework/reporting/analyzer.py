@@ -83,12 +83,13 @@ _COVERAGE_WEIGHT = {"full": 1.0, "partial": 0.5, "none": 0.0}
 def _analyze_pool(body: dict[str, Any]) -> dict[str, Any]:
     pool = body.get("pool", [])
     if not pool:
-        return {"total": 0, "simulatable": 0, "not_simulatable": []}
-    simulatable = [o["id"] for o in pool if o.get("simulatable")]
+        return {"total": 0, "simulatable": 0, "simulatable_ids": [], "not_simulatable": []}
+    simulatable_ids = [o["id"] for o in pool if o.get("simulatable")]
     not_simulatable = [o["id"] for o in pool if not o.get("simulatable")]
     return {
         "total": len(pool),
-        "simulatable": len(simulatable),
+        "simulatable": len(simulatable_ids),
+        "simulatable_ids": simulatable_ids,
         "not_simulatable": not_simulatable,
     }
 

@@ -302,6 +302,30 @@
       font-size: 0.8rem;
     }
     .hb-feature-row:first-child { border-top: none; }
+    .hb-feature-row.expandable { cursor: pointer; user-select: none; }
+    .hb-feature-row.expandable:hover { background: rgba(255,255,255,0.03); }
+    .hb-expand-arrow {
+      flex-shrink: 0; width: 0.85rem; color: var(--muted); font-size: 0.6rem;
+      margin-top: 0.25rem; transition: transform 0.15s;
+    }
+    .hb-expand-arrow.open { transform: rotate(90deg); }
+    .hb-feature-detail {
+      padding: 0.5rem 0.75rem 0.6rem 2.6rem; border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.15);
+    }
+    .hb-option-section { margin-top: 0.4rem; }
+    .hb-option-section:first-child { margin-top: 0; }
+    .hb-option-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+    .hb-option-label.ok   { color: #6fcf6f; }
+    .hb-option-label.none { color: #e07070; }
+    .hb-option-chips { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+    .hb-chip {
+      font-size: 0.68rem; padding: 0.1rem 0.45rem; border-radius: 4px;
+      font-family: monospace; letter-spacing: 0;
+    }
+    .hb-chip-ok   { background: #1a3320; color: #6fcf6f; }
+    .hb-chip-none { background: #3a1515; color: #e07070; }
     .hb-cov-pill {
       flex-shrink: 0; font-size: 0.68rem; font-weight: 700; padding: 0.1rem 0.45rem;
       border-radius: 99px; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.05rem;
@@ -309,7 +333,7 @@
     .cov-full    { background: #1a3a1a; color: #6fcf6f; }
     .cov-partial { background: #3a2e10; color: #d4a826; }
     .cov-none    { background: #3a1515; color: #e07070; }
-    .hb-feature-info { flex: 1; }
+    .hb-feature-info { flex: 1; min-width: 0; }
     .hb-feature-name { color: var(--text); font-weight: 600; }
     .hb-feature-reason { color: var(--muted); font-size: 0.74rem; margin-top: 0.1rem; }
     .hb-pool-bar {
@@ -776,6 +800,15 @@ function _covColor(pct) {
   return pct >= 70 ? '#6fcf6f' : pct >= 40 ? '#d4a826' : '#e07070';
 }
 
+function _toggleFeatureDetail(idx) {
+  const detail = document.getElementById(`hb-detail-${idx}`);
+  const arrow  = document.getElementById(`hb-arrow-${idx}`);
+  if (!detail) return;
+  const opening = detail.hidden;
+  detail.hidden = !opening;
+  if (arrow) arrow.classList.toggle('open', opening);
+}
+
 function _renderAnalysis(r) {
   const el = document.getElementById('hb-analysis');
 
@@ -791,9 +824,10 @@ function _renderAnalysis(r) {
     ? r.schema_errors.map(e => `<div class="hb-schema-error">${e}</div>`).join('')
     : '';
 
-  const featRows = (r.features || []).map(f => {
+  const featRows = (r.features || []).map((f, i) => {
     const lvl = f.unlock_level ? `<span style="color:var(--muted);font-size:0.72rem"> L${f.unlock_level}</span>` : '';
     let icon, nameStyle, extra = '';
+    const ppo = f.pool_options && f.pool_options.total > 0 ? f.pool_options : null;
 
     if (f.coverage === 'full') {
       icon      = `<span style="color:#6fcf6f;font-size:1rem;flex-shrink:0">✓</span>`;
@@ -801,27 +835,45 @@ function _renderAnalysis(r) {
     } else if (f.coverage === 'partial') {
       icon      = `<span class="hb-cov-pill cov-partial" style="flex-shrink:0">Partial</span>`;
       nameStyle = 'color:var(--text)';
-      if (f.reason) extra += `<div class="hb-feature-reason">${f.reason}</div>`;
+      if (f.reason && !ppo) extra += `<div class="hb-feature-reason">${f.reason}</div>`;
     } else {
       icon      = `<span class="hb-cov-pill cov-none" style="flex-shrink:0">Not simulated</span>`;
       nameStyle = 'color:var(--muted)';
-      if (f.reason) extra += `<div class="hb-feature-reason">${f.reason}</div>`;
+      if (f.reason && !ppo) extra += `<div class="hb-feature-reason">${f.reason}</div>`;
     }
 
-    if (f.pool_options && f.pool_options.total > 0) {
-      const ppo  = f.pool_options;
+    let detailHtml = '';
+    if (ppo) {
       const pct2 = Math.round(ppo.simulatable / ppo.total * 100);
       extra += `<div class="hb-pool-bar"><div class="hb-pool-fill" style="width:${pct2}%"></div></div>`;
-      extra += `<div class="hb-feature-reason">${ppo.simulatable}/${ppo.total} pool options simulatable</div>`;
+      extra += `<div class="hb-feature-reason" style="margin-bottom:0.1rem">${ppo.simulatable}/${ppo.total} pool options simulatable — <span style="color:var(--gold-dim)">click to expand</span></div>`;
+
+      const okChips   = (ppo.simulatable_ids || []).map(id => `<span class="hb-chip hb-chip-ok">${id}</span>`).join('');
+      const noneChips = (ppo.not_simulatable || []).map(id => `<span class="hb-chip hb-chip-none">${id}</span>`).join('');
+      detailHtml = `<div class="hb-feature-detail" id="hb-detail-${i}" hidden>
+        ${okChips ? `<div class="hb-option-section">
+          <div class="hb-option-label ok">Simulatable (${ppo.simulatable})</div>
+          <div class="hb-option-chips">${okChips}</div>
+        </div>` : ''}
+        ${noneChips ? `<div class="hb-option-section">
+          <div class="hb-option-label none">Not simulatable (${ppo.not_simulatable.length})</div>
+          <div class="hb-option-chips">${noneChips}</div>
+        </div>` : ''}
+      </div>`;
     }
 
-    return `<div class="hb-feature-row">
+    const expandable = ppo ? 'expandable' : '';
+    const arrow = ppo ? `<span class="hb-expand-arrow" id="hb-arrow-${i}">▶</span>` : `<span style="width:0.85rem;flex-shrink:0"></span>`;
+    const onclick = ppo ? `onclick="_toggleFeatureDetail(${i})"` : '';
+
+    return `<div class="hb-feature-row ${expandable}" ${onclick}>
+      ${arrow}
       ${icon}
       <div class="hb-feature-info">
         <span class="hb-feature-name" style="${nameStyle}">${f.display_name}${lvl}</span>
         ${extra}
       </div>
-    </div>`;
+    </div>${detailHtml}`;
   }).join('');
 
   const validBadge = valid
