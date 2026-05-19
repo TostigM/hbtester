@@ -1,0 +1,486 @@
+schema_version: "0.1"
+content_type: subclass
+id: legion
+display_name: The Legion
+parent_class: warlock
+source: homebrew
+author: TostigM
+flavor: >
+  Your patron is not one voice—but many. You are the vessel of a lost
+  community: a village massacred, a town razed, a people forgotten by the
+  world. Their spirits now live within you, guiding your path and acting
+  through you as guardian, witness, and vengeance. You are not one voice.
+  You are many.
+subclass_feature_levels: [3, 6, 10, 14]
+features:
+
+  # Patron Spells — 2024 convention: always prepared, don't count against
+  # spells known. Replaces 2014 "Expanded Spell List" language.
+  - id: legion_patron_spells
+    display_name: Patron Spells
+    feature_type: spell_grant
+    unlock_level: 3
+    body:
+      always_prepared: true
+      spells:
+        - heroism
+        - dissonant_whispers
+        - detect_thoughts
+        - hold_person
+        - counterspell
+        - fear
+        - confusion
+        - phantasmal_killer
+        - scrying
+        - wall_of_force
+
+  # 2024 change: was "1st-level feature" → now 3rd-level (subclass choice moves
+  # to level 3 in PHB 2024). Uses = proficiency bonus, restored on Long Rest.
+  - id: echoes_of_the_fallen
+    display_name: Echoes of the Fallen
+    feature_type: choice_feature
+    unlock_level: 3
+    body:
+      uses: proficiency_bonus
+      recharge: long_rest
+      description: >
+        As part of any Action, Bonus Action, Reaction, or triggered event, you
+        may channel one spirit from your lost community. You have a number of
+        uses equal to your Proficiency Bonus, all restored on a Long Rest.
+      pool:
+
+        - id: the_apprentice
+          display_name: The Apprentice
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: reroll
+            roll_type: spell_attack
+            penalty: -1
+          description: On a missed spell attack, reroll with −1 penalty.
+
+        - id: the_beggar
+          display_name: The Beggar
+          action_type: no_action
+          recharge: long_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: While below half HP, your next spell costs no spell slot.
+
+        - id: the_bellringer
+          display_name: The Bellringer
+          action_type: no_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: deafened
+            save_ability: WIS
+            dc: spell_save_dc
+          description: >
+            When you cast a spell, enemies within 60 feet make a WIS save or
+            are Deafened until the end of their next turn.
+
+        - id: the_blacksmith
+          display_name: The Blacksmith
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: damage_bonus
+            amount: 2
+            damage_type: force
+          description: One hit gains +2 force damage.
+
+        - id: the_carpenter
+          display_name: The Carpenter
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: Create a 5×5 ft floating platform within 30 feet lasting 1 minute.
+
+        - id: the_chirurgeon
+          display_name: The Chirurgeon
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: heal
+            amount: "1d4"
+            bonus: cha_mod
+            target: ally
+          description: >
+            One creature within 30 feet regains 1d4 + CHA modifier HP but has
+            Disadvantage on its next attack roll or saving throw.
+
+        - id: the_crone
+          display_name: The Crone
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: reroll
+            roll_type: enemy_save
+          description: Force a creature to reroll one successful saving throw against your spell.
+
+        - id: the_farmer
+          display_name: The Farmer
+          action_type: reaction
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: reroll
+            roll_type: skill_check
+          description: Reroll one Athletics or Acrobatics check (Reaction).
+
+        - id: the_father
+          display_name: The Father
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: temp_hp
+            amount: warlock_level
+          description: Gain Temporary Hit Points equal to your warlock level.
+
+        - id: the_forester
+          display_name: The Forester
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: advantage_grant
+            roll_type: skill_check
+            skills: [stealth, perception]
+          description: Gain Advantage on your next Stealth or Perception check.
+
+        - id: the_gambler
+          display_name: The Gambler
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: Roll d6. On 4–6, the triggering effect is empowered. On 1, it fizzles.
+
+        - id: the_gravedigger
+          display_name: The Gravedigger
+          action_type: no_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: frightened
+            save_ability: WIS
+            dc: spell_save_dc
+          description: >
+            When you reduce a creature to 0 HP, one creature within 10 feet makes
+            a WIS save or becomes Frightened until the end of its next turn.
+
+        - id: the_guard
+          display_name: The Guard
+          action_type: reaction
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: disadvantage_impose
+            roll_type: attack
+          description: >
+            When you or an ally within 5 feet is hit, impose Disadvantage on
+            that attack roll (declared after hit, before damage).
+
+        - id: the_herbalist
+          display_name: The Herbalist
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_remove
+            conditions: [poisoned, charmed, frightened, blinded]
+          description: End one condition (Poisoned, Charmed, Frightened, or Blinded).
+
+        - id: the_hunter
+          display_name: The Hunter
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: speed_change
+            amount: -10
+            target: enemy
+          description: On a hit, reduce the target's Speed by 10 feet until your next turn.
+
+        - id: the_leader
+          display_name: The Leader
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: >
+            When you cast a spell or use a feature, one ally within 30 feet may
+            Reaction-move or make one weapon attack.
+
+        - id: the_little_boy
+          display_name: The Little Boy
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: reroll
+            roll_type: saving_throw
+            target: ally
+          description: You or one ally within 30 feet may reroll one failed saving throw.
+
+        - id: the_little_girl
+          display_name: The Little Girl
+          action_type: no_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: frightened
+            save_ability: INT
+            dc: spell_save_dc
+          description: >
+            When a creature fails a save against your spell, it makes an INT save
+            or becomes Frightened until the end of its next turn.
+
+        - id: the_merchant
+          display_name: The Merchant
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: >
+            Halve your spell damage to impose Disadvantage on one of the target's
+            saving throws until the start of your next turn.
+
+        - id: the_midwife
+          display_name: The Midwife
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: heal
+            amount: 0
+            bonus: cha_mod
+            target: ally
+          description: One ally within 10 feet regains HP equal to your CHA modifier (min 1).
+
+        - id: the_miller
+          display_name: The Miller
+          action_type: no_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: prone
+            save_ability: STR
+            dc: spell_save_dc
+          description: On a hit, target makes a STR save or is knocked Prone.
+
+        - id: the_mother
+          display_name: The Mother
+          action_type: reaction
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: >
+            Reaction when you or an ally within 10 feet takes damage: both gain
+            Resistance to that instance and the next source until end of your next turn.
+
+        - id: the_priest
+          display_name: The Priest
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: advantage_grant
+            roll_type: death_save
+          description: One creature within 30 feet gains Advantage on death saving throws.
+
+        - id: the_scoundrel
+          display_name: The Scoundrel
+          action_type: no_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: When using a cantrip targeting one creature, also target a second.
+
+        - id: the_seamstress
+          display_name: The Seamstress
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: Cast mending or stabilize a dying creature within 30 feet.
+
+        - id: the_stablehand
+          display_name: The Stablehand
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: speed_change
+            amount: 10
+            target: self
+          description: Your Speed increases by 10 feet until the end of your next turn.
+
+        - id: the_storyteller
+          display_name: The Storyteller
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: advantage_grant
+            roll_type: ability_check
+            abilities: [INT, CHA]
+          description: Gain Advantage on your next INT or CHA ability check or saving throw.
+
+        - id: the_tavernkeeper
+          display_name: The Tavernkeeper
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: true
+          effect:
+            type: condition_apply
+            condition: frightened
+            save_ability: CON
+            dc: spell_save_dc
+          description: >
+            All hostile creatures within 10 feet make a CON save or have
+            Disadvantage on their next WIS or DEX saving throw.
+
+        - id: the_teacher
+          display_name: The Teacher
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: Your next INT check has Advantage; for 1 hour you can read and write all languages.
+
+        - id: the_weaver
+          display_name: The Weaver
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: utility
+          description: >
+            Create a spectral thread to a creature within 30 feet; Bonus Action
+            to teleport within 5 feet of it.
+
+        - id: the_young_lover
+          display_name: The Young Lover
+          action_type: bonus_action
+          recharge: short_rest
+          simulatable: false
+          effect:
+            type: advantage_grant
+            roll_type: ability_check
+            abilities: [CHA]
+          description: >
+            Gain Advantage on your next CHA check or saving throw; next creature
+            saving against your Charm has Disadvantage.
+
+  # 2024 change: was "1st-level feature" → now 3rd-level. Wording updated to
+  # use 2024 condition and action-economy language.
+  - id: shared_burden
+    display_name: Shared Burden
+    feature_type: scripted_feature
+    unlock_level: 3
+    body:
+      uses: 1
+      recharge: short_or_long_rest
+      action_type: reaction
+      description: >
+        When you take damage from a creature you can see, you may use your
+        Reaction to reduce that damage by an amount equal to your warlock level +
+        your Charisma modifier (minimum 1). If this reduction brings the damage
+        to 0, you automatically succeed on any resulting Concentration check.
+
+  # 6th-level feature unchanged from 2014; language updated to 2024 style.
+  - id: voices_in_harmony
+    display_name: Voices in Harmony
+    feature_type: scripted_feature
+    unlock_level: 6
+    body:
+      description: >
+        When you use Echoes of the Fallen, you may choose two spirits instead of
+        one; both effects apply simultaneously.
+
+        Once per Short or Long Rest, while taking a rest you may commune with
+        your spirits. Choose one ability score other than Strength. Until your
+        next rest, you gain proficiency in saving throws that use that ability
+        score. If you already have proficiency, you instead gain Expertise.
+
+  # 10th-level feature. Three options; choice is permanent. "Pain of Loss" uses
+  # 2024 language for the 0-HP trigger (mirrors Relentless Endurance wording).
+  - id: the_turning_point
+    display_name: The Turning Point
+    feature_type: passive_feature_grant
+    unlock_level: 10
+    body:
+      description: >
+        Choose one of the following permanent enhancements. This choice cannot
+        be changed.
+
+        Stronger Together. When you cast a spell that targets only yourself, you
+        may also target one willing ally within 30 feet.
+
+        The Pain of Loss. When you are reduced to 0 Hit Points but not killed
+        outright, you may drop to 1 Hit Point instead. All hostile creatures
+        within 10 feet must succeed on a WIS save (your Spell Save DC) or become
+        Frightened of you until the end of their next turn. Once you use this
+        option, you must finish a Long Rest before using it again.
+
+        It Takes a Village. Once per Long Rest, when you finish a Short Rest, the
+        strength of your community lifts you and those around you. You and up to
+        four allies who also took that Short Rest each regain Hit Points as though
+        you expended one additional Hit Die (this does not consume a Hit Die).
+        You also regain one expended use of Echoes of the Fallen and may reset
+        the usage of one spirit that has a "once per long rest" limitation.
+
+  # 14th-level feature. Three 1/day ultimates; "Vengeance" updated to use 2024
+  # Blinded condition language; "Haunted" is a custom condition defined in body.
+  - id: as_one
+    display_name: As One
+    feature_type: scripted_feature
+    unlock_level: 14
+    body:
+      uses: 1
+      recharge: long_rest
+      description: >
+        Choose one of the following options. You may only use one per Long Rest.
+
+        Voice of the Fallen. For 1 minute: you may use Echoes of the Fallen
+        every turn without expending charges; you may channel two spirits per
+        turn; once per turn, you may repeat the effect of a spell or subclass
+        feature you used on your previous turn, targeting a different creature.
+
+        Vengeance of the Legion. As an Action, choose a point within 60 feet.
+        All creatures of your choice within 30 feet must make a CHA save (your
+        Spell Save DC). On a failure: the creature takes 6d10 Psychic damage,
+        gains the Blinded condition, and is Haunted for 1 minute. A Haunted
+        creature has Disadvantage on Concentration checks, cannot benefit from
+        Invisibility, and has Disadvantage on the first attack roll it makes each
+        of its turns. The Haunted effect ends if the creature succeeds on a CHA
+        save at the end of one of its turns (your Spell Save DC).
+
+        The Chorus' Crescendo. For 1 minute: when you or a creature within 30
+        feet casts a spell, uses a class feature, or makes a weapon attack, you
+        may apply one spirit effect from Echoes of the Fallen without expending a
+        charge. You may do this a number of times per round up to your CHA
+        modifier (minimum 1), divided as you choose among eligible triggers.
+        Additionally, all allies within 30 feet gain Temporary Hit Points equal
+        to your warlock level at the start of each of their turns.

@@ -34,7 +34,7 @@ CORS(app)
 CONTENT_DIR   = Path(os.environ.get("CONTENT_DIR",   "content"))
 BASELINES_DIR = Path(os.environ.get("BASELINES_DIR", "baselines/v1.3"))
 MAX_RUNS      = int(os.environ.get("MAX_RUNS",  "100"))
-MAX_LEVEL     = int(os.environ.get("MAX_LEVEL", "10"))
+MAX_LEVEL     = int(os.environ.get("MAX_LEVEL", "20"))
 
 # ---------------------------------------------------------------------------
 # Rate limiter (in-memory; resets on dyno restart — acceptable for free tier)
@@ -114,6 +114,22 @@ def subclass_data(subclass_id: str):
     return jsonify(json.loads(path.read_text(encoding="utf-8")))
 
 
+@app.route("/api/analyze", methods=["POST"])
+def analyze():
+    """Parse and analyze a homebrew subclass YAML for format validity and simulation coverage."""
+    ip = request.headers.get("X-Forwarded-For", request.remote_addr or "").split(",")[0].strip()
+    if not _rate_ok(ip):
+        return jsonify({"error": "Rate limit exceeded — max 5 requests per minute."}), 429
+
+    body = request.get_json(silent=True)
+    if not body or "yaml_content" not in body:
+        return jsonify({"error": "JSON body with 'yaml_content' field required."}), 400
+
+    from balance_framework.reporting.analyzer import analyze_subclass_yaml
+    report = analyze_subclass_yaml(body["yaml_content"])
+    return jsonify(report)
+
+
 @app.route("/api/simulate", methods=["POST"])
 def simulate():
     # Rate limit by IP (Render/Railway set X-Forwarded-For)
@@ -125,8 +141,9 @@ def simulate():
     if not body or "yaml_content" not in body:
         return jsonify({"error": "JSON body with 'yaml_content' field required."}), 400
 
-    runs  = min(max(int(body.get("runs",  50)), 1), MAX_RUNS)
-    level = min(max(int(body.get("level",  5)), 1), MAX_LEVEL)
+    runs      = min(max(int(body.get("runs",  50)), 1), MAX_RUNS)
+    level     = min(max(int(body.get("level",  5)), 1), MAX_LEVEL)
+    persona_id = body.get("persona")  # optional; None = default heuristic
 
     # 1. Parse YAML (safe_load only — no arbitrary code execution)
     try:
@@ -157,10 +174,28 @@ def simulate():
             )
         }), 400
 
-    # 4. Run simulation (serialised so registry mutations don't race)
+    # 4. Resolve persona strategy (one Haiku call, outside the sim lock)
+    persona_strategy = None
+    if persona_id:
+        from balance_framework.ai.personas import generate_persona_strategy, PERSONAS
+        if persona_id not in PERSONAS:
+            return jsonify({"error": f"Unknown persona {persona_id!r}. Valid: {sorted(PERSONAS)}"}), 400
+        feature_names = [
+            f.get("display_name", f.get("id", ""))
+            for f in (parsed.get("features") or [])
+            if isinstance(f, dict)
+        ]
+        try:
+            persona_strategy = generate_persona_strategy(
+                persona_id, subclass_obj.parent_class, subclass_obj.id, level, feature_names
+            )
+        except Exception as exc:
+            app.logger.warning("Persona strategy generation failed: %s", exc)
+
+    # 5. Run simulation (serialised so registry mutations don't race)
     try:
         with _sim_lock:
-            result = _run_simulation(subclass_obj, runs, level)
+            result = _run_simulation(subclass_obj, runs, level, persona_strategy)
     except Exception as exc:
         app.logger.exception("Simulation error")
         return jsonify({"error": f"Simulation error: {exc}"}), 500
@@ -173,7 +208,7 @@ def simulate():
 # ---------------------------------------------------------------------------
 
 
-def _run_simulation(subclass_obj, runs: int, level: int) -> dict:
+def _run_simulation(subclass_obj, runs: int, level: int, persona_strategy=None) -> dict:
     """Inject the homebrew subclass, run the harness, restore registry."""
     from balance_framework.registry.character_builder import CharacterBuild
     from balance_framework.harnesses.subclass import run_subclass_build
@@ -196,7 +231,8 @@ def _run_simulation(subclass_obj, runs: int, level: int) -> dict:
         for enc_name, monster_id, count in STANDARD_ENCOUNTERS:
             factory = lambda s, mid=monster_id, cnt=count: monster_enemy_band(mid, cnt, registry)
             enc_results[enc_name] = run_subclass_build(
-                build, sc_id, registry, n=runs, base_seed=0, enemy_factory=factory,
+                build, sc_id, registry, n=runs, base_seed=0,
+                enemy_factory=factory, persona_strategy=persona_strategy,
             )
     finally:
         # Always restore — even if the simulation raised.
@@ -218,6 +254,13 @@ def _run_simulation(subclass_obj, runs: int, level: int) -> dict:
         "display_name": subclass_obj.display_name,
         "level":        level,
         "runs":         runs,
+        "persona": {
+            "id":    persona_strategy.persona_id,
+            "name":  persona_strategy.display_name,
+            "notes": persona_strategy.notes,
+            "bonus_action_reliability": persona_strategy.bonus_action_reliability,
+            "target_priority":          persona_strategy.target_priority,
+        } if persona_strategy else None,
         "aggregate": {
             "avg_win_rate": sum(win_rates) / len(win_rates),
             "min_win_rate": min(win_rates),

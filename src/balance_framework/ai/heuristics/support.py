@@ -25,6 +25,7 @@ from balance_framework.engine.combat.actions import WeaponAttackAction, HealActi
 from balance_framework.engine.combat.resources import has_resource, spend
 from balance_framework.engine.grid import nearest_enemy
 from balance_framework.ai.heuristics.caster import _cantrip_count_sides
+from balance_framework.ai.choice_scorer import select_best_pool_option
 
 
 def support_selector(
@@ -92,7 +93,16 @@ def support_selector(
         damage_bonus=spell_dmg_bonus,
         is_ranged=True,
     )
-    return [main] + _war_priest_bonus(combatant, target)
+    extra = _war_priest_bonus(combatant, target)
+
+    # Bonus action pool option (if war_priest didn't consume it)
+    if combatant.bonus_actions_remaining > 0 and combatant.active_pool_features:
+        pool_action = select_best_pool_option(combatant, scenario, "bonus_action")
+        if pool_action is not None:
+            combatant.bonus_actions_remaining -= 1
+            extra.append(pool_action)
+
+    return [main] + extra
 
 
 def _war_priest_bonus(

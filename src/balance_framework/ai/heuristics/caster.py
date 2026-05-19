@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 from balance_framework.engine.combat.actions import WeaponAttackAction
 from balance_framework.engine.combat.resources import has_resource, spend
 from balance_framework.engine.grid import nearest_enemy
+from balance_framework.ai.choice_scorer import select_best_pool_option
 
 
 # Cantrip damage by character level (Fire Bolt / Eldritch Blast tiers)
@@ -73,7 +74,7 @@ def caster_selector(
 
     # 2. Cantrip (no resource cost)
     count, sides = _cantrip_count_sides(combatant.proficiency_bonus)
-    return [WeaponAttackAction(
+    actions = [WeaponAttackAction(
         attacker_id=combatant.id,
         target_id=target.id,
         attack_bonus=spell_atk,
@@ -82,3 +83,12 @@ def caster_selector(
         damage_bonus=spell_dmg_bonus,
         is_ranged=True,
     )]
+
+    # Bonus action: use the highest-utility pool option if available
+    if combatant.bonus_actions_remaining > 0 and combatant.active_pool_features:
+        pool_action = select_best_pool_option(combatant, scenario, "bonus_action")
+        if pool_action is not None:
+            combatant.bonus_actions_remaining -= 1
+            actions.append(pool_action)
+
+    return actions

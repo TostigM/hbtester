@@ -91,6 +91,14 @@ _HALF_CASTER_SLOTS: dict[int, dict[str, int]] = {
 _FULL_CASTER_CLASSES = frozenset({"cleric", "wizard", "druid", "bard", "sorcerer"})
 _HALF_CASTER_CLASSES = frozenset({"paladin", "ranger"})
 
+_PROF_BY_LEVEL: dict[int, int] = {
+    **{lvl: 2 for lvl in range(1, 5)},
+    **{lvl: 3 for lvl in range(5, 9)},
+    **{lvl: 4 for lvl in range(9, 13)},
+    **{lvl: 5 for lvl in range(13, 17)},
+    **{lvl: 6 for lvl in range(17, 21)},
+}
+
 # Pact Magic: slots are all the same level; recover on short or long rest.
 # Stored as spell_slot_N so the caster AI naturally selects the right level.
 _PACT_MAGIC_SLOTS: dict[int, dict[str, int]] = {
@@ -257,5 +265,19 @@ def resources_from_features(
         pools["sorcery_points"] = level
 
     pools.update(spell_slots_for(class_id, level))
+
+    # choice_feature pools: one resource key per feature, sized by uses spec
+    prof = _PROF_BY_LEVEL.get(level, 2)
+    for f in features:
+        if f.feature_type == "choice_feature":
+            uses_spec = f.body.get("uses", 1)
+            if uses_spec == "proficiency_bonus":
+                uses = prof
+            else:
+                try:
+                    uses = int(uses_spec)
+                except (TypeError, ValueError):
+                    uses = 1
+            pools[f"choice_feature_{f.id}"] = uses
 
     return pools

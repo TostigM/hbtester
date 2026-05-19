@@ -138,6 +138,11 @@ def test() -> None:
     type=click.Path(file_okay=False),
     help="Path to the content directory.",
 )
+@click.option(
+    "--persona", default=None,
+    type=click.Choice(["power_gamer", "newbie", "veteran", "forever_dm", "min_maxer"]),
+    help="LLM persona to use as the player (calls Claude Haiku once to generate strategy).",
+)
 def subclass(
     subclass_file: str,
     runs: int,
@@ -145,6 +150,7 @@ def subclass(
     level: int,
     seed: int,
     content_dir: str,
+    persona: str | None,
 ) -> None:
     """Test a subclass and generate a balance report."""
     from balance_framework.registry.loader import load_content_directory
@@ -160,8 +166,18 @@ def subclass(
     click.echo(f"Parsing subclass from {subclass_file!r}...")
     build, label = _build_from_subclass_file(Path(subclass_file), level)
 
+    persona_strategy = None
+    if persona:
+        from balance_framework.ai.personas import generate_persona_strategy, PERSONAS
+        import yaml as _yaml
+        raw = _yaml.safe_load(Path(subclass_file).read_text(encoding="utf-8"))
+        feature_names = [f.get("display_name", f.get("id", "")) for f in raw.get("features", [])]
+        click.echo(f"Generating {PERSONAS[persona]['display_name']} strategy via Haiku...")
+        persona_strategy = generate_persona_strategy(persona, build.class_id, build.subclass_id, level, feature_names)
+        click.echo(f"  Strategy: {persona_strategy.notes}")
+
     click.echo(f"Running {runs} encounters for {label!r} at level {level}...")
-    result = run_subclass_build(build, label, registry, n=runs, base_seed=seed)
+    result = run_subclass_build(build, label, registry, n=runs, base_seed=seed, persona_strategy=persona_strategy)
 
     out_path = Path(output)
     out_path.parent.mkdir(parents=True, exist_ok=True)

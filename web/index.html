@@ -275,6 +275,88 @@
     .hb-enc-name { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.3rem; }
     .hb-enc-wr   { font-size: 1.2rem; font-weight: 700; }
     .hb-enc-rnd  { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
+    /* Analyze button */
+    .hb-persona-select {
+      padding: 0.3rem 0.5rem; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text); font-size: 0.85rem; cursor: pointer;
+    }
+    .hb-persona-select:focus { outline: none; border-color: var(--gold-dim); }
+    .hb-persona-card {
+      margin-top: 0.75rem; padding: 0.6rem 0.85rem;
+      background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--gold-dim);
+    }
+    .hb-persona-card-name { font-size: 0.75rem; font-weight: 700; color: var(--gold-dim);
+      text-transform: uppercase; letter-spacing: 0.06em; }
+    .hb-persona-card-notes { font-size: 0.82rem; color: var(--text); margin-top: 0.25rem; line-height: 1.4; }
+    .hb-persona-card-stats { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
+    .hb-analyze-btn {
+      padding: 0.5rem 1.2rem; background: transparent;
+      border: 1px solid var(--border); border-radius: 6px; color: var(--muted);
+      cursor: pointer; font-size: 0.85rem; transition: border-color 0.15s, color 0.15s;
+    }
+    .hb-analyze-btn:hover:not(:disabled) { border-color: var(--gold-dim); color: var(--text); }
+    .hb-analyze-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    /* Coverage report */
+    #hb-analysis { margin-top: 0.75rem; }
+    .hb-analysis-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.5rem 0.75rem; background: var(--surface2);
+      border-radius: 6px 6px 0 0; border-bottom: 1px solid var(--border);
+    }
+    .hb-analysis-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .hb-cov-badge {
+      font-size: 0.8rem; font-weight: 700; padding: 0.15rem 0.55rem;
+      border-radius: 99px; background: var(--surface2);
+    }
+    .hb-feature-list { background: var(--surface2); border-radius: 0 0 6px 6px; padding: 0.25rem 0; }
+    .hb-feature-row {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      padding: 0.35rem 0.75rem; border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+    .hb-feature-row:first-child { border-top: none; }
+    .hb-feature-row.expandable { cursor: pointer; user-select: none; }
+    .hb-feature-row.expandable:hover { background: rgba(255,255,255,0.03); }
+    .hb-expand-arrow {
+      flex-shrink: 0; width: 0.85rem; color: var(--muted); font-size: 0.6rem;
+      margin-top: 0.25rem; transition: transform 0.15s;
+    }
+    .hb-expand-arrow.open { transform: rotate(90deg); }
+    .hb-feature-detail {
+      padding: 0.5rem 0.75rem 0.6rem 2.6rem; border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.15);
+    }
+    .hb-option-section { margin-top: 0.4rem; }
+    .hb-option-section:first-child { margin-top: 0; }
+    .hb-option-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+    .hb-option-label.ok   { color: #6fcf6f; }
+    .hb-option-label.none { color: #e07070; }
+    .hb-option-chips { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+    .hb-chip {
+      font-size: 0.68rem; padding: 0.1rem 0.45rem; border-radius: 4px;
+      font-family: monospace; letter-spacing: 0;
+    }
+    .hb-chip-ok   { background: #1a3320; color: #6fcf6f; }
+    .hb-chip-none { background: #3a1515; color: #e07070; }
+    .hb-cov-pill {
+      flex-shrink: 0; font-size: 0.68rem; font-weight: 700; padding: 0.1rem 0.45rem;
+      border-radius: 99px; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.05rem;
+    }
+    .cov-full    { background: #1a3a1a; color: #6fcf6f; }
+    .cov-partial { background: #3a2e10; color: #d4a826; }
+    .cov-none    { background: #3a1515; color: #e07070; }
+    .hb-feature-info { flex: 1; min-width: 0; }
+    .hb-feature-name { color: var(--text); font-weight: 600; }
+    .hb-feature-reason { color: var(--muted); font-size: 0.74rem; margin-top: 0.1rem; }
+    .hb-pool-bar {
+      height: 4px; background: var(--border); border-radius: 2px; margin-top: 0.35rem; overflow: hidden;
+    }
+    .hb-pool-fill { height: 100%; border-radius: 2px; background: #d4a826; }
+    .hb-schema-error {
+      padding: 0.6rem 0.75rem; background: #3c1515; border-radius: 6px;
+      color: #f08080; font-size: 0.8rem; margin-bottom: 0.4rem;
+    }
   </style>
 </head>
 <body>
@@ -359,9 +441,24 @@
           placeholder="schema_version: &quot;0.1&quot;&#10;content_type: subclass&#10;id: my_fighter_subclass&#10;display_name: My Fighter Subclass&#10;parent_class: fighter&#10;source: Homebrew&#10;author: You&#10;features: []&#10;resource_pools: []"></textarea>
         <div class="hb-controls">
           <label>Runs <input type="number" id="hb-runs"  value="50" min="10" max="100" class="hb-num"></label>
-          <label>Level <input type="number" id="hb-level" value="5"  min="1"  max="10"  class="hb-num"></label>
+          <label>Level <input type="number" id="hb-level" value="5"  min="1"  max="20"  class="hb-num"></label>
+          <label>Persona
+            <select id="hb-persona" class="hb-persona-select">
+              <option value="">Heuristic (default)</option>
+              <option value="power_gamer">Power Gamer</option>
+              <option value="veteran">Veteran</option>
+              <option value="forever_dm">Forever DM</option>
+              <option value="min_maxer">Min-Maxer</option>
+              <option value="newbie">Newbie</option>
+            </select>
+          </label>
+          <button id="hb-analyze-btn" class="hb-analyze-btn">Analyze</button>
           <button id="hb-run-btn" class="hb-run-btn">Run Simulation</button>
         </div>
+        <div id="hb-level-warn" hidden style="margin-top:0.5rem;padding:0.5rem 0.75rem;background:#2e2510;border-radius:6px;border-left:3px solid #d4a826;font-size:0.8rem;color:#d4a826;">
+          Levels 11–20 are supported but accuracy is reduced — some high-tier features (triple Extra Attack, 6th–9th level spells, capstone abilities) are partially or not modeled. Interpret results with that in mind.
+        </div>
+        <div id="hb-analysis" hidden></div>
         <div id="hb-status"  class="hb-status" hidden></div>
         <div id="hb-results" hidden></div>
       </div>
@@ -683,7 +780,14 @@ function _hbStatus(type, msg) {
 
 function _hbShowResults(d) {
   const encs = Object.keys(d.encounters);
+  const personaHtml = d.persona ? `
+    <div class="hb-persona-card">
+      <div class="hb-persona-card-name">${d.persona.name}</div>
+      <div class="hb-persona-card-notes">${d.persona.notes}</div>
+      <div class="hb-persona-card-stats">Bonus action reliability: ${Math.round(d.persona.bonus_action_reliability * 100)}% &nbsp;|&nbsp; Target priority: ${d.persona.target_priority.replace('_', ' ')}</div>
+    </div>` : '';
   document.getElementById('hb-results').innerHTML = `
+    ${personaHtml}
     <div class="hb-summary">
       <div class="hb-sum-card">
         <div class="hb-sum-label">Avg Win Rate</div>
@@ -719,23 +823,157 @@ function _hbShowResults(d) {
   document.getElementById('hb-results').hidden = false;
 }
 
-async function runHomebrew() {
-  const btn   = document.getElementById('hb-run-btn');
+function _covClass(cov) {
+  return cov === 'full' ? 'cov-full' : cov === 'partial' ? 'cov-partial' : 'cov-none';
+}
+function _covLabel(cov) {
+  return cov === 'full' ? 'Full' : cov === 'partial' ? 'Partial' : 'None';
+}
+function _covColor(pct) {
+  return pct >= 70 ? '#6fcf6f' : pct >= 40 ? '#d4a826' : '#e07070';
+}
+
+function _toggleFeatureDetail(idx) {
+  const detail = document.getElementById(`hb-detail-${idx}`);
+  const arrow  = document.getElementById(`hb-arrow-${idx}`);
+  if (!detail) return;
+  const opening = detail.hidden;
+  detail.hidden = !opening;
+  if (arrow) arrow.classList.toggle('open', opening);
+}
+
+function _renderAnalysis(r) {
+  const el = document.getElementById('hb-analysis');
+
+  if (r.parse_error) {
+    el.innerHTML = `<div class="hb-schema-error">Parse error: ${r.parse_error}</div>`;
+    el.hidden = false;
+    return;
+  }
+
+  const pct   = r.summary.coverage_pct ?? 0;
+  const valid = r.valid;
+  const schemaHtml = r.schema_errors.length
+    ? r.schema_errors.map(e => `<div class="hb-schema-error">${e}</div>`).join('')
+    : '';
+
+  const featRows = (r.features || []).map((f, i) => {
+    const lvl = f.unlock_level ? `<span style="color:var(--muted);font-size:0.72rem"> L${f.unlock_level}</span>` : '';
+    let icon, nameStyle, extra = '';
+    const ppo = f.pool_options && f.pool_options.total > 0 ? f.pool_options : null;
+
+    if (f.coverage === 'full') {
+      icon      = `<span style="color:#6fcf6f;font-size:1rem;flex-shrink:0">✓</span>`;
+      nameStyle = 'color:var(--text)';
+    } else if (f.coverage === 'partial') {
+      icon      = `<span class="hb-cov-pill cov-partial" style="flex-shrink:0">Partial</span>`;
+      nameStyle = 'color:var(--text)';
+      if (f.reason && !ppo) extra += `<div class="hb-feature-reason">${f.reason}</div>`;
+    } else {
+      icon      = `<span class="hb-cov-pill cov-none" style="flex-shrink:0">Not simulated</span>`;
+      nameStyle = 'color:var(--muted)';
+      if (f.reason && !ppo) extra += `<div class="hb-feature-reason">${f.reason}</div>`;
+    }
+
+    let detailHtml = '';
+    if (ppo) {
+      const pct2 = Math.round(ppo.simulatable / ppo.total * 100);
+      extra += `<div class="hb-pool-bar"><div class="hb-pool-fill" style="width:${pct2}%"></div></div>`;
+      extra += `<div class="hb-feature-reason" style="margin-bottom:0.1rem">${ppo.simulatable}/${ppo.total} pool options simulatable — <span style="color:var(--gold-dim)">click to expand</span></div>`;
+
+      const okChips   = (ppo.simulatable_ids || []).map(id => `<span class="hb-chip hb-chip-ok">${id}</span>`).join('');
+      const noneChips = (ppo.not_simulatable || []).map(id => `<span class="hb-chip hb-chip-none">${id}</span>`).join('');
+      detailHtml = `<div class="hb-feature-detail" id="hb-detail-${i}" hidden>
+        ${okChips ? `<div class="hb-option-section">
+          <div class="hb-option-label ok">Simulatable (${ppo.simulatable})</div>
+          <div class="hb-option-chips">${okChips}</div>
+        </div>` : ''}
+        ${noneChips ? `<div class="hb-option-section">
+          <div class="hb-option-label none">Not simulatable (${ppo.not_simulatable.length})</div>
+          <div class="hb-option-chips">${noneChips}</div>
+        </div>` : ''}
+      </div>`;
+    }
+
+    const expandable = ppo ? 'expandable' : '';
+    const arrow = ppo ? `<span class="hb-expand-arrow" id="hb-arrow-${i}">▶</span>` : `<span style="width:0.85rem;flex-shrink:0"></span>`;
+    const onclick = ppo ? `onclick="_toggleFeatureDetail(${i})"` : '';
+
+    return `<div class="hb-feature-row ${expandable}" ${onclick}>
+      ${arrow}
+      ${icon}
+      <div class="hb-feature-info">
+        <span class="hb-feature-name" style="${nameStyle}">${f.display_name}${lvl}</span>
+        ${extra}
+      </div>
+    </div>${detailHtml}`;
+  }).join('');
+
+  const validBadge = valid
+    ? `<span style="color:#6fcf6f;font-size:0.78rem">✓ Valid schema</span>`
+    : `<span style="color:#e07070;font-size:0.78rem">✗ Schema errors</span>`;
+
+  el.innerHTML = `
+    ${schemaHtml}
+    <div class="hb-analysis-hdr">
+      <span class="hb-analysis-title">Simulation Coverage</span>
+      <span style="display:flex;gap:0.75rem;align-items:center">
+        ${validBadge}
+        <span class="hb-cov-badge" style="color:${_covColor(pct)}">${pct}%</span>
+      </span>
+    </div>
+    <div class="hb-feature-list">${featRows || '<div class="hb-feature-row" style="color:var(--muted)">No features found.</div>'}</div>`;
+  el.hidden = false;
+}
+
+async function analyzeHomebrew() {
+  const btn     = document.getElementById('hb-analyze-btn');
   const yamlTxt = document.getElementById('hb-yaml').value.trim();
-  const runs  = parseInt(document.getElementById('hb-runs').value)  || 50;
-  const level = parseInt(document.getElementById('hb-level').value) || 5;
+  if (!yamlTxt) { _hbStatus('error', 'Paste a subclass YAML first.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Analyzing…';
+  document.getElementById('hb-analysis').hidden = true;
+
+  try {
+    const resp = await fetch(`${API_BASE}/api/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ yaml_content: yamlTxt }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { _hbStatus('error', data.error || `Server error ${resp.status}`); return; }
+    document.getElementById('hb-status').hidden = true;
+    _renderAnalysis(data);
+  } catch (e) {
+    _hbStatus('error', `Network error: ${e.message}`);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Analyze';
+  }
+}
+
+async function runHomebrew() {
+  const btn     = document.getElementById('hb-run-btn');
+  const yamlTxt = document.getElementById('hb-yaml').value.trim();
+  const runs    = parseInt(document.getElementById('hb-runs').value)  || 50;
+  const level   = parseInt(document.getElementById('hb-level').value) || 5;
+  const persona = document.getElementById('hb-persona').value || null;
 
   if (!yamlTxt) { _hbStatus('error', 'Paste a subclass YAML first.'); return; }
 
   btn.disabled = true;
   document.getElementById('hb-results').hidden = true;
-  _hbStatus('loading', 'Simulating… this can take 10–30 s on a cold server start.');
+  const personaLabel = persona ? ` as ${document.getElementById('hb-persona').options[document.getElementById('hb-persona').selectedIndex].text}` : '';
+  _hbStatus('loading', `Simulating${personaLabel}… this can take 10–30 s on a cold server start.`);
 
   try {
+    const body = { yaml_content: yamlTxt, runs, level };
+    if (persona) body.persona = persona;
     const resp = await fetch(`${API_BASE}/api/simulate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ yaml_content: yamlTxt, runs, level }),
+      body: JSON.stringify(body),
     });
     const data = await resp.json();
     if (!resp.ok) { _hbStatus('error', data.error || `Server error ${resp.status}`); return; }
@@ -749,6 +987,10 @@ async function runHomebrew() {
 }
 
 document.getElementById('hb-run-btn').addEventListener('click', runHomebrew);
+document.getElementById('hb-analyze-btn').addEventListener('click', analyzeHomebrew);
+document.getElementById('hb-level').addEventListener('input', function() {
+  document.getElementById('hb-level-warn').hidden = parseInt(this.value) <= 10;
+});
 
 // ── Go ─────────────────────────────────────────────────────────────────────
 init();
