@@ -16,6 +16,7 @@ from balance_framework.registry.character_builder import CharacterBuild, build_c
 from balance_framework.registry.registry import ContentRegistry
 from balance_framework.ai.profiles import CLASS_PROFILE
 from balance_framework.ai.decision import select_actions
+from balance_framework.ai.personas import PersonaStrategy
 from balance_framework.runner.orchestrator import run_encounter_batch
 from balance_framework.runner.collector import EncounterResult
 from balance_framework.reporting.test_report import summarize, EncounterSuite
@@ -96,11 +97,12 @@ def run_subclass_build(
     n: int = 100,
     base_seed: int = 0,
     enemy_factory: EnemyFactory | None = None,
+    persona_strategy: PersonaStrategy | None = None,
 ) -> VariantResult:
     """Run *n* encounters for one build and return aggregated stats."""
     if enemy_factory is None:
         enemy_factory = lambda seed: default_enemy_band(2)  # noqa: E731
-    return _run_variant(build, label, "variant", registry, n, base_seed, enemy_factory)
+    return _run_variant(build, label, "variant", registry, n, base_seed, enemy_factory, persona_strategy)
 
 
 def _run_variant(
@@ -111,15 +113,22 @@ def _run_variant(
     n: int,
     base_seed: int,
     enemy_factory: EnemyFactory,
+    persona_strategy: PersonaStrategy | None = None,
 ) -> VariantResult:
     profile = CLASS_PROFILE.get(build.class_id, "passive")
+
+    if persona_strategy is not None:
+        from balance_framework.ai.persona_selector import make_persona_selector
+        action_selector = make_persona_selector(persona_strategy, rng_seed=base_seed)
+    else:
+        action_selector = select_actions
 
     def factory(seed: int) -> ScenarioState:
         char = build_character(build, registry)
         cs = CombatantState.from_character(char, combatant_id, label, "party", profile)
         return make_scenario([cs], enemy_factory(seed), seed)
 
-    results = run_encounter_batch(factory, select_actions, n=n, base_seed=base_seed)
+    results = run_encounter_batch(factory, action_selector, n=n, base_seed=base_seed)
     suite = summarize(results)
     combatant_stats = _aggregate_combatant_stats(results, combatant_id, n)
     return VariantResult(label=label, suite=suite, combatant_stats=combatant_stats)
