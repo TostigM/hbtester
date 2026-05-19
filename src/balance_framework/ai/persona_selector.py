@@ -58,7 +58,7 @@ def _retarget_attacks(
 ) -> list:
     from balance_framework.engine.combat.actions import WeaponAttackAction
 
-    enemies = [c for c in scenario.combatants.values()
+    enemies = [c for c in scenario.combatants
                if c.team != combatant.team and c.is_alive]
     if not enemies:
         return actions
