@@ -441,7 +441,7 @@
           placeholder="schema_version: &quot;0.1&quot;&#10;content_type: subclass&#10;id: my_fighter_subclass&#10;display_name: My Fighter Subclass&#10;parent_class: fighter&#10;source: Homebrew&#10;author: You&#10;features: []&#10;resource_pools: []"></textarea>
         <div class="hb-controls">
           <label>Runs <input type="number" id="hb-runs"  value="50" min="10" max="100" class="hb-num"></label>
-          <label>Level <input type="number" id="hb-level" value="5"  min="1"  max="10"  class="hb-num"></label>
+          <label>Level <input type="number" id="hb-level" value="5"  min="1"  max="20"  class="hb-num"></label>
           <label>Persona
             <select id="hb-persona" class="hb-persona-select">
               <option value="">Heuristic (default)</option>
@@ -454,6 +454,9 @@
           </label>
           <button id="hb-analyze-btn" class="hb-analyze-btn">Analyze</button>
           <button id="hb-run-btn" class="hb-run-btn">Run Simulation</button>
+        </div>
+        <div id="hb-level-warn" hidden style="margin-top:0.5rem;padding:0.5rem 0.75rem;background:#2e2510;border-radius:6px;border-left:3px solid #d4a826;font-size:0.8rem;color:#d4a826;">
+          Levels 11–20 are supported but accuracy is reduced — some high-tier features (triple Extra Attack, 6th–9th level spells, capstone abilities) are partially or not modeled. Interpret results with that in mind.
         </div>
         <div id="hb-analysis" hidden></div>
         <div id="hb-status"  class="hb-status" hidden></div>
@@ -985,6 +988,9 @@ async function runHomebrew() {
 
 document.getElementById('hb-run-btn').addEventListener('click', runHomebrew);
 document.getElementById('hb-analyze-btn').addEventListener('click', analyzeHomebrew);
+document.getElementById('hb-level').addEventListener('input', function() {
+  document.getElementById('hb-level-warn').hidden = parseInt(this.value) <= 10;
+});
 
 // ── Go ─────────────────────────────────────────────────────────────────────
 init();

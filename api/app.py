@@ -34,7 +34,7 @@ CORS(app)
 CONTENT_DIR   = Path(os.environ.get("CONTENT_DIR",   "content"))
 BASELINES_DIR = Path(os.environ.get("BASELINES_DIR", "baselines/v1.3"))
 MAX_RUNS      = int(os.environ.get("MAX_RUNS",  "100"))
-MAX_LEVEL     = int(os.environ.get("MAX_LEVEL", "10"))
+MAX_LEVEL     = int(os.environ.get("MAX_LEVEL", "20"))
 
 # ---------------------------------------------------------------------------
 # Rate limiter (in-memory; resets on dyno restart — acceptable for free tier)
