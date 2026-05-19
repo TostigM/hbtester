@@ -276,6 +276,19 @@
     .hb-enc-wr   { font-size: 1.2rem; font-weight: 700; }
     .hb-enc-rnd  { font-size: 0.72rem; color: var(--muted); margin-top: 0.1rem; }
     /* Analyze button */
+    .hb-persona-select {
+      padding: 0.3rem 0.5rem; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text); font-size: 0.85rem; cursor: pointer;
+    }
+    .hb-persona-select:focus { outline: none; border-color: var(--gold-dim); }
+    .hb-persona-card {
+      margin-top: 0.75rem; padding: 0.6rem 0.85rem;
+      background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--gold-dim);
+    }
+    .hb-persona-card-name { font-size: 0.75rem; font-weight: 700; color: var(--gold-dim);
+      text-transform: uppercase; letter-spacing: 0.06em; }
+    .hb-persona-card-notes { font-size: 0.82rem; color: var(--text); margin-top: 0.25rem; line-height: 1.4; }
+    .hb-persona-card-stats { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
     .hb-analyze-btn {
       padding: 0.5rem 1.2rem; background: transparent;
       border: 1px solid var(--border); border-radius: 6px; color: var(--muted);
@@ -429,6 +442,16 @@
         <div class="hb-controls">
           <label>Runs <input type="number" id="hb-runs"  value="50" min="10" max="100" class="hb-num"></label>
           <label>Level <input type="number" id="hb-level" value="5"  min="1"  max="10"  class="hb-num"></label>
+          <label>Persona
+            <select id="hb-persona" class="hb-persona-select">
+              <option value="">Heuristic (default)</option>
+              <option value="power_gamer">Power Gamer</option>
+              <option value="veteran">Veteran</option>
+              <option value="forever_dm">Forever DM</option>
+              <option value="min_maxer">Min-Maxer</option>
+              <option value="newbie">Newbie</option>
+            </select>
+          </label>
           <button id="hb-analyze-btn" class="hb-analyze-btn">Analyze</button>
           <button id="hb-run-btn" class="hb-run-btn">Run Simulation</button>
         </div>
@@ -754,7 +777,14 @@ function _hbStatus(type, msg) {
 
 function _hbShowResults(d) {
   const encs = Object.keys(d.encounters);
+  const personaHtml = d.persona ? `
+    <div class="hb-persona-card">
+      <div class="hb-persona-card-name">${d.persona.name}</div>
+      <div class="hb-persona-card-notes">${d.persona.notes}</div>
+      <div class="hb-persona-card-stats">Bonus action reliability: ${Math.round(d.persona.bonus_action_reliability * 100)}% &nbsp;|&nbsp; Target priority: ${d.persona.target_priority.replace('_', ' ')}</div>
+    </div>` : '';
   document.getElementById('hb-results').innerHTML = `
+    ${personaHtml}
     <div class="hb-summary">
       <div class="hb-sum-card">
         <div class="hb-sum-label">Avg Win Rate</div>
@@ -921,22 +951,26 @@ async function analyzeHomebrew() {
 }
 
 async function runHomebrew() {
-  const btn   = document.getElementById('hb-run-btn');
+  const btn     = document.getElementById('hb-run-btn');
   const yamlTxt = document.getElementById('hb-yaml').value.trim();
-  const runs  = parseInt(document.getElementById('hb-runs').value)  || 50;
-  const level = parseInt(document.getElementById('hb-level').value) || 5;
+  const runs    = parseInt(document.getElementById('hb-runs').value)  || 50;
+  const level   = parseInt(document.getElementById('hb-level').value) || 5;
+  const persona = document.getElementById('hb-persona').value || null;
 
   if (!yamlTxt) { _hbStatus('error', 'Paste a subclass YAML first.'); return; }
 
   btn.disabled = true;
   document.getElementById('hb-results').hidden = true;
-  _hbStatus('loading', 'Simulating… this can take 10–30 s on a cold server start.');
+  const personaLabel = persona ? ` as ${document.getElementById('hb-persona').options[document.getElementById('hb-persona').selectedIndex].text}` : '';
+  _hbStatus('loading', `Simulating${personaLabel}… this can take 10–30 s on a cold server start.`);
 
   try {
+    const body = { yaml_content: yamlTxt, runs, level };
+    if (persona) body.persona = persona;
     const resp = await fetch(`${API_BASE}/api/simulate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ yaml_content: yamlTxt, runs, level }),
+      body: JSON.stringify(body),
     });
     const data = await resp.json();
     if (!resp.ok) { _hbStatus('error', data.error || `Server error ${resp.status}`); return; }
