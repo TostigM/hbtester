@@ -28,6 +28,10 @@ htmlcov/
 
 # OS
 .DS_Store
+
+# Secrets
+.env
+.env.*
 Thumbs.db
 
 # Project-specific
